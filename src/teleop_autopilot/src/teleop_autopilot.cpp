@@ -52,13 +52,18 @@
 #include <string>
 #include <geometry_msgs/Twist.h>
 
+#include <unistd.h>
+
 #include <std_srvs/Empty.h>
 #include <algorithm>
 
 using namespace std;
 
 int STEER_DIR = 0;
-const int DEPTH_SCALE_FACTOR = 40;
+float STEER_SPEED = 1.0; //max 1
+const int DEPTH_SCALE_FACTOR = 80;//40;
+
+cv::RNG rng( 0xFFFFFFFF );
 
 boost::format g_format;
 bool save_all_image, save_image_service;
@@ -123,21 +128,41 @@ public://initialize fields of callbacks
 */
     count_++;
   }
+  
+  int min_3_nums(int a, int b, int c)
+  {
+    if( a < b && a < c)
+      return 0;
+    else if( b < a && b < c)
+      return 1;
+    else if(c < a && c < b)
+      return 2;
+    /*
+    if (a==b)
+      return 0;
+    if (b==c)
+      return 1;*/
+  }
 
   void getDirectionSteer(cv::Mat depth_mono8_img)
   {
     int DEPTH_MAX = 255;
-    int depth_scaled = 0;
+    
     int image_height = depth_mono8_img.rows;
     int image_width  = depth_mono8_img.cols;
-    int num_depth_bins = 10;
+    int num_depth_bins = image_width;//100;
     int stride_length    = floor(image_width/num_depth_bins);
     cv::Mat depth_vals(num_depth_bins,1,CV_32F);
+    cv::Mat vector_field_hist = cv::Mat::zeros(DEPTH_MAX,num_depth_bins,CV_8UC3);
+    
     int image_height_depth_val = floor(image_height/2);
     int image_col_val = floor(stride_length/2);
+    
+    //Build VFH
     for(int i = 0; i < num_depth_bins; ++i)
     {
-      float depth_this = 0;
+      int depth_this = 0;
+      int depth_scaled = 0;
       if( image_col_val <= image_width)
       {
 	depth_this = (int)(depth_mono8_img.at<char>(image_height_depth_val, image_col_val));  //(image_height_depth_val, image_col_val);
@@ -147,62 +172,213 @@ public://initialize fields of callbacks
       {
 	depth_scaled = DEPTH_MAX;
       }
-      else
+      else if  (depth_this == 0) // LESS THAN MIN RANGE
       {
-	depth_scaled = depth_this;
+	depth_scaled = 0;
       }
       
-      depth_vals.at<float>(i) = depth_scaled;
-      cout << depth_this << " "  << depth_scaled << endl;
+      depth_vals.at<float>(i,0) = (float)(DEPTH_MAX-depth_scaled);
+      //cout << depth_this << " " << depth_scaled << endl;
+      cv::Point pt1, pt2;
+      pt1.x = i;
+      pt2.x = i;
+      
+      pt1.y = DEPTH_MAX;
+      pt2.y = DEPTH_MAX-depth_scaled;
+      
+      cv::line(vector_field_hist, pt1, pt2, cv::Scalar(0,0,255), 2, 8);
       
       image_col_val += stride_length;
     }
+    // Find best steer direction
+    int min_freespace_width = 30; //let this be an even number
+    int freespace_min_depth = 255;
+    
+    cv::Mat free_space_widths = cv::Mat::zeros(num_depth_bins,1,CV_32F);
+    //std::vector<int> free_space_directions;
+    //std::vector<int> free_space_widths;
+    
+    /*
+    int offset = 1;
+    for(int i = 0; i < num_depth_bins; i+offset)
+    {
+      
+      int depth_this = (int)depth_vals.at<float>(i+offset);
+      while(depth_this >=  freespace_min_depth && i+offset < num_depth_bins)
+      {
+	offset += 1;
+	depth_this = (int)depth_vals.at<float>(i+offset);
+      }
+      if (offset >= min_freespace_width)
+      {
+	free_space_widths.push_back(offset);
+	int free_space_direction = (int)(i+offset/2);
+	free_space_directions.push_back(free_space_direction);
+      }
+      
+      
+    }*/
+    for(int i = 0; i < num_depth_bins; ++i)//num_depth_bins-50
+    {
+      //cout << "i: " << i << endl;
+      int depth_this = DEPTH_MAX;
+      int left_offset = 0;
+      while (depth_this >= freespace_min_depth && i-left_offset >= 0)
+      {
+	//cout << "depth_this: " << depth_this << endl;
+	//cout << "left_offset: " << left_offset << endl;
+	depth_this = (int)depth_vals.at<float>(i-left_offset,0);
+	left_offset += 1;
+      }
+      depth_this = DEPTH_MAX;
+      int right_offset = 0;
+      
+      while (depth_this >= freespace_min_depth && i+right_offset < num_depth_bins)
+      {
+	//cout << "depth_this: " << depth_this << endl;
+	//cout << "right_offset: " << right_offset << endl;
+	depth_this = (int)depth_vals.at<float>(i+right_offset,0);
+	right_offset += 1;
+      }
+      float width = (float) (left_offset + right_offset);
+      free_space_widths.at<float>(i,0) = left_offset + right_offset; 
+      
+      cv::circle(vector_field_hist, cv::Point(i,DEPTH_MAX-10), 3, cv::Scalar(0,0,(int)width), -1);
+      
+    }
+    
+    double min, max;
+    cv::Point min_loc, max_loc;
+    cv::minMaxLoc(free_space_widths, &min, &max, &min_loc, &max_loc);
+    int best_free_space_direction = max_loc.y;
+    int best_free_space_width     = (int)max;
+    
+  
+    
+    //cout << "Direction: " << best_free_space_direction << " Width: " << best_free_space_width << endl;
+    
+    cv::imshow("vfh", vector_field_hist);
     int depths_left = 0, depths_right = 0, depths_centre = 0;
     
-    for(int i = 0; i < 4; ++i)
+    int num_cols_third = (int)(num_depth_bins/3);
+    for(int i = 0; i < num_cols_third; ++i)
     {
-      depths_left += depth_vals.at<float>(i);
+      depths_left += 255-depth_vals.at<float>(i,0);
     }
-    depths_left /= 4;
+    depths_left /= num_cols_third;
     
-    for(int i = 4; i < 6; ++i)
+    for(int i = num_cols_third; i < 2*num_cols_third; ++i)
     {
-      depths_centre += depth_vals.at<float>(i);
+      depths_centre += 255-depth_vals.at<float>(i,0);
     }
-    depths_centre /= 2;
+    depths_centre /= num_cols_third;
     
-    for(int i = 6; i < 10; ++i)
+    for(int i = 2*num_cols_third; i < 3*num_cols_third; ++i)
     {
-      depths_right += depth_vals.at<float>(i);
+      depths_right += 255-depth_vals.at<float>(i,0);
     }
-    depths_right /= 4;
+    depths_right /= num_cols_third;
     
     cout << "left: " << depths_left << endl;
     cout << "centre: " << depths_centre << endl;
     cout << "right: " << depths_right << endl;
     
-    if (depths_centre == 0 && depths_left == 0 && depths_right == 0)
+    
+    /*
+    if ((depths_left == 0 && depths_right == 0) ||
+        (depths_centre == 0 && depths_right == 0))// ||
+       //(depths_left == 0) || (depths_right == 0))
     {
+      
       STEER_DIR = 0; //TURN LEFT
-    }
-    else
-    {
-      if (depths_centre >= depths_left && depths_centre >= depths_right)
+	 STEER_SPEED = 1;
+	 
+      float rand_num = rng.uniform(0.f,1.f);
+      cout << "rand num: " << rand_num << endl;
+      if (rand_num >= 0.5)
       {
-	STEER_DIR = 1; //GO STRAIGHT
-	//cout << "GO STRAIGHT" << endl;
-      }
-      else if (depths_left >= depths_centre && depths_left >= depths_right)
-      {
-	STEER_DIR = 0; //TURN LEFT
-	//cout << "TURN LEFT" << endl;
+	 STEER_DIR = 0; //TURN LEFT
+	 STEER_SPEED = 1;
+	
       }
       else
       {
 	STEER_DIR = 2; //TURN RIGHT
-	//cout << "TURN RIGHT" << endl;
+	STEER_SPEED = 1;
       }
+
+    }*/
+    if (depths_left == 0 && depths_right == 0)
+    {
+      cout << "GO LEFT " << endl;
+      STEER_DIR = 0; //TURN LEFT
+      STEER_SPEED = 1;
+      
     }
+    else if (depths_left == 255 && depths_right == 255)
+    {
+      cout << "GO STRAIGHT " << endl;
+      STEER_DIR = 1; //GO STRAIGHT
+      STEER_SPEED = 0;
+    }
+    else if (depths_left > depths_right)
+    {
+      cout << "GO LEFT " << endl;
+       STEER_DIR = 0; //TURN LEFT
+       STEER_SPEED = 1;
+	/*
+      if (depths_left == 0)
+      {
+	STEER_DIR = 2; //TURN RIGHT
+	STEER_SPEED = 1;
+      }
+      else
+      {
+	STEER_DIR = 0; //TURN LEFT
+	STEER_SPEED = 1;
+      }*/
+      
+    }
+    else if (depths_right >= depths_left)
+    {
+      cout << "GO RIGHT " << endl;
+      STEER_DIR = 2; //GO RIGHT
+      STEER_SPEED = 1;
+    }
+
+    
+    /*
+    else if (depths_centre == 0 && depths_left == 0 && depths_right > 0)
+    {
+      STEER_DIR = 2; //TURN RIGHT
+      STEER_SPEED = 1;
+    }
+    else if (depths_centre == 0 && depths_right == 0 && depths_left > 0)
+    {
+      STEER_DIR = 0; //TURN LEFT
+      STEER_SPEED = 1;
+    }
+    else if (depths_centre == 255 && depths_left == 255 && depths_right == 255)
+    {
+      STEER_DIR = 1; //GO STRAIGHT
+    }
+    else if (depths_centre == 255 && depths_left == 255 && depths_right < 255)
+    {
+      STEER_DIR = 0; //TURN LEFT
+      STEER_SPEED = 1;
+    }
+    else if (depths_centre == 255 && depths_right == 255 && depths_right < 255)
+    {
+      STEER_DIR = 3; //TURN RIGHT
+      STEER_SPEED = 1;
+    }
+    else
+    { // Go in the min of depths_left, centre and right
+      STEER_DIR =  min_3_nums(depths_left, depths_centre, depths_right);
+      STEER_SPEED = 1;
+    }
+     */
+ 
       
     
     
@@ -423,7 +599,7 @@ int main(int argc, char** argv)
     
     if (STEER_DIR == 1)
     {
-      twist.linear.x = 0.2;//straight
+      twist.linear.x = 0.8;//straight
       twist.linear.y = 0.0;
       twist.linear.z = 0.0;
       
@@ -434,33 +610,37 @@ int main(int argc, char** argv)
     }
     else if (STEER_DIR == 0)
     {
-      twist.linear.x = 0.5;
+      twist.linear.x = 0.0;
       twist.linear.y = 0.0;
       twist.linear.z = 0.0;
       
       twist.angular.x = 0.0;
       twist.angular.y = 0.0;
-      twist.angular.z = +1.0;//turn left
+      twist.angular.z = STEER_SPEED;//+1.0;//turn left
+       
     }
     else
     {
-      twist.linear.x = 0.5;
+      twist.linear.x = 0.0;
       twist.linear.y = 0.0;
       twist.linear.z = 0.0;
       
       twist.angular.x = 0.0;
       twist.angular.y = 0.0;
-      twist.angular.z = -1.0;//turn right
+      twist.angular.z = -STEER_SPEED;//-1.0;//turn right
+      
+      
     }
-    cout << "lin x: " << twist.linear.x << endl;
-    cout << "lin y: " << twist.linear.y << endl;
-    cout << "lin z: " << twist.linear.z << endl;
+    //cout << "lin x: " << twist.linear.x << endl;
+    //cout << "lin y: " << twist.linear.y << endl;
+    //cout << "lin z: " << twist.linear.z << endl;
     
-    cout << "theta x: " << twist.angular.x << endl;
-    cout << "theta y: " << twist.angular.y << endl;
-    cout << "theta z: " << twist.angular.z << endl;
+    //cout << "theta x: " << twist.angular.x << endl;
+    //cout << "theta y: " << twist.angular.y << endl;
+    //cout << "theta z: " << twist.angular.z << endl;
     
-    cout << "STEER DIR" << STEER_DIR << endl;
+    //cout << "STEER DIR" << STEER_DIR << endl;
+    //cout << "STEER_SPEED:" << STEER_SPEED << endl;
     pubControl.publish(twist);
   
   // [hover, back, forward, turn right, turn left, down, up, clockwise, ccw]
