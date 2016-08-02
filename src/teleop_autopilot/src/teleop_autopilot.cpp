@@ -312,7 +312,18 @@ public://initialize fields of callbacks
     {
       cout << "GO LEFT " << endl;
       STEER_DIR = 0; //TURN LEFT
-      STEER_SPEED = 1;
+      
+      float rand_num = rng.uniform(0.f,1.f);
+      // randomness for extricating from corners
+      cout << "rand num: " << rand_num << endl;
+      if (rand_num >= 0.5)
+      {
+	STEER_SPEED = 1;
+      }
+      else
+      {
+	STEER_SPEED = -1;
+      }
       
     }
     else if (depths_left == 255 && depths_right == 255)
@@ -325,7 +336,17 @@ public://initialize fields of callbacks
     {
       cout << "GO LEFT " << endl;
        STEER_DIR = 0; //TURN LEFT
-       STEER_SPEED = 1;
+       float rand_num = rng.uniform(0.f,1.f);
+      cout << "rand num: " << rand_num << endl;
+      // randomness for extricating from corners
+      if (rand_num >= 0.5)
+      {
+	STEER_SPEED = 1;
+      }
+      else
+      {
+	STEER_SPEED = 0.5;
+      }
 	/*
       if (depths_left == 0)
       {
