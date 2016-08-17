@@ -264,22 +264,27 @@ int main(int argc, char** argv)
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   callbacks.path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(callbacks.path);
-  boost::filesystem::remove_all(dir);
-  if(boost::filesystem::create_directory(dir)) {
-    callbacks.path_depth = callbacks.path+"/depth";
-    boost::filesystem::path dir_depth(callbacks.path_depth);
-    if(boost::filesystem::create_directory(dir_depth)) {
-      std::cout << "Success in creating: "<<callbacks.path_depth << "\n";
+  boost::filesystem::file_status f = status(dir);
+  if(! boost::filesystem::is_directory(f)){
+    //create directory if it already exists.
+    //boost::filesystem::remove_all(dir);
+    if(boost::filesystem::create_directory(dir)) {
+      callbacks.path_depth = callbacks.path+"/depth";
+      boost::filesystem::path dir_depth(callbacks.path_depth);
+      if(boost::filesystem::create_directory(dir_depth)) {
+	std::cout << "Success in creating: "<<callbacks.path_depth << "\n";
+      }
+      callbacks.path = callbacks.path+"/RGB";
+      boost::filesystem::path dir_rgb(callbacks.path);
+      if(boost::filesystem::create_directory(dir_rgb)) {
+	std::cout << "Success in creating: "<<callbacks.path << "\n";
+	boost::filesystem::file_status s = status(callbacks.path);
+	printf("%o\n",s.permissions());
+      }
+    }else{
+      std::cout <<"Failed to make saving direction "<<callbacks.path <<"\n";
     }
-    callbacks.path = callbacks.path+"/RGB";
-    boost::filesystem::path dir_rgb(callbacks.path);
-    if(boost::filesystem::create_directory(dir_rgb)) {
-      std::cout << "Success in creating: "<<callbacks.path << "\n";
-    }
-  }else{
-    std::cout <<"Failed to make saving direction "<<callbacks.path <<"\n";
   }
-  
   // Useful when CameraInfo is being published
   /*image_transport::CameraSubscriber sub_image_and_camera = it.subscribeCamera(topic, 1,
                                                                               &Callbacks::callbackWithCameraInfo,

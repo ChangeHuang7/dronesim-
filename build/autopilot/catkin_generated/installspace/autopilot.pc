@@ -1,0 +1,8 @@
+prefix=/home/jay/autopilot_ws/install
+
+Name: autopilot
+Description: Description of autopilot
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/jay/autopilot_ws/install/lib 
+Requires: 

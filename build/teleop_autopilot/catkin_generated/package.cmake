@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "teleop_autopilot")
+set(teleop_autopilot_MAINTAINER "jay <jay@todo.todo>")
+set(teleop_autopilot_DEPRECATED "")
+set(teleop_autopilot_VERSION "0.0.0")
+set(teleop_autopilot_BUILD_DEPENDS "camera_calibration_parsers" "ardrone_autonomy" "cv_bridge" "image_transport" "message_generation" "roscpp" "rospy" "sensor_msgs" "std_msgs")
+set(teleop_autopilot_RUN_DEPENDS "ardrone_autonomy" "cv_bridge" "image_transport" "message_runtime" "roscpp" "rospy" "sensor_msgs" "std_msgs")
+set(teleop_autopilot_BUILDTOOL_DEPENDS "catkin")

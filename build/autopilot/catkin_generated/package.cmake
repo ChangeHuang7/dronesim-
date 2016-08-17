@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "autopilot")
+set(autopilot_MAINTAINER "jay <jay@todo.todo>")
+set(autopilot_DEPRECATED "")
+set(autopilot_VERSION "0.0.0")
+set(autopilot_BUILD_DEPENDS "camera_calibration_parsers" "ardrone_autonomy" "cv_bridge" "image_transport" "message_generation" "roscpp" "rospy" "sensor_msgs" "std_msgs")
+set(autopilot_RUN_DEPENDS "ardrone_autonomy" "cv_bridge" "image_transport" "message_runtime" "roscpp" "rospy" "sensor_msgs" "std_msgs")
+set(autopilot_BUILDTOOL_DEPENDS "catkin")

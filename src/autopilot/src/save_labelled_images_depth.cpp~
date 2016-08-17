@@ -76,7 +76,7 @@ public://initialize fields of callbacks
   Callbacks() : is_first_image_(true), is_first_image_depth_(true), has_camera_info_(false), count_(0){}
   
   void depthToCV8UC1(const cv::Mat& float_img, cv::Mat& mono8_img){
-    //Process images
+    //Process images: 
     if(mono8_img.rows != float_img.rows || mono8_img.cols != float_img.cols){
       mono8_img = cv::Mat(float_img.size(), CV_8UC1);}
     cv::convertScaleAbs(float_img, mono8_img, 80, 0.0);
@@ -134,7 +134,7 @@ public://initialize fields of callbacks
     }
     if (control.length()==0)//dont save any image if there has no control signal arrived just yet
       return;
-    //Copy the image.data to imageBuf. Depth image is uint16 with depths in mm.
+    //Copy the image.data to imageBuf. Depth image is uint16 with depths in m.
     cv::Mat depth_float_img = cv_ptr->image;
     cv::Mat depth_mono8_img;
     depthToCV8UC1(depth_float_img, depth_mono8_img);
@@ -275,6 +275,8 @@ int main(int argc, char** argv)
     boost::filesystem::path dir_rgb(callbacks.path);
     if(boost::filesystem::create_directory(dir_rgb)) {
       std::cout << "Success in creating: "<<callbacks.path << "\n";
+      boost::filesystem::file_status s = status(callbacks.path);
+      printf("%o\n",s.permissions());
     }
   }else{
     std::cout <<"Failed to make saving direction "<<callbacks.path <<"\n";
