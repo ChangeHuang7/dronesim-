@@ -3,8 +3,8 @@
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched-->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
   <!--use line for spawning world from .dae mesh in gz model folder-->
-    <!--<arg name="world_name" value="$(find autopilot)/worlds/oa_world.world"/>-->
-    <arg name="world_name" value="$(find autopilot)/worlds/corridor_big.world"/>
+    <arg name="world_name" value="$(find autopilot)/worlds/simple_wall.world"/>
+      <!--<arg name="world_name" value="$(find autopilot)/worlds/corridor_small.world"/>-->
   </include>
 
   <!-- use line for spawning environment from separate launch file-->
@@ -22,9 +22,9 @@
     <arg name="human" value="$(find cvg_sim_gazebo)/urdf/human.urdf.xacro"/> 
   </include>-->
 
-  <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>
- 
+ <!--<node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>-->
+ <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" />
  <!-- JAY: Uncomment this line below if you want to launch your autopilot teleop imediately -->
- <!-- <node name="teleop" pkg="teleop_autopilot" type="teleop_autopilot" output="screen"/>-->
+  <node name="teleop_autopilot_turning" pkg="teleop_autopilot" type="teleop_autopilot_turning" output="screen"/>
  
 </launch>

@@ -51,6 +51,8 @@
 #include <boost/filesystem.hpp>
 #include <string>
 #include <geometry_msgs/Twist.h>
+#include <geometry_msgs/Point.h>
+#include <nav_msgs/Odometry.h>
 
 #include <unistd.h>
 
@@ -59,9 +61,11 @@
 
 using namespace std;
 
+int state=0;
 int STEER_DIR = 0;
-float STEER_SPEED = 1.0; //max 1
+float STEER_SPEED = 1;//0 means go straight, 1 means turn left, -1 means turn right
 const int DEPTH_SCALE_FACTOR = 80;//40;
+const float STEER_SPEED_SCALE=1;//0.005;
 
 cv::RNG rng( 0xFFFFFFFF );
 
@@ -100,35 +104,7 @@ public://initialize fields of callbacks
     //cv::line( mono8_img, cv::Point2i(10,10),cv::Point2i(200,100), cv::Scalar(255), 3, 8);
   }
   
-  void callbackWithoutCameraInfo(const sensor_msgs::ImageConstPtr& image_msg)
-  {
-    if (is_first_image_) {
-      is_first_image_ = false;
-
-      // Wait a tiny bit to see whether callbackWithCameraInfo is called
-      ros::Duration(0.001).sleep();
-    }
-
-    if (has_camera_info_)
-      return;
-
-    // save the image
-    cv::Mat image;
-    try
-    {
-      image = cv_bridge::toCvShare(image_msg, encoding)->image;
-    } catch(cv_bridge::Exception)
-    {
-      ROS_ERROR("Unable to convert %s image to bgr8", image_msg->encoding.c_str());
-      return;
-    }
-    std::string filename;
-    /*if (!saveImage(image, filename))
-      return;
-*/
-    count_++;
-  }
-  
+ 
   int min_3_nums(int a, int b, int c)
   {
     if( a < b && a < c)
@@ -144,6 +120,8 @@ public://initialize fields of callbacks
       return 1;*/
   }
 
+  //calculate a proper steering direction and save this in the global variable steer_dir and steer_speed
+  //the direction is picked from go straight/turn left/turn right depending on the depth image
   void getDirectionSteer(cv::Mat depth_mono8_img)
   {
     int DEPTH_MAX = 255;
@@ -308,6 +286,7 @@ public://initialize fields of callbacks
       }
 
     }*/
+    
     if (depths_left == 0 && depths_right == 0)
     {
       cout << "GO LEFT " << endl;
@@ -406,6 +385,7 @@ public://initialize fields of callbacks
     
     
   }
+  //general callback function for the depth map
   void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& original_image)
   {
     if (is_first_image_) {
@@ -437,143 +417,21 @@ public://initialize fields of callbacks
     cv::Mat depth_mono8_img;
     depthToCV8UC1(depth_float_img, depth_mono8_img);
     //cout << "Here" << endl;
-    cv::imshow("test_window", depth_mono8_img);
+    //cv::imshow("test_window", depth_mono8_img);
     cv::waitKey(25);
     
     getDirectionSteer(depth_mono8_img);
-    
-    
-//     double min, max;
-//     cv::minMaxLoc(depth_float_img, &min, &max);	
-//     std::cout << "minmax float: " << min << "; " << max << "\n";
-//     cv::minMaxLoc(depth_mono8_img, &min, &max);	
-//     std::cout << "minmax mono: " << min << "; " << max << "\n";
-//     
-    // save the image
-    std::string filename;
-    if (!saveImage(depth_mono8_img, filename, true))
-      return;
-    
-    count_++;
+   
   }
   
-  void callbackWithCameraInfo(const sensor_msgs::ImageConstPtr& image_msg, const sensor_msgs::CameraInfoConstPtr& info)
+
+
+  void callbackGt(const nav_msgs::Odometry& msg)
   {
-    has_camera_info_ = true;
-
-    // save the image
-    cv::Mat image;
-    try
-    {
-      image = cv_bridge::toCvShare(image_msg, encoding)->image;
-    } catch(cv_bridge::Exception)
-    {
-      ROS_ERROR("Unable to convert %s image to bgr8", image_msg->encoding.c_str());
-      return;
-    }
-    std::string filename;
-    if (!saveImage(image, filename))
-      return;
-
-    // save the CameraInfo
-    if (info) {
-      filename = filename.replace(filename.rfind("."), filename.length(), ".ini");
-      camera_calibration_parsers::writeCalibration(filename, "camera", *info);
-    }
-
-    count_++;
-  }
-  
-  void callbackCmd(const geometry_msgs::Twist& msg)
-  {
-    geometry_msgs::Vector3 lin = msg.linear;
-    geometry_msgs::Vector3 ang = msg.angular;
-    //std::cout << "twist message: "<< msg << std::endl;
+    //geometry_msgs::Vector3 pos = msg.pose.pose.position;
+    std::cout << "pos message: "<< msg.pose.pose.position.x << std::endl;
+    
     //std::cout << "twist message ang z: "<< ang.z << std::endl;
-    
-    std::string cmd;
-    //check stop signal if quadrotor has to hover
-    if( !(lin.x || lin.y || lin.z || ang.z)){
-      cmd = "100000000";//hover
-    }else{
-      if(lin.y < 0){
-	cmd = "000100000";//-y aka right
-      }else if(lin.y > 0){
-	cmd = "000010000";//+y aka left
-      }else{
-	if(lin.x < 0){
-	  cmd = "010000000";//-x aka back
-	}else if(lin.x > 0){
-	  cmd = "001000000";//+x aka forward
-	}else{
-	  if(lin.z < 0){
-	    cmd =  "000001000";//-z aka down
-	  }else if(lin.z > 0){
-	    cmd =  "000000100";//+z aka up
-	  }else{
-	    if(ang.z < 0){
-	      cmd =  "000000010";//cw
-	    }else if(ang.z > 0){
-	      cmd =  "000000001";//ccw
-	    }else{
-	      cmd = "x";
-	    }
-	  }
-	}
-      }
-    }
-         
-    control = cmd;
-    std::cout << "control message: "<< cmd << std::endl;
-  }
-  
-private: //private methods of callback
-  bool saveImage(cv::Mat image, std::string &filename, bool depth = false) {
-    
-    //cv::imshow("test_window", image);
-    //cv::waitKey(0.05);
-    if (!image.empty()) {
-      
-      try {
-        filename = (g_format).str();
-      } catch (...) { g_format.clear(); }
-      try {
-        filename = (g_format % path).str();
-      } catch (...) { g_format.clear(); }
-      try {
-        filename = (g_format % path % count_).str();
-      } catch (...) { g_format.clear(); }
-      try { 
-        filename = (g_format % path % count_ % "jpg").str();
-      } catch (...) { g_format.clear(); }
-      try {
-	if(!depth){
-	  //RELEVANT for rgb
-	  filename = (g_format % path % count_ % control % "jpg").str();
-	}else{
-	  //RELEVANT FOR DEPTH
-	  filename = (g_format % path_depth % count_ % control % "jpg").str();
-	}
-      } catch (...) { g_format.clear(); }
-      
-      if ( save_all_image || save_image_service ) {
-        try{
-	  cv::imwrite(filename, image);
-	  ROS_INFO("Saved image %s", filename.c_str());
-
-	  save_image_service = false;
-	}catch(runtime_error& ex){
-	  fprintf(stderr, "Exception converting image to PNG format: %s\n", ex.what());
-	  return false;
-	}
-      } else {
-        return false;
-      }
-    } else {
-      ROS_WARN("Couldn't save image, no data!");
-      return false;
-    }
-    return true;
   }
 
 private: //private fields of callback
@@ -590,18 +448,20 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
   image_transport::ImageTransport it(nh);
   //std::string topic = nh.resolveName("image");
-  std::string topic = "/ardrone/image_raw";
   std::string topic_depth = "/ardrone/kinect/depth/image_raw";
 
   Callbacks callbacks;
   
   // Useful when CameraInfo is not being published
-  image_transport::Subscriber sub_image = it.subscribe(
-      topic, 1, boost::bind(&Callbacks::callbackWithoutCameraInfo, &callbacks, _1));
-  //depth
+   //depth
   image_transport::Subscriber sub_image_depth = it.subscribe(
       topic_depth, 1, boost::bind(&Callbacks::callbackWithoutCameraInfoWithDepth, &callbacks, _1));
 
+  
+  // Make subscriber to ground_truth in order to get the psotion.
+  //ros::Subscriber subControl = nh.subscribe("/ground_truth/state/pose/pose/position",1,&Callbacks::callbackGt, &callbacks);
+  ros::Subscriber subControl = nh.subscribe("/ground_truth/state",1,&Callbacks::callbackGt, &callbacks);
+  
   // Make subscriber to cmd_vel in order to set the name.
   ros::Publisher pubControl = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1000);
   ros::Rate loop_rate(10);
@@ -637,7 +497,7 @@ int main(int argc, char** argv)
       
       twist.angular.x = 0.0;
       twist.angular.y = 0.0;
-      twist.angular.z = STEER_SPEED;//+1.0;//turn left
+      twist.angular.z = STEER_SPEED_SCALE*STEER_SPEED;//+1.0;//turn left
        
     }
     else
@@ -648,7 +508,7 @@ int main(int argc, char** argv)
       
       twist.angular.x = 0.0;
       twist.angular.y = 0.0;
-      twist.angular.z = -STEER_SPEED;//-1.0;//turn right
+      twist.angular.z = -STEER_SPEED_SCALE*STEER_SPEED;//-1.0;//turn right
       
       
     }
@@ -664,15 +524,6 @@ int main(int argc, char** argv)
     //cout << "STEER_SPEED:" << STEER_SPEED << endl;
     pubControl.publish(twist);
   
-  // [hover, back, forward, turn right, turn left, down, up, clockwise, ccw]
-  // Adapt name instead of left0000.jpg it should be 00000-gt1.jpg when receiving control 1 ~ straight
-  ros::NodeHandle local_nh("~");
-  std::string format_string;
-  local_nh.param("filename_format", format_string, std::string("%s/%05i-gt%s.%s"));
-  local_nh.param("encoding", encoding, std::string("bgr8"));
-  local_nh.param("save_all_image", save_all_image, true);
-  g_format.parse(format_string);
-  ros::ServiceServer save = local_nh.advertiseService ("save", service);
   loop_rate.sleep();
   ros::spinOnce();
   }

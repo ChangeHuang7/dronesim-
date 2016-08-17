@@ -56,7 +56,7 @@
 #include <algorithm>
 
 using namespace std;
-
+int max_count=500000;
 boost::format g_format;
 bool save_all_image, save_image_service;
 std::string encoding;
@@ -80,15 +80,7 @@ public://initialize fields of callbacks
     if(mono8_img.rows != float_img.rows || mono8_img.cols != float_img.cols){
       mono8_img = cv::Mat(float_img.size(), CV_8UC1);}
     cv::convertScaleAbs(float_img, mono8_img, 80, 0.0);
-    //The following doesn't work due to NaNs
-    /*double min, max;
-    cv::minMaxLoc(your_mat, &min, &max);	
-    std::cout << min << "; " << max << */
-    //double minVal, maxVal; 
-    //minMaxLoc(float_img, &minVal, &maxVal);
-    //ROS_DEBUG("Minimum/Maximum Depth in current image: %f/%f", minVal, maxVal);
-    //mono8_img = cv::Scalar(0);
-    //cv::line( mono8_img, cv::Point2i(10,10),cv::Point2i(200,100), cv::Scalar(255), 3, 8);
+    
   }
   
   void callbackWithoutCameraInfo(const sensor_msgs::ImageConstPtr& image_msg)
@@ -99,10 +91,9 @@ public://initialize fields of callbacks
       // Wait a tiny bit to see whether callbackWithCameraInfo is called
       ros::Duration(0.001).sleep();
     }
-
-    if (has_camera_info_)
+    
+    if (control.length()==0)//dont save any image if there has no control signal arrived just yet
       return;
-
     // save the image
     cv::Mat image;
     try
@@ -114,7 +105,7 @@ public://initialize fields of callbacks
       return;
     }
     std::string filename;
-    if (!saveImage(image, filename))
+    if (!saveImage(image, filename) || count_ >= max_count)
       return;
 
     count_++;
@@ -127,10 +118,6 @@ public://initialize fields of callbacks
       // Wait a tiny bit to see whether callbackWithCameraInfo is called
       ros::Duration(0.001).sleep();
     }
-
-    if (has_camera_info_)
-      return;
-
     cv_bridge::CvImagePtr cv_ptr;
     //Convert from the ROS image message to a CvImage suitable for working with OpenCV for processing
     try
@@ -145,7 +132,8 @@ public://initialize fields of callbacks
         ROS_ERROR("save_labelled_images_depth::main.cpp::cv_bridge exception: %s", e.what());
         return;
     }
-
+    if (control.length()==0)//dont save any image if there has no control signal arrived just yet
+      return;
     //Copy the image.data to imageBuf. Depth image is uint16 with depths in mm.
     cv::Mat depth_float_img = cv_ptr->image;
     cv::Mat depth_mono8_img;
@@ -163,34 +151,7 @@ public://initialize fields of callbacks
 
     count_++;
   }
-  
-  void callbackWithCameraInfo(const sensor_msgs::ImageConstPtr& image_msg, const sensor_msgs::CameraInfoConstPtr& info)
-  {
-    has_camera_info_ = true;
-
-    // save the image
-    cv::Mat image;
-    try
-    {
-      image = cv_bridge::toCvShare(image_msg, encoding)->image;
-    } catch(cv_bridge::Exception)
-    {
-      ROS_ERROR("Unable to convert %s image to bgr8", image_msg->encoding.c_str());
-      return;
-    }
-    std::string filename;
-    if (!saveImage(image, filename))
-      return;
-
-    // save the CameraInfo
-    if (info) {
-      filename = filename.replace(filename.rfind("."), filename.length(), ".ini");
-      camera_calibration_parsers::writeCalibration(filename, "camera", *info);
-    }
-
-    count_++;
-  }
-  
+    
   void callbackCmd(const geometry_msgs::Twist& msg)
   {
     geometry_msgs::Vector3 lin = msg.linear;
@@ -236,10 +197,7 @@ public://initialize fields of callbacks
   
 private: //private methods of callback
   bool saveImage(cv::Mat image, std::string &filename, bool depth = false) {
-    
-
     if (!image.empty()) {
-      
       try {
         filename = (g_format).str();
       } catch (...) { g_format.clear(); }
@@ -294,7 +252,8 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
   image_transport::ImageTransport it(nh);
   //std::string topic = nh.resolveName("image");
-  std::string topic = "/ardrone/image_raw";
+//  std::string topic = "/ardrone/image_raw";
+  std::string topic = "/ardrone/kinect/image_raw";
   std::string topic_depth = "/ardrone/kinect/depth/image_raw";
 
   Callbacks callbacks;
@@ -302,6 +261,7 @@ int main(int argc, char** argv)
   //callbacks.path = "/home/jay/data/";
   //obtain saving location
   std::string saving_location = nh.resolveName("generated_set");
+  //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   callbacks.path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(callbacks.path);
   boost::filesystem::remove_all(dir);

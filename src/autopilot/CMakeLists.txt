@@ -145,6 +145,8 @@ include_directories(
 ## Declare a C++ executable
 add_executable(save_labelled_images src/save_labelled_images.cpp)
 add_executable(save_labelled_images_depth src/save_labelled_images_depth.cpp)
+add_executable(save_labelled_images_dagger src/save_labelled_images_dagger.cpp)
+add_executable(online_control src/online_control.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -156,6 +158,14 @@ target_link_libraries(save_labelled_images
    ${OpenCV_LIBRARIES}
 )
 target_link_libraries(save_labelled_images_depth
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+)
+target_link_libraries(online_control
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+)
+target_link_libraries(save_labelled_images_dagger
    ${catkin_LIBRARIES}
    ${OpenCV_LIBRARIES}
 )

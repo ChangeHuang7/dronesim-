@@ -144,6 +144,9 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(teleop_autopilot src/teleop_autopilot.cpp)
+add_executable(teleop_autopilot_height src/teleop_autopilot_height.cpp)
+add_executable(teleop_autopilot_dagger src/teleop_autopilot_dagger.cpp)
+add_executable(teleop_autopilot_turning src/teleop_autopilot_turning.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -151,6 +154,18 @@ add_executable(teleop_autopilot src/teleop_autopilot.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(teleop_autopilot
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+)
+target_link_libraries(teleop_autopilot_height
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+)
+target_link_libraries(teleop_autopilot_dagger
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+)
+target_link_libraries(teleop_autopilot_turning
    ${catkin_LIBRARIES}
    ${OpenCV_LIBRARIES}
 )
