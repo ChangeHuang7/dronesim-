@@ -264,7 +264,7 @@ int main(int argc, char** argv)
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   callbacks.path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(callbacks.path);
-  boost::filesystem::file_status f = status(dir);
+  boost::filesystem::file_status f = boost::filesystem::status(dir);
   if(! boost::filesystem::is_directory(f)){
     //create directory if it already exists.
     //boost::filesystem::remove_all(dir);
@@ -278,7 +278,7 @@ int main(int argc, char** argv)
       boost::filesystem::path dir_rgb(callbacks.path);
       if(boost::filesystem::create_directory(dir_rgb)) {
 	std::cout << "Success in creating: "<<callbacks.path << "\n";
-	boost::filesystem::file_status s = status(callbacks.path);
+	boost::filesystem::file_status s = boost::filesystem::status(callbacks.path);
 	printf("%o\n",s.permissions());
       }
     }else{
