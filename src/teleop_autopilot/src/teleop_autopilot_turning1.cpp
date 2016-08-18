@@ -53,16 +53,20 @@
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Point.h>
 #include <nav_msgs/Odometry.h>
+#include <geometry_msgs/Quaternion.h>
+#include <tf/transform_datatypes.h>
 
 #include <unistd.h>
 
 #include <std_srvs/Empty.h>
 #include <algorithm>
 
-    using namespace std;
+using namespace std;
 
 int VERY_CLOSE_OBSTACLE_DEPTH = 1, CLOSE_OBSTACLE_DEPTH = 2;
 
+double YAW_MARGIN = 0.7;
+int ADJUST_DIR = 0;
 int state = 0; //define some states that override the general obstacle avoidance behavior: 0 ~ wait, 1 ~ do obstacle avoidance, 2 ~ turn for a random amount of time in 1 direction
 int FSM_COUNTER_THRESH=20;//count by which the state goes to the next state in the FSM (0->1->2->1->...)
 float turn=1;//turn in random state: should be 
@@ -73,6 +77,7 @@ int FSM_COUNTER=0;
 int STEER_DIR = 0;//0 means go left, 1 means go straight, 2 means turn right
 float STEER_SPEED = 1;//0 means no turning, 1 means turn left, -1 means turn right
 int adjust_height = 0; //0 means no adjust, 1 means go up, -1 means go down
+double INITIAL_DIR = 0; // yaw angle -pi->+pi
 
 const int DEPTH_SCALE_FACTOR = 80;//40;
 const float STEER_SPEED_SCALE=1;//0.005;
@@ -290,8 +295,8 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
 
 
   cv::minMaxLoc( depth_float_img, &minVal, &maxVal, &minLoc, &maxLoc );  // Iterate through all elements, to find huge negative values
-  cout << "Min value: " << minVal << endl;
-  cout << "Max value: " << maxVal << endl;
+  // cout << "Min value: " << minVal << endl;
+  // cout << "Max value: " << maxVal << endl;
 
    float origLeft = (depth_float_img.at<float>(image_height_depth_val, 10));
    float origCenter = (depth_float_img.at<float>(image_height_depth_val, (int)image_width/2));
@@ -321,9 +326,9 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
   cv::putText(depth_mono8_img, stextCenter, textCenter, fontFace, fontScale, cv::Scalar(255,0,0), thickness,8);
   cv::putText(depth_mono8_img, stextRight, textRight, fontFace, fontScale, cv::Scalar(255,0,0), thickness,8);
 
-  cout << "left: " << depths_left << endl;
-  cout << "centre: " << depths_centre << endl;
-  cout << "right: " << depths_right << endl;
+  // cout << "left: " << depths_left << endl;
+  // cout << "centre: " << depths_centre << endl;
+  // cout << "right: " << depths_right << endl;
 
   std::ostringstream stmLeftOrig ;
   std::ostringstream stmCenterOrig ;
@@ -345,7 +350,7 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
 
   // depths values: min: ~0.49, max: ~5
 
-  if ((depths_left <= VERY_CLOSE_OBSTACLE_DEPTH
+ if ((depths_left <= VERY_CLOSE_OBSTACLE_DEPTH
    && depths_right <= VERY_CLOSE_OBSTACLE_DEPTH) 
     || depths_centre <= CLOSE_OBSTACLE_DEPTH)
   {
@@ -365,11 +370,11 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
       //cout << "rand num: " << rand_num << endl;
       /*if (rand_num >= 0.5)
       {
-	STEER_SPEED = 1;
+  STEER_SPEED = 1;
       }
       else
       {
-	STEER_SPEED = -1;
+  STEER_SPEED = -1;
       }*/
 
 }
@@ -389,22 +394,22 @@ else if (depths_left > depths_right)
       // randomness for extricating from corners
       /*if (rand_num >= 0.5)
       {
-	STEER_SPEED = 1;
+  STEER_SPEED = 1;
       }
       else
       {
-	STEER_SPEED = 0.5;
+  STEER_SPEED = 0.5;
       }
-	/*
+  /*
       if (depths_left == 0)
       {
-	STEER_DIR = 2; //TURN RIGHT
-	STEER_SPEED = 1;
+  STEER_DIR = 2; //TURN RIGHT
+  STEER_SPEED = 1;
       }
       else
       {
-	STEER_DIR = 0; //TURN LEFT
-	STEER_SPEED = 1;
+  STEER_DIR = 0; //TURN LEFT
+  STEER_SPEED = 1;
       }*/
 
 }
@@ -459,17 +464,34 @@ else if (depths_right >= depths_left)
   }
   
 
+  double getYaw(geometry_msgs::Quaternion orientation) {
+    double yaw = tf::getYaw(orientation);
+    return yaw;
+  }
+
 
   void callbackGt(const nav_msgs::Odometry& msg)
   {
     //geometry_msgs::Vector3 pos = msg.pose.pose.position;
-    std::cout << "height: "<< msg.pose.pose.position.z << std::endl;
+    // std::cout << "height: "<< msg.pose.pose.position.z << std::endl;
     if (msg.pose.pose.position.z > 1.5){
       adjust_height=-1;
     }else if (msg.pose.pose.position.z < 0.5){
       adjust_height=1;
     }else{
       adjust_height=0;
+    }
+
+    double yaw = getYaw(msg.pose.pose.orientation);
+    cout << "Yaw: " << yaw << endl;
+    if (abs(yaw - INITIAL_DIR) >  YAW_MARGIN){
+      ADJUST_DIR = 1;
+    }
+    // else if ((yaw - INITIAL_DIR) < -YAW_MARGIN){
+    //   ADJUST_DIR = -1;
+    // }
+    else{
+      ADJUST_DIR = 0;
     }
     //std::cout << "twist message ang z: "<< ang.z << std::endl;
   }
@@ -512,7 +534,7 @@ geometry_msgs::Twist get_twist(){
 
       	twist.angular.x = 0.0;
       	twist.angular.y = 0.0;
-      	twist.angular.z = 0.0;
+      	twist.angular.z = ADJUST_DIR;
 	
       }
       else if (STEER_DIR == 0)// turn left
@@ -569,7 +591,7 @@ geometry_msgs::Twist get_twist(){
        break;
     }
     FSM_COUNTER=FSM_COUNTER+1;
-    cout << "state: " << state << ". next state: " << FSM_COUNTER << "/" << FSM_COUNTER_THRESH << endl;
+    // cout << "state: " << state << ". next state: " << FSM_COUNTER << "/" << FSM_COUNTER_THRESH << endl;
 
     return twist;
  }
