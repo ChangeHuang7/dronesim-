@@ -59,7 +59,8 @@
 #include <std_srvs/Empty.h>
 #include <algorithm>
 
-    using namespace std;
+using namespace std;
+
 
 int VERY_CLOSE_OBSTACLE_DEPTH = 1, CLOSE_OBSTACLE_DEPTH = 2;
 
