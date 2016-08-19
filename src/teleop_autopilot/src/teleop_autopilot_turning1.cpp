@@ -63,9 +63,13 @@
 
 using namespace std;
 
-int VERY_CLOSE_OBSTACLE_DEPTH = 1, CLOSE_OBSTACLE_DEPTH = 2;
+enum STATES {HOVER = 0, OBSTACLE_AVOID = 1, OBSTACLE_AVOID_CORNER = 2, TURN_GOAL = 3};
 
-double YAW_MARGIN = 0.7;
+float VERY_CLOSE_OBSTACLE_DEPTH = 0.5, CLOSE_OBSTACLE_DEPTH = 1;
+float TURN_GOAL_OBSTACLE_DEPTH = 2;
+
+double CURRENT_YAW = 0;
+double YAW_MARGIN = 0.175;
 int ADJUST_DIR = 0;
 int state = 0; //define some states that override the general obstacle avoidance behavior: 0 ~ wait, 1 ~ do obstacle avoidance, 2 ~ turn for a random amount of time in 1 direction
 int FSM_COUNTER_THRESH=20;//count by which the state goes to the next state in the FSM (0->1->2->1->...)
@@ -77,7 +81,7 @@ int FSM_COUNTER=0;
 int STEER_DIR = 0;//0 means go left, 1 means go straight, 2 means turn right
 float STEER_SPEED = 1;//0 means no turning, 1 means turn left, -1 means turn right
 int adjust_height = 0; //0 means no adjust, 1 means go up, -1 means go down
-double INITIAL_DIR = 0; // yaw angle -pi->+pi
+double INITIAL_DIR = +1.4 + CV_PI; // yaw angle 0 -> 2*pi
 
 const int DEPTH_SCALE_FACTOR = 80;//40;
 const float STEER_SPEED_SCALE=1;//0.005;
@@ -352,6 +356,16 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
 
   /** END DEBUG SECTION **/
 
+  // double minVal; 
+  // double maxVal; 
+  // cv::Point minLoc; 
+  // cv::Point maxLoc;
+  // cout << depth_float_img << endl;
+
+
+  cv::minMaxLoc( depth_float_img.row(image_height_depth_val), &minVal, &maxVal, &minLoc, &maxLoc );  // Iterate through all elements, to find huge negative values
+  cout << "Max val in row: " << minVal << endl;
+
   // depths values: min: ~0.49, max: ~5
   if ((depths_left <= VERY_CLOSE_OBSTACLE_DEPTH
     && depths_right <= VERY_CLOSE_OBSTACLE_DEPTH) 
@@ -363,10 +377,9 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
     // cout << "GO STRAIGHT " << endl;
     //   STEER_DIR = 1; //GO STRAIGHT
 
-    if (state == 1) {
-      state = 2;
-      FSM_COUNTER = 0;
-    }
+
+    state = OBSTACLE_AVOID_CORNER;
+    FSM_COUNTER = 0;
     // float rand_num = rng.uniform(0.f,1.f);
     // randomness for extricating from corners
     //cout << "rand num: " << rand_num << endl;
@@ -379,17 +392,32 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
       STEER_SPEED = -1;
     }*/
   }
+  else if (minVal >= TURN_GOAL_OBSTACLE_DEPTH) {
+    // Turn to goal if the yaw error is too large, else keep going forward
+    if (abs(CURRENT_YAW - INITIAL_DIR) >  YAW_MARGIN) {
+      cout << "TURN TO GOAL" << endl;
+      state = TURN_GOAL;
+    }
+    else {
+      cout << "GO STRAIGHT " << endl;
+      STEER_DIR = 1; //GO STRAIGHT
+      STEER_SPEED = 0;
+      state = OBSTACLE_AVOID;
+    }
+  }
   else if (depths_left >= CLOSE_OBSTACLE_DEPTH && depths_right >= CLOSE_OBSTACLE_DEPTH)
   {
     cout << "GO STRAIGHT " << endl;
     STEER_DIR = 1; //GO STRAIGHT
     STEER_SPEED = 0;
+    state = OBSTACLE_AVOID;
   }
   else if (depths_left > depths_right)
   {
     cout << "GO LEFT " << endl;
     STEER_DIR = 0; //TURN LEFT
     STEER_SPEED = 1;
+    state = OBSTACLE_AVOID;
      //float rand_num = rng.uniform(0.f,1.f);
     //cout << "rand num: " << rand_num << endl;
     // randomness for extricating from corners
@@ -419,14 +447,16 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
     cout << "GO RIGHT " << endl;
     STEER_DIR = 2; //GO RIGHT
     STEER_SPEED = 1;
+    state = OBSTACLE_AVOID;
   }
+
 
     
   }
   //general callback function for the depth map
   void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& original_image)
   {
-    if (state != 1) return;
+    if (state != OBSTACLE_AVOID && state != TURN_GOAL) return;
     if (is_first_image_) {
       is_first_image_depth_ = false;
       // Wait a tiny bit to see whether callbackWithCameraInfo is called
@@ -483,16 +513,23 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
       adjust_height=0;
     }
 
-    double yaw = getYaw(msg.pose.pose.orientation);
-    cout << "Yaw: " << yaw << endl;
-    if (abs(yaw - INITIAL_DIR) >  YAW_MARGIN){
-      ADJUST_DIR = 1;
-    }
-    // else if ((yaw - INITIAL_DIR) < -YAW_MARGIN){
-    //   ADJUST_DIR = -1;
-    // }
-    else{
-      ADJUST_DIR = 0;
+
+    CURRENT_YAW = getYaw(msg.pose.pose.orientation) + CV_PI;
+    cout << "Yaw: " << CURRENT_YAW << endl;
+  
+    if (state == TURN_GOAL) {
+      if (abs(CURRENT_YAW - INITIAL_DIR) >  YAW_MARGIN ){
+        if ((CURRENT_YAW - INITIAL_DIR) >= 0) {
+          ADJUST_DIR = -1;
+        } 
+        else {
+          ADJUST_DIR = 1;
+        }
+      }
+      else{
+        ADJUST_DIR = 0;
+        state = OBSTACLE_AVOID;
+      }
     }
     //std::cout << "twist message ang z: "<< ang.z << std::endl;
   }
@@ -510,7 +547,7 @@ geometry_msgs::Twist get_twist(){
   
   //FSM
   switch(state){
-    case 0://hover but adjust height
+    case HOVER://hover but adjust height
       twist.linear.x = 0.0;//straight
       twist.linear.y = 0.0;
       twist.linear.z = adjust_height;//up
@@ -525,7 +562,7 @@ geometry_msgs::Twist get_twist(){
        FSM_COUNTER = 0;
       }
       break;
-    case 1://do obstacle avoidance
+    case OBSTACLE_AVOID://do obstacle avoidance
       //steer in horizontal plane
       if (STEER_DIR == 1)
       {
@@ -535,7 +572,7 @@ geometry_msgs::Twist get_twist(){
 
       	twist.angular.x = 0.0;
       	twist.angular.y = 0.0;
-      	twist.angular.z = ADJUST_DIR;
+      	twist.angular.z = 0.0;
 	
       }
       else if (STEER_DIR == 0)// turn left
@@ -576,7 +613,16 @@ geometry_msgs::Twist get_twist(){
       	
       // }
       break;
-      case 2:
+    case TURN_GOAL:
+      twist.linear.x = 0.0; // was 0
+      twist.linear.y = 0.0;
+      twist.linear.z = adjust_height;//up
+
+      twist.angular.x = 0.0;
+      twist.angular.y = 0.0;
+      twist.angular.z = ADJUST_DIR;
+      break;
+    case OBSTACLE_AVOID_CORNER:
         twist.linear.x = 0.0;
         twist.linear.y = 0.0;
         twist.linear.z = adjust_height;//up
