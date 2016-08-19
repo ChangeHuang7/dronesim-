@@ -165,53 +165,53 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
 
   int image_height = depth_mono8_img.rows;
   int image_width  = depth_mono8_img.cols;
-    int num_depth_bins = image_width;//100;
-    int stride_length    = floor(image_width/num_depth_bins);
-    cv::Mat depth_vals(num_depth_bins,1,CV_32F);
-    cv::Mat vector_field_hist = cv::Mat::zeros(DEPTH_MAX,num_depth_bins,CV_8UC3);
-    
-    int image_height_depth_val = floor(image_height/2);
-    int image_col_val = floor(stride_length/2);
+  int num_depth_bins = image_width;//100;
+  int stride_length    = floor(image_width/num_depth_bins);
+  cv::Mat depth_vals(num_depth_bins,1,CV_32F);
+  cv::Mat vector_field_hist = cv::Mat::zeros(DEPTH_MAX,num_depth_bins,CV_8UC3);
+  
+  int image_height_depth_val = floor(image_height/2);
+  int image_col_val = floor(stride_length/2);
 
-    
-    //Build VFH
-    for(int i = 0; i < num_depth_bins; ++i)
+  
+  //Build VFH
+  for(int i = 0; i < num_depth_bins; ++i)
+  {
+    int depth_this = 0;
+    int depth_scaled = 0;
+    if( image_col_val <= image_width)
     {
-      int depth_this = 0;
-      int depth_scaled = 0;
-      if( image_col_val <= image_width)
-      {
-      	depth_this = (int)(depth_mono8_img.at<unsigned char>(image_height_depth_val, image_col_val));  //(image_height_depth_val, image_col_val);
-      }
-      
-      if (depth_this <=-1) // EXCEEDS MAX RANGE
-      {
-        depth_scaled = DEPTH_MAX;
-        //cout << "Exceeds max " << depth_this << endl;
-      }
-      else if  (depth_this == 0) // LESS THAN MIN RANGE
-      {
-        depth_scaled = 0;
-        //cout << "Less than min range " << depth_this << endl;
-      }
-      else {
-        depth_scaled = depth_this;
-        //cout << depth_scaled << endl;
-      }
-      
-      depth_vals.at<float>(i,0) = (float)(depth_scaled);
-      //cout << depth_this << " " << depth_scaled << endl;
-      // cv::Point pt1, pt2;
-      // pt1.x = i;
-      // pt2.x = i;
-      
-      // pt1.y = DEPTH_MAX;
-      // pt2.y = DEPTH_MAX-depth_scaled;
-      
-      // cv::line(vector_field_hist, pt1, pt2, cv::Scalar(0,0,255), 2, 8);
-      
-      image_col_val += stride_length;
+    	depth_this = (int)(depth_mono8_img.at<unsigned char>(image_height_depth_val, image_col_val));  //(image_height_depth_val, image_col_val);
     }
+    
+    if (depth_this <=-1) // EXCEEDS MAX RANGE
+    {
+      depth_scaled = DEPTH_MAX;
+      //cout << "Exceeds max " << depth_this << endl;
+    }
+    else if  (depth_this == 0) // LESS THAN MIN RANGE
+    {
+      depth_scaled = 0;
+      //cout << "Less than min range " << depth_this << endl;
+    }
+    else {
+      depth_scaled = depth_this;
+      //cout << depth_scaled << endl;
+    }
+    
+    depth_vals.at<float>(i,0) = (float)(depth_scaled);
+    //cout << depth_this << " " << depth_scaled << endl;
+    // cv::Point pt1, pt2;
+    // pt1.x = i;
+    // pt2.x = i;
+    
+    // pt1.y = DEPTH_MAX;
+    // pt2.y = DEPTH_MAX-depth_scaled;
+    
+    // cv::line(vector_field_hist, pt1, pt2, cv::Scalar(0,0,255), 2, 8);
+    
+    image_col_val += stride_length;
+  }
  //    // Find best steer direction
  //    int min_freespace_width = 30; //let this be an even number
  //    int freespace_min_depth = 255;
@@ -260,11 +260,11 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
     //cout << "Direction: " << best_free_space_direction << " Width: " << best_free_space_width << endl;
 
     //cv::imshow("vfh", vector_field_hist);
-   float depths_left = 0, depths_right = 0, depths_centre = 0;
+  float depths_left = 0, depths_right = 0, depths_centre = 0;
 
-   int num_cols_third = (int)(num_depth_bins/3);
-   for(int i = 0; i < num_cols_third; ++i)
-   {
+  int num_cols_third = (int)(num_depth_bins/3);
+  for(int i = 0; i < num_cols_third; ++i)
+  {
     // depths_left += depth_vals.at<float>(i,0);
     depths_left += depth_float_img.at<float>(image_height_depth_val, i);
 
@@ -287,6 +287,8 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
   }
   depths_right /= num_cols_third;
 
+  /** DEBUG SECTION: can be safely commented out
+      To comment this section, remove --> **/
   double minVal; 
   double maxVal; 
   cv::Point minLoc; 
@@ -298,9 +300,9 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
   // cout << "Min value: " << minVal << endl;
   // cout << "Max value: " << maxVal << endl;
 
-   float origLeft = (depth_float_img.at<float>(image_height_depth_val, 10));
-   float origCenter = (depth_float_img.at<float>(image_height_depth_val, (int)image_width/2));
-   float origRight = (depth_float_img.at<float>(image_height_depth_val, image_width - 10));
+  float origLeft = (depth_float_img.at<float>(image_height_depth_val, 10));
+  float origCenter = (depth_float_img.at<float>(image_height_depth_val, (int)image_width/2));
+  float origRight = (depth_float_img.at<float>(image_height_depth_val, image_width - 10));
 
   cv::rectangle(depth_mono8_img, cv::Point(0, image_height/2-100), cv::Point(image_width, image_height/2+2),
     cv::Scalar(0,0,0), -1);
@@ -337,7 +339,7 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
   stmCenterOrig << origCenter;
   stmRightOrig << origRight;
 
- cv::putText(depth_mono8_img, stmLeftOrig.str(), textLeft+cv::Point(0,20), fontFace, fontScale, cv::Scalar(255,0,0), thickness,8);
+  cv::putText(depth_mono8_img, stmLeftOrig.str(), textLeft+cv::Point(0,20), fontFace, fontScale, cv::Scalar(255,0,0), thickness,8);
   cv::putText(depth_mono8_img, stmCenterOrig.str(), textCenter+cv::Point(0,20), fontFace, fontScale, cv::Scalar(255,0,0), thickness,8);
   cv::putText(depth_mono8_img, stmRightOrig.str(), textRight+cv::Point(0,20), fontFace, fontScale, cv::Scalar(255,0,0), thickness,8);
 
@@ -348,58 +350,57 @@ void getDirectionSteer(cv::Mat depth_mono8_img, cv::Mat depth_float_img)
   cv::imshow("Mono depth map", depth_mono8_img);
   cv::waitKey(1);
 
-  // depths values: min: ~0.49, max: ~5
+  /** END DEBUG SECTION **/
 
- if ((depths_left <= VERY_CLOSE_OBSTACLE_DEPTH
-   && depths_right <= VERY_CLOSE_OBSTACLE_DEPTH) 
+  // depths values: min: ~0.49, max: ~5
+  if ((depths_left <= VERY_CLOSE_OBSTACLE_DEPTH
+    && depths_right <= VERY_CLOSE_OBSTACLE_DEPTH) 
     || depths_centre <= CLOSE_OBSTACLE_DEPTH)
   {
     cout << "GO LEFT " << endl;
-      STEER_DIR = 0; //GO LEFT
-      
-
+    STEER_DIR = 0; //GO LEFT
+  
     // cout << "GO STRAIGHT " << endl;
     //   STEER_DIR = 1; //GO STRAIGHT
 
-      // float rand_num = rng.uniform(0.f,1.f);
-      if (state == 1) {
-        state = 2;
-        FSM_COUNTER = 0;
-      }
-      // randomness for extricating from corners
-      //cout << "rand num: " << rand_num << endl;
-      /*if (rand_num >= 0.5)
-      {
-  STEER_SPEED = 1;
-      }
-      else
-      {
-  STEER_SPEED = -1;
-      }*/
-
-}
-else if (depths_left >= CLOSE_OBSTACLE_DEPTH && depths_right >= CLOSE_OBSTACLE_DEPTH)
-{
-      cout << "GO STRAIGHT " << endl;
-      STEER_DIR = 1; //GO STRAIGHT
-      STEER_SPEED = 0;
+    if (state == 1) {
+      state = 2;
+      FSM_COUNTER = 0;
     }
-else if (depths_left > depths_right)
+    // float rand_num = rng.uniform(0.f,1.f);
+    // randomness for extricating from corners
+    //cout << "rand num: " << rand_num << endl;
+    /*if (rand_num >= 0.5)
     {
-      cout << "GO LEFT " << endl;
-       STEER_DIR = 0; //TURN LEFT
-       STEER_SPEED = 1;
-       //float rand_num = rng.uniform(0.f,1.f);
-      //cout << "rand num: " << rand_num << endl;
-      // randomness for extricating from corners
-      /*if (rand_num >= 0.5)
-      {
-  STEER_SPEED = 1;
-      }
-      else
-      {
-  STEER_SPEED = 0.5;
-      }
+      STEER_SPEED = 1;
+    }
+    else
+    {
+      STEER_SPEED = -1;
+    }*/
+  }
+  else if (depths_left >= CLOSE_OBSTACLE_DEPTH && depths_right >= CLOSE_OBSTACLE_DEPTH)
+  {
+    cout << "GO STRAIGHT " << endl;
+    STEER_DIR = 1; //GO STRAIGHT
+    STEER_SPEED = 0;
+  }
+  else if (depths_left > depths_right)
+  {
+    cout << "GO LEFT " << endl;
+    STEER_DIR = 0; //TURN LEFT
+    STEER_SPEED = 1;
+     //float rand_num = rng.uniform(0.f,1.f);
+    //cout << "rand num: " << rand_num << endl;
+    // randomness for extricating from corners
+    /*if (rand_num >= 0.5)
+    {
+      STEER_SPEED = 1;
+    }
+    else
+    {
+      STEER_SPEED = 0.5;
+    }
   /*
       if (depths_left == 0)
       {
@@ -412,13 +413,13 @@ else if (depths_left > depths_right)
   STEER_SPEED = 1;
       }*/
 
-}
-else if (depths_right >= depths_left)
-{
-  cout << "GO RIGHT " << endl;
-      STEER_DIR = 2; //GO RIGHT
-      STEER_SPEED = 1;
-    }
+  }
+  else if (depths_right >= depths_left)
+  {
+    cout << "GO RIGHT " << endl;
+    STEER_DIR = 2; //GO RIGHT
+    STEER_SPEED = 1;
+  }
 
     
   }
@@ -519,7 +520,7 @@ geometry_msgs::Twist get_twist(){
       twist.angular.z = 0.0;
       if(FSM_COUNTER >= FSM_COUNTER_THRESH){
        state = 1;
-	//FSM_COUNTER_THRESH = rng.uniform(1000,1500);
+	     //FSM_COUNTER_THRESH = rng.uniform(1000,1500);
        //FSM_COUNTER_THRESH = rng.uniform(oa_dur,oa_dur*2);
        FSM_COUNTER = 0;
       }
