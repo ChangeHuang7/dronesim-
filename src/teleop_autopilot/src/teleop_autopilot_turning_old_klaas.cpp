@@ -53,6 +53,7 @@
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Point.h>
 #include <nav_msgs/Odometry.h>
+#include <std_msgs/Empty.h>
 
 #include <unistd.h>
 
@@ -61,9 +62,23 @@
 
 using namespace std;
 
+int initial_waiting=100;//wait before taking off in order to have everything started up properly
+bool takeoff=false;
+
+int turning_duration=20;//time it needs for turning 90degrees
+int state = 0; //define some states that override the general obstacle avoidance behavior: 0 ~ wait, 1 ~ do obstacle avoidance, 2 ~ turn 90 degrees
+int next_state=initial_waiting;//count by which the state goes to the next state in the FSM (0->1->2->1->...)
+float turn=-1;//turning state: -1 ~ cw +1 ~ ccw go the full 90 degrees
+//int oa_dur = 100;//time it is in oa state
+//int rnd_dur = 10;//time it is in random state
+
 int counter=0;
+
 int STEER_DIR = 0;//0 means go left, 1 means go straight, 2 means turn right
+float STEER_SPEED = 1; //0 means no turning, 1 means turn left, -1 means turn right
 int adjust_height = 0; //0 means no adjust, 1 means go up, -1 means go down
+int adjust_dir=0; //-1..0..1 when flying straight turn back in the initial direction
+float initial_dir = 0.6817; //the initial direction : value of pose.orientation.z
 
 const int DEPTH_SCALE_FACTOR = 80;//40;
 const float STEER_SPEED_SCALE=1;//0.005;
@@ -106,6 +121,11 @@ public://initialize fields of callbacks
       return 1;
     else if(c < a && c < b)
       return 2;
+    /*
+    if (a==b)
+      return 0;
+    if (b==c)
+      return 1;*/
   }
 
   //calculate a proper steering direction and save this in the global variable steer_dir and steer_speed
@@ -232,8 +252,12 @@ public://initialize fields of callbacks
     
     if (depths_left == 0 && depths_right == 0)
     {
-      cout << "GO LEFT " << endl;
-      STEER_DIR = 0; //TURN LEFT
+      cout << "TURN 90 DEGREES " << endl;
+      //STEER_DIR = 0; //TURN LEFT
+      state = 2;
+      next_state = turning_duration;
+      counter = 0;
+      
     }
     else if (depths_left == 255 && depths_right == 255)
     {
@@ -242,20 +266,23 @@ public://initialize fields of callbacks
     }
     else if (depths_left > depths_right)
     {
-      cout << "GO LEFT " << endl;
+      cout << "TURN LEFT " << endl;
        STEER_DIR = 0; //TURN LEFT
+      
     }
     else if (depths_right >= depths_left)
     {
-      cout << "GO RIGHT " << endl;
+      cout << "TURN RIGHT " << endl;
       STEER_DIR = 2; //GO RIGHT
     }
 
     
   }
+  
   //general callback function for the depth map
   void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& original_image)
   {
+    if (state != 1) return;
     if (is_first_image_) {
       is_first_image_depth_ = false;
       // Wait a tiny bit to see whether callbackWithCameraInfo is called
@@ -286,7 +313,7 @@ public://initialize fields of callbacks
     depthToCV8UC1(depth_float_img, depth_mono8_img);
     //cout << "Here" << endl;
     //cv::imshow("test_window", depth_mono8_img);
-    //cv::waitKey(25);
+    cv::waitKey(25);
     
     getDirectionSteer(depth_mono8_img);
    
@@ -298,6 +325,8 @@ public://initialize fields of callbacks
   {
     //geometry_msgs::Vector3 pos = msg.pose.pose.position;
     std::cout << "height: "<< msg.pose.pose.position.z << std::endl;
+    std::cout << "orientation: " << msg.pose.pose.orientation.z << std::endl;
+    
     if (msg.pose.pose.position.z > 1.5){
       adjust_height=-1;
     }else if (msg.pose.pose.position.z < 0.3){
@@ -305,7 +334,15 @@ public://initialize fields of callbacks
     }else{
       adjust_height=0;
     }
-    //std::cout << "twist message ang z: "<< ang.z << std::endl;
+    
+    if (msg.pose.pose.orientation.z < (initial_dir-0.01)){
+      adjust_dir = 1;
+    }else if (msg.pose.pose.orientation.z > (initial_dir-0.01)){
+      adjust_dir = -1;
+    }else{
+      adjust_dir = 0;
+    }
+    std::cout << "adjust_dir "<< adjust_dir << std::endl;
   }
 
 private: //private fields of callback
@@ -319,46 +356,92 @@ private: //private fields of callback
 geometry_msgs::Twist get_twist(){
   geometry_msgs::Twist twist;
   
-  //steer in horizontal plane
-  if (STEER_DIR == 1)
-  {
-    twist.linear.x = 1.0;//straight
-    twist.linear.y = 0.0;
-    twist.linear.z = adjust_height;//up
+  //FSM
+  switch(state){
+    case 0://hover but adjust height
+      twist.linear.x = 0.0;//straight
+      twist.linear.y = 0.0;
+      twist.linear.z = adjust_height;//up
 
-    twist.angular.x = 0.0;
-    twist.angular.y = 0.0;
-    twist.angular.z = 0.0;
-    
+      twist.angular.x = 0.0;
+      twist.angular.y = 0.0;
+      twist.angular.z = 0.0;
+      if(counter >= next_state){
+	state = 1;
+	//next_state = rng.uniform(1000,1500);
+	//next_state = rng.uniform(oa_dur,oa_dur*2);
+	counter = 0;
+	next_state = turning_duration;
+	takeoff=true;
+      }
+      break;
+    case 1://do obstacle avoidance
+      //steer in horizontal plane
+      if (STEER_DIR == 1)
+      {
+	twist.linear.x = 1.0;//straight
+	twist.linear.y = 0.0;
+	twist.linear.z = adjust_height;//up
+
+	twist.angular.x = 0.0;
+	twist.angular.y = 0.0;
+	twist.angular.z = adjust_dir;//set by ground truth
+	
+      }
+      else if (STEER_DIR == 0)//turn right
+      {
+	twist.linear.x = 0.0;
+	twist.linear.y = 0.0;
+	twist.linear.z = adjust_height;//up
+
+	twist.angular.x = 0.0;
+	twist.angular.y = 0.0;
+	twist.angular.z = STEER_SPEED_SCALE;//+1.0;//turn left
+      }
+      else if  (STEER_DIR == 2)//steer_dir == 2 turn left
+      {
+	twist.linear.x = 0.0;
+	twist.linear.y = 0.0;
+	twist.linear.z = adjust_height;//up
+
+	twist.angular.x = 0.0;
+	twist.angular.y = 0.0;
+	twist.angular.z = -STEER_SPEED_SCALE;//-1.0;//turn right
+      } else {
+	twist.linear.x = 0.0;
+	twist.linear.y = 0.0;
+	twist.linear.z = adjust_height;//up
+
+	twist.angular.x = 0.0;
+	twist.angular.y = 0.0;
+	twist.angular.z = 0.0;
+      }
+      /*if(counter >= next_state){
+	state = 2 ;
+	next_state = rng.uniform(rnd_dur,rnd_dur*2);
+	counter = 0;
+	turn =-1+2*rng.uniform(0,2);
+	cout << "turn " << turn ;
+      }*/
+      break;
+    case 2:
+      twist.linear.x = 0.0;
+      twist.linear.y = 0.0;
+      twist.linear.z = adjust_height;//up
+
+      twist.angular.x = 0.0;
+      twist.angular.y = 0.0;
+      twist.angular.z = turn*STEER_SPEED_SCALE;
+      if(counter >= next_state){
+	state = 1;
+	//next_state = rng.uniform(oa_dur,oa_dur*2);
+	counter = 0;
+      }
+      break;
   }
-  else if (STEER_DIR == 0)//turn right
-  {
-    twist.linear.x = 0.0;
-    twist.linear.y = 0.0;
-    twist.linear.z = adjust_height;//up
-
-    twist.angular.x = 0.0;
-    twist.angular.y = 0.0;
-    twist.angular.z = STEER_SPEED_SCALE;//+1.0;//turn left
-  }
-  else if  (STEER_DIR == 2)//steer_dir == 2 turn left
-  {
-    twist.linear.x = 0.0;
-    twist.linear.y = 0.0;
-    twist.linear.z = adjust_height;//up
-
-    twist.angular.x = 0.0;
-    twist.angular.y = 0.0;
-    twist.angular.z = -STEER_SPEED_SCALE;//-1.0;//turn right
-  } else {
-    twist.linear.x = 0.0;
-    twist.linear.y = 0.0;
-    twist.linear.z = adjust_height;//up
-
-    twist.angular.x = 0.0;
-    twist.angular.y = 0.0;
-    twist.angular.z = 0.0;
-  }
+  counter=counter+1;
+  cout << "state: " << state << ". next state in: " << counter << "/" << next_state << endl;
+  
   return twist;
 }
 
@@ -382,8 +465,12 @@ int main(int argc, char** argv)
   //ros::Subscriber subControl = nh.subscribe("/ground_truth/state/pose/pose/position",1,&Callbacks::callbackGt, &callbacks);
   ros::Subscriber subControl = nh.subscribe("/ground_truth/state",1,&Callbacks::callbackGt, &callbacks);
   
-  // Make subscriber to cmd_vel in order to set the name.
-  ros::Publisher pubControl = nh.advertise<geometry_msgs::Twist>("/dagger_vel", 1000);
+  // Make Publisher to cmd_vel in order to set the velocity.
+  ros::Publisher pubControl = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1000);
+  
+  // Make Publisher to cmd_vel in order to set the velocity.
+  ros::Publisher pubTakeoff = nh.advertise<std_msgs::Empty>("/ardrone/takeoff", 1);
+  
   ros::Rate loop_rate(20);
 
   geometry_msgs::Twist twist;
@@ -399,9 +486,11 @@ int main(int argc, char** argv)
   while(ros::ok()){
     
     twist = get_twist();
-    
     pubControl.publish(twist);
-  
+    if(takeoff){
+      std_msgs::Empty msg;
+      pubTakeoff.publish(msg);
+    }
     loop_rate.sleep();
     ros::spinOnce();
   }

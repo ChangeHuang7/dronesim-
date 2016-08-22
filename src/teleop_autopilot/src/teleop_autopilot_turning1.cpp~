@@ -59,7 +59,6 @@
 #include <unistd.h>
 
 #include <std_msgs/Float32.h>
-#include <std_msgs/Empty.h>
 
 #include <std_srvs/Empty.h>
 #include <algorithm>
@@ -69,28 +68,25 @@ using namespace std;
 enum STATES {HOVER = 0, OBSTACLE_AVOID = 1, OBSTACLE_AVOID_CORNER = 2, TURN_GOAL = 3, OBSTACLE_AVOID_VERT,
               HEIGHT_ADJUST_UP_DOWN, HEIGHT_ADJUST_DOWN_UP};
 
-float VERY_CLOSE_OBSTACLE_DEPTH = 0.5, CLOSE_OBSTACLE_DEPTH = 1.5;
+float VERY_CLOSE_OBSTACLE_DEPTH = 0.5, CLOSE_OBSTACLE_DEPTH = 1.25;
 float TURN_GOAL_OBSTACLE_DEPTH = 2;
 float VERTICAL_GRADIENT_THRESHOLD = 1.5, VERTICAL_MOVEMENT_DISTANCE = 3;
 
 int FSM_COUNTER_HEIGHT_ADJUST = 0;
 int FSM_COUNTER_THRESH_HEIGHT_ADJUST1 = 35;
-int FSM_COUNTER_THRESH_HEIGHT_ADJUST2 = 110;//edited klaas 
+int FSM_COUNTER_THRESH_HEIGHT_ADJUST2 = 110;
 int FSM_COUNTER_THRESH_HEIGHT_ADJUST3 = 145;
 
 
 float ADJUST_HEIGHT_MAX = 1.5; float ADJUST_HEIGHT_MIN = 0.75;
 //float ADJUST_HEIGHT_MAX = 4; float ADJUST_HEIGHT_MIN = 2.5;
 
-
-bool takeoff=false;
-
 double CURRENT_YAW = 0;
 double YAW_MARGIN = 0.1;
 float VERTICLE_DIR = 0;
 int ADJUST_DIR = 0;
 int state = 0; //define some states that override the general obstacle avoidance behavior: 0 ~ wait, 1 ~ do obstacle avoidance, 2 ~ turn for a random amount of time in 1 direction
-int FSM_COUNTER_THRESH=100;//count by which the state goes to the next state in the FSM (0->1->2->1->...)
+int FSM_COUNTER_THRESH=20;//count by which the state goes to the next state in the FSM (0->1->2->1->...)
 float turn=1;//turn in random state: should be 
 int oa_dur = 100;//time it is in oa state
 int rnd_dur = 10;//time it is in random state
@@ -628,7 +624,6 @@ geometry_msgs::Twist get_twist(){
 	     //FSM_COUNTER_THRESH = rng.uniform(1000,1500);
        //FSM_COUNTER_THRESH = rng.uniform(oa_dur,oa_dur*2);
        FSM_COUNTER = 0;
-	takeoff=true;
       }
       break;
     case OBSTACLE_AVOID://do obstacle avoidance
@@ -683,7 +678,7 @@ geometry_msgs::Twist get_twist(){
       // }
       break;
     case TURN_GOAL:
-      twist.linear.x = 1.0; // was 0 [klaas edit 21/8/16]
+      twist.linear.x = 0.0; // was 0
       twist.linear.y = 0.0;
       twist.linear.z = adjust_height;//up
 
@@ -800,17 +795,6 @@ geometry_msgs::Twist get_twist(){
 
   Callbacks callbacks;
   
-  std::string height_behavior = nh.resolveName("height");
-  cout << "height behavior" << height_behavior << endl;
-  if(strcmp(height_behavior.c_str(), "/high") == 0){ //flying high
-    //cout << "###FLY HIGH ###"<<endl;
-    ADJUST_HEIGHT_MAX = 4; 
-    ADJUST_HEIGHT_MIN = 2.5;
-  }else{//flying low (default)
-    //cout << "###FLY LOW ###"<<endl;
-    ADJUST_HEIGHT_MAX = 1.5; 
-    ADJUST_HEIGHT_MIN = 0.75;
-  }
   // Useful when CameraInfo is not being published
    //depth
   image_transport::Subscriber sub_image_depth = it.subscribe(
@@ -823,11 +807,7 @@ geometry_msgs::Twist get_twist(){
   
   // Make subscriber to cmd_vel in order to set the name.
   ros::Publisher pubControl = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1000);
-  
-  // Make Publisher to cmd_vel in order to set the velocity.
-  ros::Publisher pubTakeoff = nh.advertise<std_msgs::Empty>("/ardrone/takeoff", 1);
-  
-  ros::Rate loop_rate(20);
+  ros::Rate loop_rate(10);
 
   debugPub = nh.advertise<std_msgs::Float32>("debug_autopilot", 1000);
 
@@ -846,10 +826,7 @@ geometry_msgs::Twist get_twist(){
     twist = get_twist();
     
     pubControl.publish(twist);
-    if(takeoff){
-      std_msgs::Empty msg;
-      pubTakeoff.publish(msg);
-    }
+
     loop_rate.sleep();
     ros::spinOnce();
   }

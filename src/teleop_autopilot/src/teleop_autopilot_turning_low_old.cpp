@@ -75,7 +75,7 @@ float VERTICAL_GRADIENT_THRESHOLD = 1.5, VERTICAL_MOVEMENT_DISTANCE = 3;
 
 int FSM_COUNTER_HEIGHT_ADJUST = 0;
 int FSM_COUNTER_THRESH_HEIGHT_ADJUST1 = 35;
-int FSM_COUNTER_THRESH_HEIGHT_ADJUST2 = 110;//edited klaas 
+int FSM_COUNTER_THRESH_HEIGHT_ADJUST2 = 110;
 int FSM_COUNTER_THRESH_HEIGHT_ADJUST3 = 145;
 
 
@@ -800,17 +800,6 @@ geometry_msgs::Twist get_twist(){
 
   Callbacks callbacks;
   
-  std::string height_behavior = nh.resolveName("height");
-  cout << "height behavior" << height_behavior << endl;
-  if(strcmp(height_behavior.c_str(), "/high") == 0){ //flying high
-    //cout << "###FLY HIGH ###"<<endl;
-    ADJUST_HEIGHT_MAX = 4; 
-    ADJUST_HEIGHT_MIN = 2.5;
-  }else{//flying low (default)
-    //cout << "###FLY LOW ###"<<endl;
-    ADJUST_HEIGHT_MAX = 1.5; 
-    ADJUST_HEIGHT_MIN = 0.75;
-  }
   // Useful when CameraInfo is not being published
    //depth
   image_transport::Subscriber sub_image_depth = it.subscribe(

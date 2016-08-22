@@ -384,6 +384,7 @@ int main(int argc, char** argv)
   
   // Make subscriber to cmd_vel in order to set the name.
   ros::Publisher pubControl = nh.advertise<geometry_msgs::Twist>("/dagger_vel", 1000);
+  
   ros::Rate loop_rate(20);
 
   geometry_msgs::Twist twist;
