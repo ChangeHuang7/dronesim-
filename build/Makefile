@@ -719,6 +719,19 @@ tf_generate_messages_py/fast:
 .PHONY : tf_generate_messages_py/fast
 
 #=============================================================================
+# Target rules for targets named behaviourLib
+
+# Build rule for target.
+behaviourLib: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 behaviourLib
+.PHONY : behaviourLib
+
+# fast build rule for target.
+behaviourLib/fast:
+	$(MAKE) -f teleop_autopilot/CMakeFiles/behaviourLib.dir/build.make teleop_autopilot/CMakeFiles/behaviourLib.dir/build
+.PHONY : behaviourLib/fast
+
+#=============================================================================
 # Target rules for targets named teleop_autopilot
 
 # Build rule for target.
@@ -732,6 +745,19 @@ teleop_autopilot/fast:
 .PHONY : teleop_autopilot/fast
 
 #=============================================================================
+# Target rules for targets named teleop_autopilot_behaviour_arbitration
+
+# Build rule for target.
+teleop_autopilot_behaviour_arbitration: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 teleop_autopilot_behaviour_arbitration
+.PHONY : teleop_autopilot_behaviour_arbitration
+
+# fast build rule for target.
+teleop_autopilot_behaviour_arbitration/fast:
+	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build
+.PHONY : teleop_autopilot_behaviour_arbitration/fast
+
+#=============================================================================
 # Target rules for targets named teleop_autopilot_dagger
 
 # Build rule for target.
@@ -743,6 +769,19 @@ teleop_autopilot_dagger: cmake_check_build_system
 teleop_autopilot_dagger/fast:
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build
 .PHONY : teleop_autopilot_dagger/fast
+
+#=============================================================================
+# Target rules for targets named teleop_autopilot_evaluation
+
+# Build rule for target.
+teleop_autopilot_evaluation: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 teleop_autopilot_evaluation
+.PHONY : teleop_autopilot_evaluation
+
+# fast build rule for target.
+teleop_autopilot_evaluation/fast:
+	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build
+.PHONY : teleop_autopilot_evaluation/fast
 
 #=============================================================================
 # Target rules for targets named teleop_autopilot_height
@@ -827,8 +866,11 @@ help:
 	@echo "... tf_generate_messages_cpp"
 	@echo "... tf_generate_messages_lisp"
 	@echo "... tf_generate_messages_py"
+	@echo "... behaviourLib"
 	@echo "... teleop_autopilot"
+	@echo "... teleop_autopilot_behaviour_arbitration"
 	@echo "... teleop_autopilot_dagger"
+	@echo "... teleop_autopilot_evaluation"
 	@echo "... teleop_autopilot_height"
 	@echo "... teleop_autopilot_turning"
 .PHONY : help

@@ -13,6 +13,7 @@ SET(CMAKE_C_INCLUDE_PATH
   "/home/jay/catkin_ws/devel/include"
   "/opt/ros/hydro/include"
   "/opt/ros/hydro/include/opencv"
+  "/home/jay/autopilot_ws/src/teleop_autopilot/include"
   )
 SET(CMAKE_CXX_INCLUDE_PATH ${CMAKE_C_INCLUDE_PATH})
 SET(CMAKE_Fortran_INCLUDE_PATH ${CMAKE_C_INCLUDE_PATH})

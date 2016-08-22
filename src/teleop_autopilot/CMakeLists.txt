@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   camera_calibration_parsers
+  tf
   ##std_srvss
 )
 
@@ -130,6 +131,7 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
+  include
 )
 
 ## Declare a C++ library
@@ -142,12 +144,18 @@ include_directories(
 ## either from message generation or dynamic reconfigure
 # add_dependencies(autopilot ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+# Add library for behaviour arbitration
+add_library(behaviourLib src/BehaviourArbitration)
+target_link_libraries(behaviourLib ${OpenCV_LIBS})
+
+
 ## Declare a C++ executable
 add_executable(teleop_autopilot src/teleop_autopilot.cpp)
 add_executable(teleop_autopilot_height src/teleop_autopilot_height.cpp)
 add_executable(teleop_autopilot_dagger src/teleop_autopilot_dagger.cpp)
 add_executable(teleop_autopilot_turning src/teleop_autopilot_turning.cpp)
 add_executable(teleop_autopilot_evaluation src/teleop_autopilot_evaluation.cpp)
+add_executable(teleop_autopilot_behaviour_arbitration src/teleop_autopilot_behaviour_arbitration.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -175,6 +183,11 @@ target_link_libraries(teleop_autopilot_evaluation
    ${OpenCV_LIBRARIES}
 )
 
+target_link_libraries(teleop_autopilot_behaviour_arbitration
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+   behaviourLib
+)
 #############
 ## Install ##
 #############

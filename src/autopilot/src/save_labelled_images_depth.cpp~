@@ -183,7 +183,7 @@ public://initialize fields of callbacks
     if (!saveImage(depth_mono8_img, filename, true))
 	return;
     count_++;
-    if(static_cast<int>(count_) >= max_count) shutdown();
+    if(static_cast<int>(count_) >= max_count) shutdown("stuck");
   }
   
   void callbackTakeoff(std_msgs::Empty msg)
@@ -302,6 +302,7 @@ int main(int argc, char** argv)
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   callbacks.path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(callbacks.path);
+<<<<<<< HEAD
   boost::filesystem::file_status f = status(dir);
   if(boost::filesystem::is_directory(f)){//directory exists
     if(!overwrite){
@@ -338,17 +339,25 @@ int main(int argc, char** argv)
     }
   }//Create new folders if they dont exist.
   f = status(dir);
+=======
+  boost::filesystem::file_status f = boost::filesystem::status(dir);
+>>>>>>> origin/tom_changes
   if(! boost::filesystem::is_directory(f)){
     if(boost::filesystem::create_directory(dir)) {
       callbacks.path = "/home/jay/data/"+saving_location+"/RGB";
       boost::filesystem::path dir_rgb(callbacks.path);
       if(boost::filesystem::create_directory(dir_rgb)) {
 	std::cout << "Success in creating: "<<callbacks.path << "\n";
+<<<<<<< HEAD
       }
       callbacks.path_depth = "/home/jay/data/"+saving_location+"/depth";
       boost::filesystem::path dir_depth(callbacks.path_depth);
       if(boost::filesystem::create_directory(dir_depth)) {
 	std::cout << "Success in creating: "<<callbacks.path_depth << "\n";
+=======
+	boost::filesystem::file_status s = boost::filesystem::status(callbacks.path);
+	printf("%o\n",s.permissions());
+>>>>>>> origin/tom_changes
       }
     }else{
       std::cout <<"Failed to make saving direction "<<callbacks.path <<"\n";

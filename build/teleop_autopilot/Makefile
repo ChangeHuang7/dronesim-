@@ -147,6 +147,20 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+teleop_autopilot/CMakeFiles/behaviourLib.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 teleop_autopilot/CMakeFiles/behaviourLib.dir/rule
+.PHONY : teleop_autopilot/CMakeFiles/behaviourLib.dir/rule
+
+# Convenience name for target.
+behaviourLib: teleop_autopilot/CMakeFiles/behaviourLib.dir/rule
+.PHONY : behaviourLib
+
+# fast build rule for target.
+behaviourLib/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/behaviourLib.dir/build.make teleop_autopilot/CMakeFiles/behaviourLib.dir/build
+.PHONY : behaviourLib/fast
+
+# Convenience name for target.
 teleop_autopilot/CMakeFiles/teleop_autopilot.dir/rule:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 teleop_autopilot/CMakeFiles/teleop_autopilot.dir/rule
 .PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot.dir/rule
@@ -161,6 +175,20 @@ teleop_autopilot/fast:
 .PHONY : teleop_autopilot/fast
 
 # Convenience name for target.
+teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/rule
+.PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/rule
+
+# Convenience name for target.
+teleop_autopilot_behaviour_arbitration: teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/rule
+.PHONY : teleop_autopilot_behaviour_arbitration
+
+# fast build rule for target.
+teleop_autopilot_behaviour_arbitration/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build
+.PHONY : teleop_autopilot_behaviour_arbitration/fast
+
+# Convenience name for target.
 teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/rule:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/rule
 .PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/rule
@@ -173,6 +201,20 @@ teleop_autopilot_dagger: teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir
 teleop_autopilot_dagger/fast:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build
 .PHONY : teleop_autopilot_dagger/fast
+
+# Convenience name for target.
+teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/rule
+.PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/rule
+
+# Convenience name for target.
+teleop_autopilot_evaluation: teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/rule
+.PHONY : teleop_autopilot_evaluation
+
+# fast build rule for target.
+teleop_autopilot_evaluation/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build
+.PHONY : teleop_autopilot_evaluation/fast
 
 # Convenience name for target.
 teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/rule:
@@ -202,6 +244,30 @@ teleop_autopilot_turning/fast:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_turning.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_turning.dir/build
 .PHONY : teleop_autopilot_turning/fast
 
+src/BehaviourArbitration.o: src/BehaviourArbitration.cpp.o
+.PHONY : src/BehaviourArbitration.o
+
+# target to build an object file
+src/BehaviourArbitration.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/behaviourLib.dir/build.make teleop_autopilot/CMakeFiles/behaviourLib.dir/src/BehaviourArbitration.cpp.o
+.PHONY : src/BehaviourArbitration.cpp.o
+
+src/BehaviourArbitration.i: src/BehaviourArbitration.cpp.i
+.PHONY : src/BehaviourArbitration.i
+
+# target to preprocess a source file
+src/BehaviourArbitration.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/behaviourLib.dir/build.make teleop_autopilot/CMakeFiles/behaviourLib.dir/src/BehaviourArbitration.cpp.i
+.PHONY : src/BehaviourArbitration.cpp.i
+
+src/BehaviourArbitration.s: src/BehaviourArbitration.cpp.s
+.PHONY : src/BehaviourArbitration.s
+
+# target to generate assembly for a file
+src/BehaviourArbitration.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/behaviourLib.dir/build.make teleop_autopilot/CMakeFiles/behaviourLib.dir/src/BehaviourArbitration.cpp.s
+.PHONY : src/BehaviourArbitration.cpp.s
+
 src/teleop_autopilot.o: src/teleop_autopilot.cpp.o
 .PHONY : src/teleop_autopilot.o
 
@@ -226,6 +292,30 @@ src/teleop_autopilot.cpp.s:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot.dir/src/teleop_autopilot.cpp.s
 .PHONY : src/teleop_autopilot.cpp.s
 
+src/teleop_autopilot_behaviour_arbitration.o: src/teleop_autopilot_behaviour_arbitration.cpp.o
+.PHONY : src/teleop_autopilot_behaviour_arbitration.o
+
+# target to build an object file
+src/teleop_autopilot_behaviour_arbitration.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o
+.PHONY : src/teleop_autopilot_behaviour_arbitration.cpp.o
+
+src/teleop_autopilot_behaviour_arbitration.i: src/teleop_autopilot_behaviour_arbitration.cpp.i
+.PHONY : src/teleop_autopilot_behaviour_arbitration.i
+
+# target to preprocess a source file
+src/teleop_autopilot_behaviour_arbitration.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.i
+.PHONY : src/teleop_autopilot_behaviour_arbitration.cpp.i
+
+src/teleop_autopilot_behaviour_arbitration.s: src/teleop_autopilot_behaviour_arbitration.cpp.s
+.PHONY : src/teleop_autopilot_behaviour_arbitration.s
+
+# target to generate assembly for a file
+src/teleop_autopilot_behaviour_arbitration.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.s
+.PHONY : src/teleop_autopilot_behaviour_arbitration.cpp.s
+
 src/teleop_autopilot_dagger.o: src/teleop_autopilot_dagger.cpp.o
 .PHONY : src/teleop_autopilot_dagger.o
 
@@ -249,6 +339,30 @@ src/teleop_autopilot_dagger.s: src/teleop_autopilot_dagger.cpp.s
 src/teleop_autopilot_dagger.cpp.s:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/src/teleop_autopilot_dagger.cpp.s
 .PHONY : src/teleop_autopilot_dagger.cpp.s
+
+src/teleop_autopilot_evaluation.o: src/teleop_autopilot_evaluation.cpp.o
+.PHONY : src/teleop_autopilot_evaluation.o
+
+# target to build an object file
+src/teleop_autopilot_evaluation.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/src/teleop_autopilot_evaluation.cpp.o
+.PHONY : src/teleop_autopilot_evaluation.cpp.o
+
+src/teleop_autopilot_evaluation.i: src/teleop_autopilot_evaluation.cpp.i
+.PHONY : src/teleop_autopilot_evaluation.i
+
+# target to preprocess a source file
+src/teleop_autopilot_evaluation.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/src/teleop_autopilot_evaluation.cpp.i
+.PHONY : src/teleop_autopilot_evaluation.cpp.i
+
+src/teleop_autopilot_evaluation.s: src/teleop_autopilot_evaluation.cpp.s
+.PHONY : src/teleop_autopilot_evaluation.s
+
+# target to generate assembly for a file
+src/teleop_autopilot_evaluation.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/src/teleop_autopilot_evaluation.cpp.s
+.PHONY : src/teleop_autopilot_evaluation.cpp.s
 
 src/teleop_autopilot_height.o: src/teleop_autopilot_height.cpp.o
 .PHONY : src/teleop_autopilot_height.o
@@ -304,6 +418,7 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... behaviourLib"
 	@echo "... edit_cache"
 	@echo "... install"
 	@echo "... install/local"
@@ -311,16 +426,27 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... teleop_autopilot"
+	@echo "... teleop_autopilot_behaviour_arbitration"
 	@echo "... teleop_autopilot_dagger"
+	@echo "... teleop_autopilot_evaluation"
 	@echo "... teleop_autopilot_height"
 	@echo "... teleop_autopilot_turning"
 	@echo "... test"
+	@echo "... src/BehaviourArbitration.o"
+	@echo "... src/BehaviourArbitration.i"
+	@echo "... src/BehaviourArbitration.s"
 	@echo "... src/teleop_autopilot.o"
 	@echo "... src/teleop_autopilot.i"
 	@echo "... src/teleop_autopilot.s"
+	@echo "... src/teleop_autopilot_behaviour_arbitration.o"
+	@echo "... src/teleop_autopilot_behaviour_arbitration.i"
+	@echo "... src/teleop_autopilot_behaviour_arbitration.s"
 	@echo "... src/teleop_autopilot_dagger.o"
 	@echo "... src/teleop_autopilot_dagger.i"
 	@echo "... src/teleop_autopilot_dagger.s"
+	@echo "... src/teleop_autopilot_evaluation.o"
+	@echo "... src/teleop_autopilot_evaluation.i"
+	@echo "... src/teleop_autopilot_evaluation.s"
 	@echo "... src/teleop_autopilot_height.o"
 	@echo "... src/teleop_autopilot_height.i"
 	@echo "... src/teleop_autopilot_height.s"

@@ -300,6 +300,9 @@ autopilot_BINARY_DIR:STATIC=/home/jay/autopilot_ws/build/autopilot
 //Value Computed by CMake
 autopilot_SOURCE_DIR:STATIC=/home/jay/autopilot_ws/src/autopilot
 
+//Dependencies for the target
+behaviourLib_LIB_DEPENDS:STATIC=general;opencv_videostab;general;opencv_video;general;opencv_superres;general;opencv_stitching;general;opencv_photo;general;opencv_ocl;general;opencv_objdetect;general;opencv_nonfree;general;opencv_ml;general;opencv_legacy;general;opencv_imgproc;general;opencv_highgui;general;opencv_gpu;general;opencv_flann;general;opencv_features2d;general;opencv_core;general;opencv_contrib;general;opencv_calib3d;
+
 //The directory containing a CMake configuration file for camera_calibration_parsers.
 camera_calibration_parsers_DIR:PATH=/opt/ros/hydro/share/camera_calibration_parsers/cmake
 
