@@ -147,6 +147,7 @@ add_executable(teleop_autopilot src/teleop_autopilot.cpp)
 add_executable(teleop_autopilot_height src/teleop_autopilot_height.cpp)
 add_executable(teleop_autopilot_dagger src/teleop_autopilot_dagger.cpp)
 add_executable(teleop_autopilot_turning src/teleop_autopilot_turning.cpp)
+add_executable(teleop_autopilot_evaluation src/teleop_autopilot_evaluation.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -169,6 +170,11 @@ target_link_libraries(teleop_autopilot_turning
    ${catkin_LIBRARIES}
    ${OpenCV_LIBRARIES}
 )
+target_link_libraries(teleop_autopilot_evaluation
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+)
+
 #############
 ## Install ##
 #############

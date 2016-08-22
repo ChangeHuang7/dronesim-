@@ -304,7 +304,7 @@ int main(int argc, char** argv)
   // Adapt name instead of left0000.jpg it should be 00000-gt1.jpg when receiving control 1 ~ straight
   ros::NodeHandle local_nh("~");
   std::string format_string;
-  local_nh.param("filename_format", format_string, std::string("%s/%05i-gt%s.%s"));
+  local_nh.param("filename_format", format_string, std::string("%s/%010i-gt%s.%s"));
   local_nh.param("encoding", encoding, std::string("bgr8"));
   local_nh.param("save_all_image", save_all_image, true);
   g_format.parse(format_string);

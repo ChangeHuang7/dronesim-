@@ -17,12 +17,15 @@
     <arg name="model" value="$(find cvg_sim_gazebo)/urdf/quadrotor_sensors.urdf.xacro"/> 
   </include>
 
+  
+  <node name="teleop_autopilot_evaluation" pkg="teleop_autopilot" type="teleop_autopilot_evaluation" output="screen"/>
+  
   <!-- Spawn human -->
   <!-- <include file="$(find cvg_sim_gazebo)/launch/spawn_human.launch" >
     <arg name="human" value="$(find cvg_sim_gazebo)/urdf/human.urdf.xacro"/> 
   </include>-->
 
- <!-- <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>  -->
+  <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>
  
  <!-- JAY: Uncomment this line below if you want to launch your autopilot teleop imediately -->
  <!-- <node name="teleop" pkg="teleop_autopilot" type="teleop_autopilot" output="screen"/>-->

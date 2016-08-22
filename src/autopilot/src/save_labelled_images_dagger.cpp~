@@ -93,8 +93,7 @@ public://initialize fields of callbacks
       // Wait a tiny bit to see whether callbackWithCameraInfo is called
       ros::Duration(0.001).sleep();
     }
-    
-    if (control.length()==0)//dont save any image if there has no control signal arrived just yet
+    if (! takeOff)//dont save any image if the drone didnt take off just yet
       return;
     // save the image
     cv::Mat image;
@@ -134,7 +133,7 @@ public://initialize fields of callbacks
         ROS_ERROR("save_labelled_images_depth::main.cpp::cv_bridge exception: %s", e.what());
         return;
     }
-    if (! takeOff)//dont save any image if there has no control signal arrived just yet
+    if (! takeOff)//dont save any image if the drone didnt take off just yet
       return;
     //Copy the image.data to imageBuf. Depth image is uint16 with depths in m.
     cv::Mat depth_float_img = cv_ptr->image;

@@ -49,6 +49,7 @@
 #include <fstream>      // std::ifstream
 #include <sstream>     // std::cout
 
+#include <std_msgs/Empty.h>
 //#include <unistd.h>
 //#include <std_srvs/Empty.h>
 //#include <algorithm>
@@ -61,6 +62,9 @@
 //#include <boost/bind.hpp>
 
 using namespace std;
+bool takeoff = false;
+int FSM_COUNTER_THRESH=100;
+int FSM_COUNTER = 0;
 
 float speed_scale = 0.5;//10/20; //if the frame rate at training is 30 and the framerate at testing is 3 the speed should be 10 time lower.
 
@@ -84,6 +88,8 @@ void callbackGt(const nav_msgs::Odometry& msg)
 }
 
 geometry_msgs::Twist get_twist(){
+  //take off after FSM counter greater than the threshold
+  if(FSM_COUNTER > FSM_COUNTER_THRESH) takeoff=true;
   geometry_msgs::Twist twist;
   //control_states are indices for current control vector:
   //[hover, back, forward, turn right, turn left, down, up, rotate cw, rotate ccw]
@@ -171,6 +177,7 @@ geometry_msgs::Twist get_twist(){
       twist.angular.z = 0.0;
       break;
   }
+  FSM_COUNTER=FSM_COUNTER+1;
   return twist;
 }
 
@@ -212,6 +219,10 @@ int main(int argc, char** argv)
   
   // Make subscriber to cmd_vel in order to set the name.
   ros::Publisher pubControl = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1000);
+
+  // Make Publisher to takeoff in order to set the velocity.
+  ros::Publisher pubTakeoff = nh.advertise<std_msgs::Empty>("/ardrone/takeoff", 1);
+  
   ros::Rate loop_rate(20);
 
   geometry_msgs::Twist twist;
@@ -222,7 +233,11 @@ int main(int argc, char** argv)
     twist = get_twist();
     //cout << twist << endl;
     pubControl.publish(twist);
-  
+    if(takeoff){
+      std_msgs::Empty msg;
+      pubTakeoff.publish(msg);
+    }
+    
     loop_rate.sleep();
     ros::spinOnce();
   }

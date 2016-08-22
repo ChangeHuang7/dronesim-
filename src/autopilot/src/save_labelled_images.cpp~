@@ -212,8 +212,8 @@ int main(int argc, char** argv)
   std::string topic = "/ardrone/image_raw";
 
   Callbacks callbacks;
-  callbacks.control="000000001";
-  callbacks.path="/home/jay/data/";
+  //callbacks.control="000000001";
+  //callbacks.path="/home/jay/data/";
   //obtain saving location
   std::string saving_location = nh.resolveName("generated_set");
   callbacks.path = callbacks.path+saving_location;

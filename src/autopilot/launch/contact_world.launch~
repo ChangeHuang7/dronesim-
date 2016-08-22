@@ -22,7 +22,7 @@
     <arg name="human" value="$(find cvg_sim_gazebo)/urdf/human.urdf.xacro"/> 
   </include>-->
 
-  <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>
+ <!-- <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>  -->
  
  <!-- JAY: Uncomment this line below if you want to launch your autopilot teleop imediately -->
  <!-- <node name="teleop" pkg="teleop_autopilot" type="teleop_autopilot" output="screen"/>-->

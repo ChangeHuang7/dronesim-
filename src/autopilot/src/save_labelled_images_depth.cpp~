@@ -51,12 +51,20 @@
 #include <boost/filesystem.hpp>
 #include <string>
 #include <geometry_msgs/Twist.h>
-
+#include <stdexcept>
 #include <std_srvs/Empty.h>
 #include <algorithm>
+#include <std_msgs/Empty.h>
+
+#include <fstream>      // std::ifstream
+#include <sstream>     // std::cout
 
 using namespace std;
-int max_count=500000;
+bool overwrite = true;//if a folder with the same name exists, overwrite this folder.
+
+bool takeoff=false;
+bool shuttingdown=false;
+int max_count=10000;
 boost::format g_format;
 bool save_all_image, save_image_service;
 std::string encoding;
@@ -64,7 +72,31 @@ bool service(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res) {
   save_image_service = true;
   return true;
 }
-
+void shutdown(string msg){
+  std::cout << "SHUTDOWN ################################################ "<< std::endl;
+  shuttingdown=true;
+  //write the message away to now which one is success and which one failures
+  ofstream res_file("/home/jay/autopilot_ws/src/autopilot/log.txt", std::ios_base::app);
+  if(res_file){
+    res_file << msg << "\n" ;
+    res_file.close();
+  }
+  stringstream command;
+  int pid;
+  ifstream file("/home/jay/autopilot_ws/src/autopilot/.pid");
+  if(file)
+  {
+    stringstream buffer;
+    buffer << file.rdbuf();
+    file.close();
+    buffer >> pid;
+  }
+  command << "gnome-terminal -x sh -c 'kill -9 "<< pid <<"'";
+  string command_str = command.str();
+  cout << command_str.c_str() << endl;
+  system(command_str.c_str());
+  usleep(5000);
+}
 
 /** Class to deal with which callback to call whether we have CameraInfo or not
  */
@@ -79,8 +111,9 @@ public://initialize fields of callbacks
     //Process images: 
     if(mono8_img.rows != float_img.rows || mono8_img.cols != float_img.cols){
       mono8_img = cv::Mat(float_img.size(), CV_8UC1);}
-    cv::convertScaleAbs(float_img, mono8_img, 80, 0.0);
-    
+    float alpha = 256/4.6;
+    float beta = -2.7*256/4.6+128;
+    cv::convertScaleAbs(float_img, mono8_img, alpha, beta);
   }
   
   void callbackWithoutCameraInfo(const sensor_msgs::ImageConstPtr& image_msg)
@@ -92,7 +125,7 @@ public://initialize fields of callbacks
       ros::Duration(0.001).sleep();
     }
     
-    if (control.length()==0)//dont save any image if there has no control signal arrived just yet
+    if (control.length()==0 || !takeoff)//dont save any image if there has no control signal arrived just yet
       return;
     // save the image
     cv::Mat image;
@@ -105,10 +138,11 @@ public://initialize fields of callbacks
       return;
     }
     std::string filename;
-    if (!saveImage(image, filename) || count_ >= max_count)
-      return;
-
+    if (!saveImage(image, filename))
+	return;
     count_++;
+    if(static_cast<int>(count_) >= max_count) shutdown("stuck");
+        
   }
 
   void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& original_image)
@@ -132,7 +166,7 @@ public://initialize fields of callbacks
         ROS_ERROR("save_labelled_images_depth::main.cpp::cv_bridge exception: %s", e.what());
         return;
     }
-    if (control.length()==0)//dont save any image if there has no control signal arrived just yet
+    if (control.length()==0 || !takeoff)//dont save any image if there has no control signal arrived just yet
       return;
     //Copy the image.data to imageBuf. Depth image is uint16 with depths in m.
     cv::Mat depth_float_img = cv_ptr->image;
@@ -147,9 +181,14 @@ public://initialize fields of callbacks
     // save the image
     std::string filename;
     if (!saveImage(depth_mono8_img, filename, true))
-      return;
-
+	return;
     count_++;
+    if(static_cast<int>(count_) >= max_count) shutdown();
+  }
+  
+  void callbackTakeoff(std_msgs::Empty msg)
+  {
+    if(!takeoff) takeoff=true;
   }
     
   void callbackCmd(const geometry_msgs::Twist& msg)
@@ -190,9 +229,8 @@ public://initialize fields of callbacks
 	}
       }
     }
-         
     control = cmd;
-    std::cout << "control message: "<< cmd << std::endl;
+    //std::cout << "control message: "<< cmd << std::endl;
   }
   
 private: //private methods of callback
@@ -242,7 +280,7 @@ private: //private fields of callback
   bool is_first_image_;
   bool is_first_image_depth_;
   bool has_camera_info_;
-  size_t count_;
+  size_t count_;//size_t
   string control;
 };
 
@@ -264,28 +302,59 @@ int main(int argc, char** argv)
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   callbacks.path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(callbacks.path);
-  boost::filesystem::remove_all(dir);
-  if(boost::filesystem::create_directory(dir)) {
-    callbacks.path_depth = callbacks.path+"/depth";
-    boost::filesystem::path dir_depth(callbacks.path_depth);
-    if(boost::filesystem::create_directory(dir_depth)) {
-      std::cout << "Success in creating: "<<callbacks.path_depth << "\n";
+  boost::filesystem::file_status f = status(dir);
+  if(boost::filesystem::is_directory(f)){//directory exists
+    if(!overwrite){
+      //check if the subfolders exists both for depth and RGB
+      callbacks.path = "/home/jay/data/"+saving_location+"/RGB";
+      boost::filesystem::path dir_sub(callbacks.path);
+      boost::filesystem::file_status f_sub = status(dir_sub);
+      if(! boost::filesystem::is_directory(f_sub)){
+	if(boost::filesystem::create_directory(dir_sub)) {
+	  std::cout << "Success in creating: "<<callbacks.path << "\n";
+	}else{
+	  std::cout <<"Failed to make saving direction "<<callbacks.path <<"\n";
+	  throw std::invalid_argument( "[save_labelled_images_depth]Failed to make saving direction" );
+	}
+      }else{//file already exists but we are not allowed to overwrite.
+	std::cout <<"[save_labelled_images_depth] Directory already exists and overwrite is false... "<<callbacks.path <<"\n";
+	throw std::invalid_argument( "[save_labelled_images_depth] Directory already exists and overwrite is false..." );
+      }
+      callbacks.path_depth = "/home/jay/data/"+saving_location+"/depth";
+      dir_sub = callbacks.path_depth;
+      f_sub = status(dir_sub);
+      if(! boost::filesystem::is_directory(f_sub)){
+	if(boost::filesystem::create_directory(dir_sub)) {
+	  std::cout << "Success in creating: "<<callbacks.path_depth << "\n";
+	}else{
+	  std::cout <<"Failed to make saving direction "<<callbacks.path_depth <<"\n";
+	  throw std::invalid_argument( "[save_labelled_images_depth]Failed to make saving direction" );
+	}
+      }else{
+	throw std::invalid_argument( "[save_labelled_images_depth]Directory already exists and overwrite is false..." );
+      }
+    }else{//if overwrite => remove the folders
+      boost::filesystem::remove_all(dir);
     }
-    callbacks.path = callbacks.path+"/RGB";
-    boost::filesystem::path dir_rgb(callbacks.path);
-    if(boost::filesystem::create_directory(dir_rgb)) {
-      std::cout << "Success in creating: "<<callbacks.path << "\n";
-      boost::filesystem::file_status s = status(callbacks.path);
-      printf("%o\n",s.permissions());
+  }//Create new folders if they dont exist.
+  f = status(dir);
+  if(! boost::filesystem::is_directory(f)){
+    if(boost::filesystem::create_directory(dir)) {
+      callbacks.path = "/home/jay/data/"+saving_location+"/RGB";
+      boost::filesystem::path dir_rgb(callbacks.path);
+      if(boost::filesystem::create_directory(dir_rgb)) {
+	std::cout << "Success in creating: "<<callbacks.path << "\n";
+      }
+      callbacks.path_depth = "/home/jay/data/"+saving_location+"/depth";
+      boost::filesystem::path dir_depth(callbacks.path_depth);
+      if(boost::filesystem::create_directory(dir_depth)) {
+	std::cout << "Success in creating: "<<callbacks.path_depth << "\n";
+      }
+    }else{
+      std::cout <<"Failed to make saving direction "<<callbacks.path <<"\n";
+      throw std::invalid_argument( "[save_labelled_images_depth]Failed to make saving direction" );
     }
-  }else{
-    std::cout <<"Failed to make saving direction "<<callbacks.path <<"\n";
   }
-  
-  // Useful when CameraInfo is being published
-  /*image_transport::CameraSubscriber sub_image_and_camera = it.subscribeCamera(topic, 1,
-                                                                              &Callbacks::callbackWithCameraInfo,
-                                                                              &callbacks);*/
   // Useful when CameraInfo is not being published
   image_transport::Subscriber sub_image = it.subscribe(
       topic, 1, boost::bind(&Callbacks::callbackWithoutCameraInfo, &callbacks, _1));
@@ -299,11 +368,14 @@ int main(int argc, char** argv)
   // Adapt name instead of left0000.jpg it should be 00000-gt1.jpg when receiving control 1 ~ straight
   ros::NodeHandle local_nh("~");
   std::string format_string;
-  local_nh.param("filename_format", format_string, std::string("%s/%05i-gt%s.%s"));
+  local_nh.param("filename_format", format_string, std::string("%s/%010i-gt%s.%s"));
   local_nh.param("encoding", encoding, std::string("bgr8"));
   local_nh.param("save_all_image", save_all_image, true);
   g_format.parse(format_string);
   ros::ServiceServer save = local_nh.advertiseService ("save", service);
-
+  
+  // Subscribe to the takeoff message in order to know when to start the saving procedure
+  ros::Subscriber subTakeoff = nh.subscribe("/ardrone/takeoff",1,&Callbacks::callbackTakeoff, &callbacks);
+  
   ros::spin();
 } 

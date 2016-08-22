@@ -1,0 +1,15 @@
+# read list of world files in
+WORLDDIR="/home/jay/autopilot_ws/src/autopilot/worlds"
+WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/auto_generated/*.world"
+# for file in list launch
+world="/home/jay/autopilot_ws/src/autopilot/worlds/auto_generated/$1.world"
+	
+	FNAME=$(basename ${world}) #get name of the world
+	echo $FNAME
+	SLOC=$(basename ${world} | cut -c1-4) #cut .world from it
+	COMMAND="roslaunch autopilot oa_challenge_test.launch sloc:='$SLOC' current_world:='/auto_generated/$FNAME' height_behavior:='low'"
+	xterm -hold -e $COMMAND &
+	pidlaunch=$!
+	echo $pidlaunch > "$WORLDDIR/../.pid"
+	
+

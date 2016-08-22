@@ -1,20 +1,20 @@
 <?xml version='1.0'?>
 <sdf version='1.4'>
   <model name='challenge_w1'>
-    <link name='Wall_20'>
-      <collision name='Wall_20_Collision'>
+    <link name='Wall_South'>
+      <collision name='Wall_South_Collision'>
         <geometry>
           <box>
-            <size>21.0026 0.2 2.5</size>
+            <size>20 0.2 4</size>
           </box>
         </geometry>
-        <pose>0 0 1.25 0 -0 0</pose>
+        <pose>0 0 2 0 -0 0</pose>
       </collision>
-      <visual name='Wall_20_Visual'>
-        <pose>0 0 1.25 0 -0 0</pose>
+      <visual name='Wall_South_Visual'>
+        <pose>0 0 2 0 -0 0</pose>
         <geometry>
           <box>
-            <size>21.0026 0.2 2.5</size>
+            <size>20 0.2 4</size>
           </box>
         </geometry>
         <material>
@@ -28,22 +28,22 @@
         <linear>0</linear>
         <angular>0</angular>
       </velocity_decay>
-      <pose>0.451668 -15.9141 0 0 -0 0</pose>
+      <pose>0 -20 0 0 -0 0</pose>
     </link>
-    <link name='Wall_21'>
+    <link name='Wall_East'>
       <collision name='Wall_21_Collision'>
         <geometry>
           <box>
-            <size>33.0662 0.2 2.5</size>
+            <size>40 0.2 4</size>
           </box>
         </geometry>
-        <pose>0 0 1.25 0 -0 0</pose>
+        <pose>0 0 2 0 -0 0</pose>
       </collision>
       <visual name='Wall_21_Visual'>
-        <pose>0 0 1.25 0 -0 0</pose>
+        <pose>0 0 2 0 -0 0</pose>
         <geometry>
           <box>
-            <size>33.0662 0.2 2.5</size>
+            <size>40 0.2 4</size>
           </box>
         </geometry>
         <material>
@@ -57,22 +57,22 @@
         <linear>0</linear>
         <angular>0</angular>
       </velocity_decay>
-      <pose>10.853 0.519015 0 0 -0 1.5708</pose>
+      <pose>10 0 0 0 -0 1.5708</pose>
     </link>
-    <link name='Wall_22'>
+    <link name='Wall_North'>
       <collision name='Wall_22_Collision'>
         <geometry>
           <box>
-            <size>20.7888 0.2 2.5</size>
+            <size>20 0.2 4</size>
           </box>
         </geometry>
-        <pose>0 0 1.25 0 -0 0</pose>
+        <pose>0 0 2 0 -0 0</pose>
       </collision>
       <visual name='Wall_22_Visual'>
-        <pose>0 0 1.25 0 -0 0</pose>
+        <pose>0 0 2 0 -0 0</pose>
         <geometry>
           <box>
-            <size>20.7888 0.2 2.5</size>
+            <size>20 0.2 4</size>
           </box>
         </geometry>
         <material>
@@ -86,22 +86,22 @@
         <linear>0</linear>
         <angular>0</angular>
       </velocity_decay>
-      <pose>0.558532 16.9521 0 0 -0 3.14159</pose>
+      <pose>0 20 0 0 -0 3.14159</pose>
     </link>
-    <link name='Wall_23'>
+    <link name='Wall_West'>
       <collision name='Wall_23_Collision'>
         <geometry>
           <box>
-            <size>33.12 0.2 2.5</size>
+            <size>40 0.2 4</size>
           </box>
         </geometry>
-        <pose>0 0 1.25 0 -0 0</pose>
+        <pose>0 0 2 0 -0 0</pose>
       </collision>
       <visual name='Wall_23_Visual'>
-        <pose>0 0 1.25 0 -0 0</pose>
+        <pose>0 0 2 0 -0 0</pose>
         <geometry>
           <box>
-            <size>33.12 0.2 2.5</size>
+            <size>40 0.2 4</size>
           </box>
         </geometry>
         <material>
@@ -115,7 +115,7 @@
         <linear>0</linear>
         <angular>0</angular>
       </velocity_decay>
-      <pose>-9.73589 0.492135 0 0 0 -1.5708</pose>
+      <pose>-10 0 0 0 0 -1.5708</pose>
     </link>
     <static>1</static>
   </model>
