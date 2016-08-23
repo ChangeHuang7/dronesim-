@@ -28,7 +28,7 @@ BehaviourArbitration::BehaviourArbitration() {
 
 	lambdaObstacleVert = 5;
 	angularRangeVert = 27.5*CV_PI/180;
-	obstacleDistanceGainVert = 0.15;//0.2;
+	obstacleDistanceGainVert = 0.2;
 
 }
 

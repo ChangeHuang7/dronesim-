@@ -84,7 +84,7 @@ void shutdown(string msg){
   //write the message away to now which one is success and which one failures
   ofstream res_file("/home/jay/autopilot_ws/src/autopilot/log.txt", std::ios_base::app);
   if(res_file){
-    res_file << "result: " << msg << "\n" ;
+    res_file << msg << "\n" ;
     res_file.close();
   }
   stringstream command;

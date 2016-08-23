@@ -251,7 +251,7 @@ public://initialize fields of callbacks
     if(shuttingdown) return;
     //std::cout << "y-direction: "<< msg.pose.pose.position.y << std::endl;
     //Check from groundtruth whether drone is in the end of the trajectory
-    if (msg.pose.pose.position.y >= 17.5 && !shuttingdown){
+    if (msg.pose.pose.position.y >= 16 && !shuttingdown){
       shutdown("success");
     }
   }
