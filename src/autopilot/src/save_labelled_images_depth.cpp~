@@ -59,6 +59,7 @@
 #include <fstream>      // std::ifstream
 #include <sstream>     // std::cout
 
+#include <sys/stat.h>
 using namespace std;
 bool overwrite = true;//if a folder with the same name exists, overwrite this folder.
 
@@ -302,7 +303,6 @@ int main(int argc, char** argv)
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   callbacks.path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(callbacks.path);
-<<<<<<< HEAD
   boost::filesystem::file_status f = status(dir);
   if(boost::filesystem::is_directory(f)){//directory exists
     if(!overwrite){
@@ -339,26 +339,22 @@ int main(int argc, char** argv)
     }
   }//Create new folders if they dont exist.
   f = status(dir);
-=======
-  boost::filesystem::file_status f = boost::filesystem::status(dir);
->>>>>>> origin/tom_changes
   if(! boost::filesystem::is_directory(f)){
     if(boost::filesystem::create_directory(dir)) {
       callbacks.path = "/home/jay/data/"+saving_location+"/RGB";
       boost::filesystem::path dir_rgb(callbacks.path);
       if(boost::filesystem::create_directory(dir_rgb)) {
 	std::cout << "Success in creating: "<<callbacks.path << "\n";
-<<<<<<< HEAD
       }
+      //change permissions
+      chmod(callbacks.path_depth, S_IRWXU | S_IRWXG | S_IRWXO);
       callbacks.path_depth = "/home/jay/data/"+saving_location+"/depth";
       boost::filesystem::path dir_depth(callbacks.path_depth);
       if(boost::filesystem::create_directory(dir_depth)) {
 	std::cout << "Success in creating: "<<callbacks.path_depth << "\n";
-=======
-	boost::filesystem::file_status s = boost::filesystem::status(callbacks.path);
-	printf("%o\n",s.permissions());
->>>>>>> origin/tom_changes
       }
+      //change permissions
+      chmod(callbacks.path_depth, S_IRWXU | S_IRWXG | S_IRWXO);
     }else{
       std::cout <<"Failed to make saving direction "<<callbacks.path <<"\n";
       throw std::invalid_argument( "[save_labelled_images_depth]Failed to make saving direction" );

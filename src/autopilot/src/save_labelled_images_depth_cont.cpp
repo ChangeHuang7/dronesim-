@@ -63,6 +63,7 @@
 using namespace std;
 bool overwrite = true;//if a folder with the same name exists, overwrite this folder.
 string save_log_location="/home/jay/autopilot_ws/src/autopilot/log.txt";
+string control_output_filename="";
 
 bool takeoff=false;
 bool shuttingdown=false;
@@ -127,7 +128,7 @@ public://initialize fields of callbacks
       ros::Duration(0.001).sleep();
     }
     
-    if (control.length()==0 || !takeoff)//dont save any image if there has no control signal arrived just yet
+    if (!takeoff)//dont save any image if there has no control signal arrived just yet
       return;
     // save the image
     cv::Mat image;
@@ -168,7 +169,7 @@ public://initialize fields of callbacks
         ROS_ERROR("save_labelled_images_depth::main.cpp::cv_bridge exception: %s", e.what());
         return;
     }
-    if (control.length()==0 || !takeoff)//dont save any image if there has no control signal arrived just yet
+    if (!takeoff)//dont save any image if there has no control signal arrived just yet
       return;
     //Copy the image.data to imageBuf. Depth image is uint16 with depths in m.
     cv::Mat depth_float_img = cv_ptr->image;
@@ -195,44 +196,7 @@ public://initialize fields of callbacks
     
   void callbackCmd(const geometry_msgs::Twist& msg)
   {
-    geometry_msgs::Vector3 lin = msg.linear;
-    geometry_msgs::Vector3 ang = msg.angular;
-    //std::cout << "twist message: "<< msg << std::endl;
-    //std::cout << "twist message ang z: "<< ang.z << std::endl;
-    
-    std::string cmd;
-    //check stop signal if quadrotor has to hover
-    if( !(lin.x || lin.y || lin.z || ang.z)){
-      cmd = "100000000";
-    }else{
-      if(lin.y < 0){
-	cmd = "000100000";
-      }else if(lin.y > 0){
-	cmd = "000010000";
-      }else{
-	if(lin.x < 0){
-	  cmd = "010000000";
-	}else if(lin.x > 0){
-	  cmd = "001000000";
-	}else{
-	  if(lin.z < 0){
-	    cmd =  "000001000";
-	  }else if(lin.z > 0){
-	    cmd =  "000000100";
-	  }else{
-	    if(ang.z < 0){
-	      cmd =  "000000010";
-	    }else if(ang.z > 0){
-	      cmd =  "000000001";
-	    }else{
-	      cmd = "x";
-	    }
-	  }
-	}
-      }
-    }
-    control = cmd;
-    //std::cout << "control message: "<< cmd << std::endl;
+    latest_twist = msg; 
   }
   
 private: //private methods of callback
@@ -248,26 +212,28 @@ private: //private methods of callback
         filename = (g_format % path % count_).str();
       } catch (...) { g_format.clear(); }
       try { 
-        filename = (g_format % path % count_ % "jpg").str();
+        filename = (g_format % path % count_ % ".jpg").str();
       } catch (...) { g_format.clear(); }
       try {
-	if(!depth){
-	  filename = (g_format % path % count_ % control % "jpg").str();
-	}else{
-	  filename = (g_format % path_depth % count_ % control % "jpg").str();
-	}
+      	if(!depth){
+      	  filename = (g_format % path % count_ % ".jpg").str();
+      	}else{
+      	  filename = (g_format % path_depth % count_ % ".jpg").str();
+      	}
       } catch (...) { g_format.clear(); }
       
       if ( save_all_image || save_image_service ) {
         try{
-	  cv::imwrite(filename, image);
-	  ROS_INFO("Saved image %s", filename.c_str());
+          cout << "Filename: " << filename << endl;
+      	  cv::imwrite(filename, image);
+          writeVelInfo();
+      	  ROS_INFO("Saved image %s", filename.c_str());
 
-	  save_image_service = false;
-	}catch(runtime_error& ex){
-	  fprintf(stderr, "Exception converting image to PNG format: %s\n", ex.what());
-	  return false;
-	}
+      	  save_image_service = false;
+      	}catch(runtime_error& ex){
+      	  fprintf(stderr, "Exception converting image to PNG format: %s\n", ex.what());
+      	  return false;
+      	}
       } else {
         return false;
       }
@@ -278,12 +244,25 @@ private: //private methods of callback
     return true;
   }
 
+  /* Writes velocity (control) info to file */
+  void writeVelInfo() {
+    ofstream control_output_file;
+    control_output_file.open(control_output_filename.c_str(), ios::app);
+    char countArray[11];
+    sprintf(countArray, "%010d", (int) count_);
+    control_output_file << countArray << " " << latest_twist.linear.x << " " << latest_twist.linear.y << " " << latest_twist.linear.z
+                            << " " << latest_twist.angular.x << " " << latest_twist.angular.y << " " << latest_twist.angular.z << endl;
+    control_output_file.close();
+
+  }
+
 private: //private fields of callback
   bool is_first_image_;
   bool is_first_image_depth_;
   bool has_camera_info_;
   size_t count_;//size_t
-  string control;
+  // string control;
+  geometry_msgs::Twist latest_twist;
 };
 
 int main(int argc, char** argv)
@@ -305,6 +284,7 @@ int main(int argc, char** argv)
   if(nh.resolveName("log").c_str() != "") save_log_location = nh.resolveName("log");
   
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
+  control_output_filename = "/home/jay/data/"+saving_location+"/control_info.txt";
   callbacks.path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(callbacks.path);
   boost::filesystem::file_status f = status(dir);
@@ -345,6 +325,8 @@ int main(int argc, char** argv)
   f = status(dir);
   if(! boost::filesystem::is_directory(f)){
     if(boost::filesystem::create_directory(dir)) {
+      //change 
+      chmod(dir.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
       callbacks.path = "/home/jay/data/"+saving_location+"/RGB";
       boost::filesystem::path dir_rgb(callbacks.path);
       if(boost::filesystem::create_directory(dir_rgb)) {
@@ -377,7 +359,7 @@ int main(int argc, char** argv)
   // Adapt name instead of left0000.jpg it should be 00000-gt1.jpg when receiving control 1 ~ straight
   ros::NodeHandle local_nh("~");
   std::string format_string;
-  local_nh.param("filename_format", format_string, std::string("%s/%010i-gt%s.%s"));
+  local_nh.param("filename_format", format_string, std::string("%s/%010i.%s"));
   local_nh.param("encoding", encoding, std::string("bgr8"));
   local_nh.param("save_all_image", save_all_image, true);
   g_format.parse(format_string);

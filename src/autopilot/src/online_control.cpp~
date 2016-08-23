@@ -49,6 +49,7 @@
 #include <fstream>      // std::ifstream
 #include <sstream>     // std::cout
 
+#include <std_msgs/Empty.h>
 //#include <unistd.h>
 //#include <std_srvs/Empty.h>
 //#include <algorithm>
