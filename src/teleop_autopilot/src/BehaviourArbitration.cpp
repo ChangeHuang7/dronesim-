@@ -19,17 +19,27 @@ std::string to_string(T value)
 }
 
 BehaviourArbitration::BehaviourArbitration() {
-	lambdaGoalHorz = 0.5;
-	lambdaObstacleHorz = 5;
+	lambdaGoalHorz = 0.5; // Linear multiplier for the angular velocity
+	lambdaObstacleHorzNormal = 5;
+	lambdaObstacleHorzAggressive = 50;
+	lambdaObstacleHorz = lambdaObstacleHorzNormal; // Default value
 	weightGoalHorz = 0.3;
 	weightObstacleHorz = 0.7;
-	obstacleDistanceGainHorz = 0.2;
-	angularRangeHorz = 29*CV_PI/180; // Range is +-29° 
+	obstacleDistanceGainHorzNormal = 0.1; // Smaller = more sensitive 
+	obstacleDistanceGainHorzAggressive = 0.005; // Smaller = more sensitive
+	obstacleDistanceGainHorz = obstacleDistanceGainHorzNormal; // Default value
+	angularRangeHorz = 2*29*CV_PI/180; // Range is +-29° 
 
 	lambdaObstacleVert = 5;
 	angularRangeVert = 27.5*CV_PI/180;
 	obstacleDistanceGainVert = 0.15;//0.2;
+	noiseVariance = 0.2;
 
+	matchedFilterKernel = (Mat_<float>(1,7) << 17,20,25,26,25,20,17);
+	obstacleArrayHorz = Mat::zeros(1,7, CV_32F);
+
+	matchedFilterExpectedResult = 3304;
+	matchedFilterMargin = 800;
 }
 
 
@@ -40,12 +50,24 @@ void BehaviourArbitration::displayObstacleArrayHorz(cv::Mat obstacleMap) {
 	int thickness = 1;
 
 	Point testPos(10, 70);
+	int indexObstacle = 0;
 	for (int i = 0; i< obstacleMap.cols; i += 10) {
-		string depthString = to_string(floor(obstacleMap.at<float>(0,i)));
+		float depthThis = floor(obstacleMap.at<float>(0,i));
+		obstacleArrayHorz.at<float>(0,indexObstacle) = depthThis;
+		string depthString = to_string(depthThis);
 		// cout <<"depth"<< depthString << endl;
 		putText(displayImage, depthString, testPos, fontFace, fontScale, cv::Scalar(255,0,0), thickness,8);
 		testPos += Point(50,0);
+		indexObstacle++;
 	}
+
+	float matchedFilterResult = matchedFilterKernel.dot(obstacleArrayHorz);
+	// float matchedFilterResult = 0;
+	// for (int i = 0; i < 7; i++) {
+	// 	matchedFilterResult += obstacleArrayHorz.at<float>(0,i) * matchedFilterKernel.at<float>(0,i);
+	// }
+	// cout << "Kernel: " << matchedFilterKernel << endl;
+	cout << "Filter result: " << matchedFilterResult << endl;
 	imshow("Depth info horizontal", displayImage);
 	waitKey(1);
 
@@ -69,6 +91,31 @@ void BehaviourArbitration::displayObstacleArrayVert(cv::Mat obstacleMap) {
 
 }
 
+void BehaviourArbitration::displayCollision(cv::Mat kinectImage) {
+	double minVal;
+	minMaxLoc(kinectImage, &minVal, NULL, NULL, NULL);
+
+	cv::Mat displayImage = Mat::zeros(200, 200, CV_8UC3);
+	if (minVal <= 0.5) {
+		rectangle(displayImage, Rect(Point(0,0), Point(200,200)),Scalar(0,0,255), CV_FILLED);
+	}
+	imshow("Collision image", displayImage);
+	waitKey(1);
+}
+
+void BehaviourArbitration::detectCorner(cv::Mat kinectImage) {
+	float matchedFilterResult = matchedFilterKernel.dot(obstacleArrayHorz);
+	if (abs(matchedFilterResult - matchedFilterExpectedResult) < matchedFilterMargin ) {
+		lambdaObstacleHorz = lambdaObstacleHorzAggressive;
+		obstacleDistanceGainHorz = obstacleDistanceGainHorzAggressive;
+		cout << "Corner detected" << endl;
+	}
+	else {
+		lambdaObstacleHorz = lambdaObstacleHorzNormal;
+		obstacleDistanceGainHorz = obstacleDistanceGainHorzNormal;	
+	}
+}
+
 /*
  * Returns the angular velocity outputted by the behaviour arbitration scheme
  * This is the obstacle avoid behaviour, should be summed with heading goal
@@ -78,6 +125,9 @@ float BehaviourArbitration::avoidObstacleHorizontal(cv::Mat kinectImage, float c
 	int image_width  = kinectImage.cols;
 	int centre_row = floor(image_height/2);
 	int obstacle_bins = 64;
+
+	detectCorner(kinectImage);
+	displayCollision(kinectImage);
 
 	// Create the obstacle array
 	cv::Mat obstacleMap = Mat::zeros(1, obstacle_bins, CV_32F);
@@ -125,7 +175,7 @@ float BehaviourArbitration::avoidObstacleVertical(cv::Mat kinectImage, float cur
 	int centre_col = floor(image_width/2);
 	int obstacle_bins = 36;
 
-	cout << "Image height: " << image_height << endl;
+	// cout << "Image height: " << image_height << endl;
 
 	cv::Mat obstacleMap = Mat::zeros(1, obstacle_bins, CV_32F);
 
@@ -163,7 +213,7 @@ float BehaviourArbitration::followGoal(float goalAngle, float currentBearing) {
 float BehaviourArbitration::sumBehavioursHorz(float angVelAvoidHorz, float angVelFollowGoal) {
 	// return 0.5;
 	float behaviourSum = weightObstacleHorz * angVelAvoidHorz + weightGoalHorz*angVelFollowGoal;
-	behaviourSum += rng.gaussian(0.5);
+	//behaviourSum += rng.gaussian(noiseVariance);
 	return behaviourSum;
 }
 

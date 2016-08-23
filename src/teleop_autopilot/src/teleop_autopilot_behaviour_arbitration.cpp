@@ -78,8 +78,8 @@ void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& origin
 	std_msgs::Float32 msg;
 	msg.data = CURRENT_YAW;
 	debugPub.publish((msg));
-	cout << "Angular velocity : " << DYAW << endl;
-	cout << "DPitch: " << DPITCH << endl;
+// 	cout << "Angular velocity : " << DYAW << endl;
+// 	cout << "DPitch: " << DPITCH << endl;
 }
 
 double getYaw(geometry_msgs::Quaternion orientation) {
@@ -107,7 +107,7 @@ geometry_msgs::Twist get_twist() {
   
 	geometry_msgs::Twist twist;
 
-	twist.linear.x = 0.5;
+	twist.linear.x = 0.8;
 	twist.linear.y = 0.0;
 	twist.linear.z = DPITCH + adjust_height;
 

@@ -21,11 +21,17 @@ public:
 private:
 	void displayObstacleArrayHorz(cv::Mat obstacleMap);
 	void displayObstacleArrayVert(cv::Mat obstacleMap);
+	void displayCollision(cv::Mat kinectImage);
+	void detectCorner(cv::Mat kinectImage);
+
 	/* data */
+	cv::Mat_<float> obstacleArrayHorz, matchedFilterKernel;
 
 	/* Horizontal control constants */
 	float lambdaGoalHorz, lambdaObstacleHorz;
 	float weightGoalHorz, weightObstacleHorz;
+	float lambdaObstacleHorzAggressive, obstacleDistanceGainHorzAggressive;
+	float lambdaObstacleHorzNormal, obstacleDistanceGainHorzNormal;
 	// c_obst in paper
 	float obstacleDistanceGainHorz;
 	// sigma_i in paper
@@ -35,4 +41,9 @@ private:
 	float lambdaObstacleVert, angularRangeVert, obstacleDistanceGainVert;
 
 	// The random number generator
+	float noiseVariance;
+
+	// Corner avoiding
+	float matchedFilterExpectedResult;
+	float matchedFilterMargin;
 };
