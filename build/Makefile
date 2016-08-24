@@ -368,6 +368,19 @@ behaviourLib/fast:
 .PHONY : behaviourLib/fast
 
 #=============================================================================
+# Target rules for targets named depth_estimator
+
+# Build rule for target.
+depth_estimator: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 depth_estimator
+.PHONY : depth_estimator
+
+# fast build rule for target.
+depth_estimator/fast:
+	$(MAKE) -f autopilot/CMakeFiles/depth_estimator.dir/build.make autopilot/CMakeFiles/depth_estimator.dir/build
+.PHONY : depth_estimator/fast
+
+#=============================================================================
 # Target rules for targets named geometry_msgs_generate_messages_cpp
 
 # Build rule for target.
@@ -813,6 +826,7 @@ help:
 	@echo "... ardrone_autonomy_generate_messages_lisp"
 	@echo "... ardrone_autonomy_generate_messages_py"
 	@echo "... behaviourLib"
+	@echo "... depth_estimator"
 	@echo "... geometry_msgs_generate_messages_cpp"
 	@echo "... geometry_msgs_generate_messages_lisp"
 	@echo "... geometry_msgs_generate_messages_py"

@@ -29,6 +29,43 @@ float DYAW = 0, DPITCH = 0;
 BehaviourArbitration BAController;
 ros::Publisher debugPub;
 
+void updateController(cv::Mat depth_float_img) {
+	float dYawObstacle = BAController.avoidObstacleHorizontal(depth_float_img, CURRENT_YAW);
+	float dYawGoal 	   = BAController.followGoal(GOAL_ANGLE, CURRENT_YAW);
+	DYAW               = BAController.sumBehavioursHorz(dYawObstacle, dYawGoal);
+	DPITCH             = BAController.avoidObstacleVertical(depth_float_img, CURRENT_YAW);
+
+	// DYAW = 0.5;
+	std_msgs::Float32 msg;
+	msg.data = CURRENT_YAW;
+	debugPub.publish((msg));
+	cout << "Angular velocity : " << DYAW << endl;
+	cout << "DPitch: " << DPITCH << endl;
+}
+
+//Callback function for the estimated depth
+void callbackDepthEstim(const sensor_msgs::ImageConstPtr& original_image) {
+	cv_bridge::CvImagePtr cv_ptr;
+	//Convert from the ROS image message to a CvImage suitable for working with OpenCV for processing
+	try
+	{
+		//Always copy, returning a mutable CvImage
+		//OpenCV expects color images to use BGR channel order.
+		cv_ptr = cv_bridge::toCvCopy(original_image);
+	}
+	catch (cv_bridge::Exception& e)
+	{
+  		//if there is an error during conversion, display it
+		ROS_ERROR("save_labelled_images_depth::main.cpp::cv_bridge exception: %s", e.what());
+		return;
+	}
+
+	//Copy the image.data to imageBuf. Depth image is uint16 with depths in mm.
+	cv::Mat depth_float_img = cv_ptr->image;
+
+	updateController(depth_float_img);
+}
+
 //general callback function for the depth map
 void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& original_image)
 {
@@ -68,18 +105,7 @@ void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& origin
       		}
     	}
   	}
-
-	float dYawObstacle = BAController.avoidObstacleHorizontal(depth_float_img, CURRENT_YAW);
-	float dYawGoal 	   = BAController.followGoal(GOAL_ANGLE, CURRENT_YAW);
-	DYAW               = BAController.sumBehavioursHorz(dYawObstacle, dYawGoal);
-	DPITCH             = BAController.avoidObstacleVertical(depth_float_img, CURRENT_YAW);
-
-	// DYAW = 0.5;
-	std_msgs::Float32 msg;
-	msg.data = CURRENT_YAW;
-	debugPub.publish((msg));
-// 	cout << "Angular velocity : " << DYAW << endl;
-// 	cout << "DPitch: " << DPITCH << endl;
+	updateController(depth_float_img);
 }
 
 double getYaw(geometry_msgs::Quaternion orientation) {
@@ -127,11 +153,22 @@ int main(int argc, char** argv)
 	image_transport::ImageTransport it(nh);
 	//std::string topic = nh.resolveName("image");
 	std::string topic_depth = "/ardrone/kinect/depth/image_raw";
+	std::string topic_estim_depth = "/autopilot/depth_estim";
 
-	// Useful when CameraInfo is not being published
-	//depth
-	image_transport::Subscriber sub_image_depth = it.subscribe(
-		topic_depth, 1, callbackWithoutCameraInfoWithDepth);
+
+	image_transport::Subscriber sub_image_depth;
+	// Use kinect by default
+	bool use_depth_estim = false;
+	nh.getParam("use_depth_estim", use_depth_estim);
+	if (use_depth_estim) {
+		cout << "Using depth estimation" << endl;
+		sub_image_depth = it.subscribe(topic_estim_depth, 1, callbackDepthEstim);
+	}
+	else {
+		cout << "Using kinect data" << endl;
+		sub_image_depth = it.subscribe(
+			topic_depth, 1, callbackWithoutCameraInfoWithDepth);
+	}
 
 
 	// Make subscriber to ground_truth in order to get the psotion.

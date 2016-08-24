@@ -287,6 +287,20 @@ behaviourLib/fast:
 .PHONY : behaviourLib/fast
 
 # Convenience name for target.
+autopilot/CMakeFiles/depth_estimator.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/depth_estimator.dir/rule
+.PHONY : autopilot/CMakeFiles/depth_estimator.dir/rule
+
+# Convenience name for target.
+depth_estimator: autopilot/CMakeFiles/depth_estimator.dir/rule
+.PHONY : depth_estimator
+
+# fast build rule for target.
+depth_estimator/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/depth_estimator.dir/build.make autopilot/CMakeFiles/depth_estimator.dir/build
+.PHONY : depth_estimator/fast
+
+# Convenience name for target.
 autopilot/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
 .PHONY : autopilot/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
@@ -758,6 +772,30 @@ src/BehaviourArbitration.cpp.s:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/behaviourLib.dir/build.make autopilot/CMakeFiles/behaviourLib.dir/src/BehaviourArbitration.cpp.s
 .PHONY : src/BehaviourArbitration.cpp.s
 
+src/depth_estimator.o: src/depth_estimator.cpp.o
+.PHONY : src/depth_estimator.o
+
+# target to build an object file
+src/depth_estimator.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/depth_estimator.dir/build.make autopilot/CMakeFiles/depth_estimator.dir/src/depth_estimator.cpp.o
+.PHONY : src/depth_estimator.cpp.o
+
+src/depth_estimator.i: src/depth_estimator.cpp.i
+.PHONY : src/depth_estimator.i
+
+# target to preprocess a source file
+src/depth_estimator.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/depth_estimator.dir/build.make autopilot/CMakeFiles/depth_estimator.dir/src/depth_estimator.cpp.i
+.PHONY : src/depth_estimator.cpp.i
+
+src/depth_estimator.s: src/depth_estimator.cpp.s
+.PHONY : src/depth_estimator.s
+
+# target to generate assembly for a file
+src/depth_estimator.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/depth_estimator.dir/build.make autopilot/CMakeFiles/depth_estimator.dir/src/depth_estimator.cpp.s
+.PHONY : src/depth_estimator.cpp.s
+
 src/online_control.o: src/online_control.cpp.o
 .PHONY : src/online_control.o
 
@@ -966,6 +1004,7 @@ help:
 	@echo "... ardrone_autonomy_generate_messages_lisp"
 	@echo "... ardrone_autonomy_generate_messages_py"
 	@echo "... behaviourLib"
+	@echo "... depth_estimator"
 	@echo "... edit_cache"
 	@echo "... geometry_msgs_generate_messages_cpp"
 	@echo "... geometry_msgs_generate_messages_lisp"
@@ -1008,6 +1047,9 @@ help:
 	@echo "... src/BehaviourArbitration.o"
 	@echo "... src/BehaviourArbitration.i"
 	@echo "... src/BehaviourArbitration.s"
+	@echo "... src/depth_estimator.o"
+	@echo "... src/depth_estimator.i"
+	@echo "... src/depth_estimator.s"
 	@echo "... src/online_control.o"
 	@echo "... src/online_control.i"
 	@echo "... src/online_control.s"
