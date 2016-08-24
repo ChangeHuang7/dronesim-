@@ -30,7 +30,7 @@
   <!-- start annotating images according to heuristic control-->
   <node name="teleop_autopilot_dagger" pkg="teleop_autopilot" type="teleop_autopilot_dagger" output="screen" />
   <!-- start online control node-->
-  <node name="teleop_autopilot_height" pkg="teleop_autopilot" type="teleop_autopilot_height" output="screen" />
+  <node name="online_control" pkg="autopilot" type="online_control" output="screen" />
   
   <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" />
 

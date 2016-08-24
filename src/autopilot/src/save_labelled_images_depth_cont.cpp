@@ -62,7 +62,7 @@
 #include <sys/stat.h>
 using namespace std;
 bool overwrite = true;//if a folder with the same name exists, overwrite this folder.
-string save_log_location="/home/jay/autopilot_ws/src/autopilot/log.txt";
+string save_log_location;
 string control_output_filename="";
 
 bool takeoff=false;
@@ -144,7 +144,7 @@ public://initialize fields of callbacks
     if (!saveImage(image, filename))
 	return;
     count_++;
-    if(static_cast<int>(count_) >= max_count) shutdown("stuck");
+    //if(static_cast<int>(count_) >= max_count) shutdown("stuck");
         
   }
 
@@ -186,7 +186,7 @@ public://initialize fields of callbacks
     if (!saveImage(depth_mono8_img, filename, true))
 	return;
     count_++;
-    if(static_cast<int>(count_) >= max_count) shutdown("stuck");
+    //if(static_cast<int>(count_) >= max_count) shutdown("stuck");
   }
   
   void callbackTakeoff(std_msgs::Empty msg)
@@ -212,13 +212,13 @@ private: //private methods of callback
         filename = (g_format % path % count_).str();
       } catch (...) { g_format.clear(); }
       try { 
-        filename = (g_format % path % count_ % ".jpg").str();
+        filename = (g_format % path % count_ % "jpg").str();
       } catch (...) { g_format.clear(); }
       try {
       	if(!depth){
-      	  filename = (g_format % path % count_ % ".jpg").str();
+      	  filename = (g_format % path % count_ % "jpg").str();
       	}else{
-      	  filename = (g_format % path_depth % count_ % ".jpg").str();
+      	  filename = (g_format % path_depth % count_ % "jpg").str();
       	}
       } catch (...) { g_format.clear(); }
       
@@ -276,15 +276,33 @@ int main(int argc, char** argv)
   std::string topic_depth = "/ardrone/kinect/depth/image_raw";
 
   Callbacks callbacks;
+  
   //callbacks.control ="10000000";
   //callbacks.path = "/home/jay/data/";
+
   //obtain saving location
-  std::string saving_location = nh.resolveName("generated_set");
-  //Get save_log_location BUG still needs to be tested!
-  /*if(nh.resolveName("log").c_str() != ""){
-    save_log_location = nh.resolveName("log");
-    save_log_location = save_log_location +".txt";
-  }*/
+  std::string saving_location;
+  if(!nh.getParam("saving_location", saving_location)) {
+    // if getParam returns falls, parameter was not set, don't save images!
+    ROS_ERROR("No saving directory given, not saving images!");
+    // Shutdown this node
+    ros::shutdown();
+    // Stop running
+    exit(0);
+  } //nh.resolveName("generated_set");
+
+  // Get the filepath of the log
+  if(!nh.getParam("saving_location_log", save_log_location)) {
+    ROS_ERROR("No saving directory given for the log!");
+    // Shutdown this node
+    ros::shutdown();
+    // Stop running
+    exit(0);
+  }
+  else {
+    cout << "Log path: " << save_log_location << endl;
+  }
+  
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   control_output_filename = "/home/jay/data/"+saving_location+"/control_info.txt";
   callbacks.path = "/home/jay/data/"+saving_location;

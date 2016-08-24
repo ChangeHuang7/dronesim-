@@ -297,10 +297,30 @@ int main(int argc, char** argv)
   std::string topic_depth = "/ardrone/kinect/depth/image_raw";
 
   Callbacks callbacks;
-  //callbacks.control ="10000000";
-  //callbacks.path = "/home/jay/data/";
+  
   //obtain saving location
-  std::string saving_location = nh.resolveName("generated_set");
+  std::string saving_location;
+  if(!nh.getParam("saving_location", saving_location)) {
+    // if getParam returns falls, parameter was not set, don't save images!
+    ROS_ERROR("No saving directory given, not saving images!");
+    // Shutdown this node
+    ros::shutdown();
+    // Stop running
+    exit(0);
+  } //nh.resolveName("generated_set");
+
+  // Get the filepath of the log
+  if(!nh.getParam("saving_location_log", save_log_location)) {
+    ROS_ERROR("No saving directory given for the log!");
+    // Shutdown this node
+    ros::shutdown();
+    // Stop running
+    exit(0);
+  }
+  else {
+    cout << "Log path: " << save_log_location << endl;
+  }
+
   //Get save_log_location BUG still needs to be tested!
   /*if(nh.resolveName("log").c_str() != ""){
     save_log_location = nh.resolveName("log");

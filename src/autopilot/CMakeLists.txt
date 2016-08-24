@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   camera_calibration_parsers
+  tf
   ##std_srvss
 )
 
@@ -130,6 +131,7 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
+	include
 )
 
 ## Declare a C++ library
@@ -142,12 +144,19 @@ include_directories(
 ## either from message generation or dynamic reconfigure
 # add_dependencies(autopilot ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+# Add library for behaviour arbitration
+add_library(behaviourLib src/BehaviourArbitration)
+target_link_libraries(behaviourLib ${OpenCV_LIBS})
+
 ## Declare a C++ executable
 add_executable(save_labelled_images src/save_labelled_images.cpp)
 add_executable(save_labelled_images_depth src/save_labelled_images_depth.cpp)
 add_executable(save_labelled_images_depth_cont src/save_labelled_images_depth_cont.cpp)
-add_executable(save_labelled_images_dagger src/save_labelled_images_dagger.cpp)
 add_executable(online_control src/online_control.cpp)
+add_executable(teleop_autopilot_dagger src/teleop_autopilot_dagger.cpp)
+add_executable(teleop_autopilot_turning src/teleop_autopilot_turning.cpp)
+add_executable(teleop_autopilot_evaluation src/teleop_autopilot_evaluation.cpp)
+add_executable(teleop_autopilot_behaviour_arbitration src/teleop_autopilot_behaviour_arbitration.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -166,14 +175,28 @@ target_link_libraries(online_control
    ${catkin_LIBRARIES}
    ${OpenCV_LIBRARIES}
 )
-target_link_libraries(save_labelled_images_dagger
-   ${catkin_LIBRARIES}
-   ${OpenCV_LIBRARIES}
-)
 target_link_libraries(save_labelled_images_depth_cont
    ${catkin_LIBRARIES}
    ${OpenCV_LIBRARIES}
 )
+target_link_libraries(teleop_autopilot_dagger
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+)
+target_link_libraries(teleop_autopilot_turning
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+)
+target_link_libraries(teleop_autopilot_evaluation
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+)
+target_link_libraries(teleop_autopilot_behaviour_arbitration
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+   behaviourLib
+)
+
 #############
 ## Install ##
 #############

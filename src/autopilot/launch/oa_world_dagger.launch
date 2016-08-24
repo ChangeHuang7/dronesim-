@@ -28,7 +28,7 @@
   <!-- start saving images for online control-->
   <node name="save_labelled_images_dagger" pkg="autopilot" type="save_labelled_images_dagger" output="screen" args="generated_set:='remote_images/set_online'" />
   <!-- start annotating images according to heuristic control-->
-  <node name="teleop_autopilot_dagger" pkg="teleop_autopilot" type="teleop_autopilot_dagger" output="screen" />
+  <node name="teleop_autopilot_dagger" pkg="autopilot" type="teleop_autopilot_dagger" output="screen" />
   <!-- start online control node-->
   <node name="online_control" pkg="autopilot" type="online_control" output="screen" />
   

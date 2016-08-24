@@ -297,15 +297,17 @@ int main(int argc, char** argv)
   std::string topic_depth = "/ardrone/kinect/depth/image_raw";
 
   Callbacks callbacks;
-  //callbacks.control ="10000000";
-  //callbacks.path = "/home/jay/data/";
+  
+  string sloc_test="no param found";
+  nh.getParam("saving_location_test", sloc_test);
+  cout << "$$$$$$$$$ location: " << sloc_test << endl;
   //obtain saving location
   std::string saving_location = nh.resolveName("generated_set");
   //Get save_log_location BUG still needs to be tested!
-  if(nh.resolveName("log").c_str() != ""){
+  /*if(nh.resolveName("log").c_str() != ""){
     save_log_location = nh.resolveName("log");
     save_log_location = save_log_location +".txt";
-  }
+  }*/
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   callbacks.path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(callbacks.path);

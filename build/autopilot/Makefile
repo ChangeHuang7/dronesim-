@@ -273,6 +273,20 @@ ardrone_autonomy_generate_messages_py/fast:
 .PHONY : ardrone_autonomy_generate_messages_py/fast
 
 # Convenience name for target.
+autopilot/CMakeFiles/behaviourLib.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/behaviourLib.dir/rule
+.PHONY : autopilot/CMakeFiles/behaviourLib.dir/rule
+
+# Convenience name for target.
+behaviourLib: autopilot/CMakeFiles/behaviourLib.dir/rule
+.PHONY : behaviourLib
+
+# fast build rule for target.
+behaviourLib/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/behaviourLib.dir/build.make autopilot/CMakeFiles/behaviourLib.dir/build
+.PHONY : behaviourLib/fast
+
+# Convenience name for target.
 autopilot/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
 .PHONY : autopilot/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
@@ -425,20 +439,6 @@ save_labelled_images: autopilot/CMakeFiles/save_labelled_images.dir/rule
 save_labelled_images/fast:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images.dir/build.make autopilot/CMakeFiles/save_labelled_images.dir/build
 .PHONY : save_labelled_images/fast
-
-# Convenience name for target.
-autopilot/CMakeFiles/save_labelled_images_dagger.dir/rule:
-	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/save_labelled_images_dagger.dir/rule
-.PHONY : autopilot/CMakeFiles/save_labelled_images_dagger.dir/rule
-
-# Convenience name for target.
-save_labelled_images_dagger: autopilot/CMakeFiles/save_labelled_images_dagger.dir/rule
-.PHONY : save_labelled_images_dagger
-
-# fast build rule for target.
-save_labelled_images_dagger/fast:
-	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images_dagger.dir/build.make autopilot/CMakeFiles/save_labelled_images_dagger.dir/build
-.PHONY : save_labelled_images_dagger/fast
 
 # Convenience name for target.
 autopilot/CMakeFiles/save_labelled_images_depth.dir/rule:
@@ -595,6 +595,62 @@ std_srvs_generate_messages_py/fast:
 .PHONY : std_srvs_generate_messages_py/fast
 
 # Convenience name for target.
+autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/rule
+.PHONY : autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/rule
+
+# Convenience name for target.
+teleop_autopilot_behaviour_arbitration: autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/rule
+.PHONY : teleop_autopilot_behaviour_arbitration
+
+# fast build rule for target.
+teleop_autopilot_behaviour_arbitration/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build
+.PHONY : teleop_autopilot_behaviour_arbitration/fast
+
+# Convenience name for target.
+autopilot/CMakeFiles/teleop_autopilot_dagger.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/teleop_autopilot_dagger.dir/rule
+.PHONY : autopilot/CMakeFiles/teleop_autopilot_dagger.dir/rule
+
+# Convenience name for target.
+teleop_autopilot_dagger: autopilot/CMakeFiles/teleop_autopilot_dagger.dir/rule
+.PHONY : teleop_autopilot_dagger
+
+# fast build rule for target.
+teleop_autopilot_dagger/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build.make autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build
+.PHONY : teleop_autopilot_dagger/fast
+
+# Convenience name for target.
+autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/rule
+.PHONY : autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/rule
+
+# Convenience name for target.
+teleop_autopilot_evaluation: autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/rule
+.PHONY : teleop_autopilot_evaluation
+
+# fast build rule for target.
+teleop_autopilot_evaluation/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build
+.PHONY : teleop_autopilot_evaluation/fast
+
+# Convenience name for target.
+autopilot/CMakeFiles/teleop_autopilot_turning.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/teleop_autopilot_turning.dir/rule
+.PHONY : autopilot/CMakeFiles/teleop_autopilot_turning.dir/rule
+
+# Convenience name for target.
+teleop_autopilot_turning: autopilot/CMakeFiles/teleop_autopilot_turning.dir/rule
+.PHONY : teleop_autopilot_turning
+
+# fast build rule for target.
+teleop_autopilot_turning/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_turning.dir/build.make autopilot/CMakeFiles/teleop_autopilot_turning.dir/build
+.PHONY : teleop_autopilot_turning/fast
+
+# Convenience name for target.
 autopilot/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule
 .PHONY : autopilot/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule
@@ -678,6 +734,30 @@ tf_generate_messages_py/fast:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/tf_generate_messages_py.dir/build.make autopilot/CMakeFiles/tf_generate_messages_py.dir/build
 .PHONY : tf_generate_messages_py/fast
 
+src/BehaviourArbitration.o: src/BehaviourArbitration.cpp.o
+.PHONY : src/BehaviourArbitration.o
+
+# target to build an object file
+src/BehaviourArbitration.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/behaviourLib.dir/build.make autopilot/CMakeFiles/behaviourLib.dir/src/BehaviourArbitration.cpp.o
+.PHONY : src/BehaviourArbitration.cpp.o
+
+src/BehaviourArbitration.i: src/BehaviourArbitration.cpp.i
+.PHONY : src/BehaviourArbitration.i
+
+# target to preprocess a source file
+src/BehaviourArbitration.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/behaviourLib.dir/build.make autopilot/CMakeFiles/behaviourLib.dir/src/BehaviourArbitration.cpp.i
+.PHONY : src/BehaviourArbitration.cpp.i
+
+src/BehaviourArbitration.s: src/BehaviourArbitration.cpp.s
+.PHONY : src/BehaviourArbitration.s
+
+# target to generate assembly for a file
+src/BehaviourArbitration.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/behaviourLib.dir/build.make autopilot/CMakeFiles/behaviourLib.dir/src/BehaviourArbitration.cpp.s
+.PHONY : src/BehaviourArbitration.cpp.s
+
 src/online_control.o: src/online_control.cpp.o
 .PHONY : src/online_control.o
 
@@ -725,30 +805,6 @@ src/save_labelled_images.s: src/save_labelled_images.cpp.s
 src/save_labelled_images.cpp.s:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images.dir/build.make autopilot/CMakeFiles/save_labelled_images.dir/src/save_labelled_images.cpp.s
 .PHONY : src/save_labelled_images.cpp.s
-
-src/save_labelled_images_dagger.o: src/save_labelled_images_dagger.cpp.o
-.PHONY : src/save_labelled_images_dagger.o
-
-# target to build an object file
-src/save_labelled_images_dagger.cpp.o:
-	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images_dagger.dir/build.make autopilot/CMakeFiles/save_labelled_images_dagger.dir/src/save_labelled_images_dagger.cpp.o
-.PHONY : src/save_labelled_images_dagger.cpp.o
-
-src/save_labelled_images_dagger.i: src/save_labelled_images_dagger.cpp.i
-.PHONY : src/save_labelled_images_dagger.i
-
-# target to preprocess a source file
-src/save_labelled_images_dagger.cpp.i:
-	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images_dagger.dir/build.make autopilot/CMakeFiles/save_labelled_images_dagger.dir/src/save_labelled_images_dagger.cpp.i
-.PHONY : src/save_labelled_images_dagger.cpp.i
-
-src/save_labelled_images_dagger.s: src/save_labelled_images_dagger.cpp.s
-.PHONY : src/save_labelled_images_dagger.s
-
-# target to generate assembly for a file
-src/save_labelled_images_dagger.cpp.s:
-	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images_dagger.dir/build.make autopilot/CMakeFiles/save_labelled_images_dagger.dir/src/save_labelled_images_dagger.cpp.s
-.PHONY : src/save_labelled_images_dagger.cpp.s
 
 src/save_labelled_images_depth.o: src/save_labelled_images_depth.cpp.o
 .PHONY : src/save_labelled_images_depth.o
@@ -798,6 +854,102 @@ src/save_labelled_images_depth_cont.cpp.s:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build.make autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/src/save_labelled_images_depth_cont.cpp.s
 .PHONY : src/save_labelled_images_depth_cont.cpp.s
 
+src/teleop_autopilot_behaviour_arbitration.o: src/teleop_autopilot_behaviour_arbitration.cpp.o
+.PHONY : src/teleop_autopilot_behaviour_arbitration.o
+
+# target to build an object file
+src/teleop_autopilot_behaviour_arbitration.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o
+.PHONY : src/teleop_autopilot_behaviour_arbitration.cpp.o
+
+src/teleop_autopilot_behaviour_arbitration.i: src/teleop_autopilot_behaviour_arbitration.cpp.i
+.PHONY : src/teleop_autopilot_behaviour_arbitration.i
+
+# target to preprocess a source file
+src/teleop_autopilot_behaviour_arbitration.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.i
+.PHONY : src/teleop_autopilot_behaviour_arbitration.cpp.i
+
+src/teleop_autopilot_behaviour_arbitration.s: src/teleop_autopilot_behaviour_arbitration.cpp.s
+.PHONY : src/teleop_autopilot_behaviour_arbitration.s
+
+# target to generate assembly for a file
+src/teleop_autopilot_behaviour_arbitration.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.s
+.PHONY : src/teleop_autopilot_behaviour_arbitration.cpp.s
+
+src/teleop_autopilot_dagger.o: src/teleop_autopilot_dagger.cpp.o
+.PHONY : src/teleop_autopilot_dagger.o
+
+# target to build an object file
+src/teleop_autopilot_dagger.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build.make autopilot/CMakeFiles/teleop_autopilot_dagger.dir/src/teleop_autopilot_dagger.cpp.o
+.PHONY : src/teleop_autopilot_dagger.cpp.o
+
+src/teleop_autopilot_dagger.i: src/teleop_autopilot_dagger.cpp.i
+.PHONY : src/teleop_autopilot_dagger.i
+
+# target to preprocess a source file
+src/teleop_autopilot_dagger.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build.make autopilot/CMakeFiles/teleop_autopilot_dagger.dir/src/teleop_autopilot_dagger.cpp.i
+.PHONY : src/teleop_autopilot_dagger.cpp.i
+
+src/teleop_autopilot_dagger.s: src/teleop_autopilot_dagger.cpp.s
+.PHONY : src/teleop_autopilot_dagger.s
+
+# target to generate assembly for a file
+src/teleop_autopilot_dagger.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build.make autopilot/CMakeFiles/teleop_autopilot_dagger.dir/src/teleop_autopilot_dagger.cpp.s
+.PHONY : src/teleop_autopilot_dagger.cpp.s
+
+src/teleop_autopilot_evaluation.o: src/teleop_autopilot_evaluation.cpp.o
+.PHONY : src/teleop_autopilot_evaluation.o
+
+# target to build an object file
+src/teleop_autopilot_evaluation.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/src/teleop_autopilot_evaluation.cpp.o
+.PHONY : src/teleop_autopilot_evaluation.cpp.o
+
+src/teleop_autopilot_evaluation.i: src/teleop_autopilot_evaluation.cpp.i
+.PHONY : src/teleop_autopilot_evaluation.i
+
+# target to preprocess a source file
+src/teleop_autopilot_evaluation.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/src/teleop_autopilot_evaluation.cpp.i
+.PHONY : src/teleop_autopilot_evaluation.cpp.i
+
+src/teleop_autopilot_evaluation.s: src/teleop_autopilot_evaluation.cpp.s
+.PHONY : src/teleop_autopilot_evaluation.s
+
+# target to generate assembly for a file
+src/teleop_autopilot_evaluation.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/src/teleop_autopilot_evaluation.cpp.s
+.PHONY : src/teleop_autopilot_evaluation.cpp.s
+
+src/teleop_autopilot_turning.o: src/teleop_autopilot_turning.cpp.o
+.PHONY : src/teleop_autopilot_turning.o
+
+# target to build an object file
+src/teleop_autopilot_turning.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_turning.dir/build.make autopilot/CMakeFiles/teleop_autopilot_turning.dir/src/teleop_autopilot_turning.cpp.o
+.PHONY : src/teleop_autopilot_turning.cpp.o
+
+src/teleop_autopilot_turning.i: src/teleop_autopilot_turning.cpp.i
+.PHONY : src/teleop_autopilot_turning.i
+
+# target to preprocess a source file
+src/teleop_autopilot_turning.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_turning.dir/build.make autopilot/CMakeFiles/teleop_autopilot_turning.dir/src/teleop_autopilot_turning.cpp.i
+.PHONY : src/teleop_autopilot_turning.cpp.i
+
+src/teleop_autopilot_turning.s: src/teleop_autopilot_turning.cpp.s
+.PHONY : src/teleop_autopilot_turning.s
+
+# target to generate assembly for a file
+src/teleop_autopilot_turning.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_turning.dir/build.make autopilot/CMakeFiles/teleop_autopilot_turning.dir/src/teleop_autopilot_turning.cpp.s
+.PHONY : src/teleop_autopilot_turning.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -813,6 +965,7 @@ help:
 	@echo "... ardrone_autonomy_generate_messages_cpp"
 	@echo "... ardrone_autonomy_generate_messages_lisp"
 	@echo "... ardrone_autonomy_generate_messages_py"
+	@echo "... behaviourLib"
 	@echo "... edit_cache"
 	@echo "... geometry_msgs_generate_messages_cpp"
 	@echo "... geometry_msgs_generate_messages_lisp"
@@ -830,7 +983,6 @@ help:
 	@echo "... rosgraph_msgs_generate_messages_lisp"
 	@echo "... rosgraph_msgs_generate_messages_py"
 	@echo "... save_labelled_images"
-	@echo "... save_labelled_images_dagger"
 	@echo "... save_labelled_images_depth"
 	@echo "... save_labelled_images_depth_cont"
 	@echo "... sensor_msgs_generate_messages_cpp"
@@ -842,6 +994,10 @@ help:
 	@echo "... std_srvs_generate_messages_cpp"
 	@echo "... std_srvs_generate_messages_lisp"
 	@echo "... std_srvs_generate_messages_py"
+	@echo "... teleop_autopilot_behaviour_arbitration"
+	@echo "... teleop_autopilot_dagger"
+	@echo "... teleop_autopilot_evaluation"
+	@echo "... teleop_autopilot_turning"
 	@echo "... test"
 	@echo "... tf2_msgs_generate_messages_cpp"
 	@echo "... tf2_msgs_generate_messages_lisp"
@@ -849,21 +1005,33 @@ help:
 	@echo "... tf_generate_messages_cpp"
 	@echo "... tf_generate_messages_lisp"
 	@echo "... tf_generate_messages_py"
+	@echo "... src/BehaviourArbitration.o"
+	@echo "... src/BehaviourArbitration.i"
+	@echo "... src/BehaviourArbitration.s"
 	@echo "... src/online_control.o"
 	@echo "... src/online_control.i"
 	@echo "... src/online_control.s"
 	@echo "... src/save_labelled_images.o"
 	@echo "... src/save_labelled_images.i"
 	@echo "... src/save_labelled_images.s"
-	@echo "... src/save_labelled_images_dagger.o"
-	@echo "... src/save_labelled_images_dagger.i"
-	@echo "... src/save_labelled_images_dagger.s"
 	@echo "... src/save_labelled_images_depth.o"
 	@echo "... src/save_labelled_images_depth.i"
 	@echo "... src/save_labelled_images_depth.s"
 	@echo "... src/save_labelled_images_depth_cont.o"
 	@echo "... src/save_labelled_images_depth_cont.i"
 	@echo "... src/save_labelled_images_depth_cont.s"
+	@echo "... src/teleop_autopilot_behaviour_arbitration.o"
+	@echo "... src/teleop_autopilot_behaviour_arbitration.i"
+	@echo "... src/teleop_autopilot_behaviour_arbitration.s"
+	@echo "... src/teleop_autopilot_dagger.o"
+	@echo "... src/teleop_autopilot_dagger.i"
+	@echo "... src/teleop_autopilot_dagger.s"
+	@echo "... src/teleop_autopilot_evaluation.o"
+	@echo "... src/teleop_autopilot_evaluation.i"
+	@echo "... src/teleop_autopilot_evaluation.s"
+	@echo "... src/teleop_autopilot_turning.o"
+	@echo "... src/teleop_autopilot_turning.i"
+	@echo "... src/teleop_autopilot_turning.s"
 .PHONY : help
 
 

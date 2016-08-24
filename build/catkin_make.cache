@@ -1,2 +1,2 @@
-autopilot:teleop_autopilot:teleop_twist_keyboard
+autopilot:teleop_twist_keyboard
 -DCATKIN_DEVEL_PREFIX=/home/jay/autopilot_ws/devel -DCMAKE_INSTALL_PREFIX=/home/jay/autopilot_ws/install

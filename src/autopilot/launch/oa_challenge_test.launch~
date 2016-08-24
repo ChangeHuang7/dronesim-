@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="current_world" default="oa_challenge.world"/>-->
+  <arg name="current_world" default="/oa_challenges_train/0000.world"/>
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched-->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
   <!--use line for spawning world from .dae mesh in gz model folder-->
@@ -19,12 +19,13 @@
   </include>
   
   <!-- start saving images in sloc saving location-->
-  <arg name="sloc" default="test"/>
-  <!--<node name="save_labelled_images_depth" pkg="autopilot" type="save_labelled_images_depth" output="screen" args="generated_set:='$(arg sloc)'" />-->
+  <arg name="sloc" default="tmp"/>
+  <param name="saving_location_test" value="$(arg sloc)" default="tmp"/>
+  <node name="save_labelled_images_depth_cont" pkg="autopilot" type="save_labelled_images_depth_cont" output="screen" args="generated_set:='$(arg sloc)'" />
   <!-- start the heurist for control-->
-   <node name="teleop_autopilot_behaviour_arbitration" pkg="teleop_autopilot" type="teleop_autopilot_behaviour_arbitration" output="screen" />
+   <node name="teleop_autopilot_behaviour_arbitration" pkg="autopilot" type="teleop_autopilot_behaviour_arbitration" output="screen" />
  <!-- keep evaluation for when the finish is reached-->
-  <node name="teleop_autopilot_evaluation" pkg="teleop_autopilot" type="teleop_autopilot_evaluation" output="screen"/>
+  <node name="teleop_autopilot_evaluation" pkg="autopilot" type="teleop_autopilot_evaluation" output="screen"/>
   <!-- Spawn human -->
   <!-- <include file="$(find cvg_sim_gazebo)/launch/spawn_human.launch" >
     <arg name="human" value="$(find cvg_sim_gazebo)/urdf/human.urdf.xacro"/> 

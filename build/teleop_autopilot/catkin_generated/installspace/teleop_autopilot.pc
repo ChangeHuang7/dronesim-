@@ -1,8 +1,0 @@
-prefix=/home/jay/autopilot_ws/install
-
-Name: teleop_autopilot
-Description: Description of teleop_autopilot
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/jay/autopilot_ws/install/lib 
-Requires: 

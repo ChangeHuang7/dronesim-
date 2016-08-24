@@ -7,4 +7,3 @@
 SUBDIRS(gtest)
 SUBDIRS(teleop_twist_keyboard)
 SUBDIRS(autopilot)
-SUBDIRS(teleop_autopilot)

@@ -215,7 +215,17 @@ int main(int argc, char** argv)
   //callbacks.control="000000001";
   //callbacks.path="/home/jay/data/";
   //obtain saving location
-  std::string saving_location = nh.resolveName("generated_set");
+  std::string saving_location;
+  if(!nh.getParam("saving_location", saving_location)) {
+    // if getParam returns falls, parameter was not set, don't save images!
+    ROS_ERROR("No saving directory given, not saving images!");
+    // Shutdown this node
+    ros::shutdown();
+    // Stop running
+    exit(0);
+  } //nh.resolveName("generated_set");
+
+
   callbacks.path = callbacks.path+saving_location;
   boost::filesystem::path dir(callbacks.path);
   boost::filesystem::remove_all(dir);
