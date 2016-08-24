@@ -23,7 +23,7 @@ int counter = 0;
 float ADJUST_HEIGHT_MAX = 3.5; float ADJUST_HEIGHT_MIN = 0.5;
 float adjust_height = 0;
 float CURRENT_YAW = 0;
-float GOAL_ANGLE = 3*CV_PI/2;
+double GOAL_ANGLE = 3*CV_PI/2;
 float DYAW = 0, DPITCH = 0;
 
 BehaviourArbitration BAController;
@@ -150,6 +150,10 @@ int main(int argc, char** argv)
 
 	geometry_msgs::Twist twist;
 
+	if(!nh.getParam("goal_angle", GOAL_ANGLE)) {
+		cout << "Using default angle, ";
+	}
+	cout << "Goal angle: " << GOAL_ANGLE << endl;
 	// BAController = new BAController();
 
 	// twist.linear.x = 0.5;//straight

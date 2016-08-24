@@ -79,6 +79,7 @@ bool shuttingdown=false;
 int wait_first_images=10;//dont evaluate the first depth images as the kinnect is still starting up...
 int max_count=10000;
 
+int MODE = 0;
 
 void shutdown(string msg){
   std::cout << "SHUTDOWN ################################################ :"<< msg << std::endl;
@@ -255,9 +256,17 @@ public://initialize fields of callbacks
     if(shuttingdown) return;
     //std::cout << "y-direction: "<< msg.pose.pose.position.y << std::endl;
     //Check from groundtruth whether drone is in the end of the trajectory
-    if (msg.pose.pose.position.y >= 16 && !shuttingdown){
-      shutdown("success");
+    
+    switch(MODE) {
+      default:
+        if (msg.pose.pose.position.y >= 16 && !shuttingdown){
+          shutdown("success");
+        }
+        break;
     }
+
+
+
   }
 
 private: //private fields of callback

@@ -75,31 +75,7 @@ bool service(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res) {
   save_image_service = true;
   return true;
 }
-void shutdown(string msg){
-  std::cout << "SHUTDOWN ################################################ "<< std::endl;
-  shuttingdown=true;
-  //write the message away to now which one is success and which one failures
-  ofstream res_file(save_log_location.c_str(), std::ios_base::app);
-  if(res_file){
-    res_file << msg << "\n" ;
-    res_file.close();
-  }
-  stringstream command;
-  int pid;
-  ifstream file("/home/jay/autopilot_ws/src/autopilot/.pid");
-  if(file)
-  {
-    stringstream buffer;
-    buffer << file.rdbuf();
-    file.close();
-    buffer >> pid;
-  }
-  command << "gnome-terminal -x sh -c 'kill -9 "<< pid <<"'";
-  string command_str = command.str();
-  cout << command_str.c_str() << endl;
-  system(command_str.c_str());
-  usleep(5000);
-}
+
 
 /** Class to deal with which callback to call whether we have CameraInfo or not
  */
@@ -291,17 +267,17 @@ int main(int argc, char** argv)
     exit(0);
   } //nh.resolveName("generated_set");
 
-  // Get the filepath of the log
-  if(!nh.getParam("saving_location_log", save_log_location)) {
-    ROS_ERROR("No saving directory given for the log!");
-    // Shutdown this node
-    ros::shutdown();
-    // Stop running
-    exit(0);
-  }
-  else {
-    cout << "Log path: " << save_log_location << endl;
-  }
+  // // Get the filepath of the log
+  // if(!nh.getParam("saving_location_log", save_log_location)) {
+  //   ROS_ERROR("No saving directory given for the log!");
+  //   // Shutdown this node
+  //   ros::shutdown();
+  //   // Stop running
+  //   exit(0);
+  // }
+  // else {
+  //   cout << "Log path: " << save_log_location << endl;
+  // }
   
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   control_output_filename = "/home/jay/data/"+saving_location+"/control_info.txt";

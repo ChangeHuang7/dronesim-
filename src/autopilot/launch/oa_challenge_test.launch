@@ -25,6 +25,9 @@
   <arg name="sloc_log" default="/home/jay/autopilot_ws/src/autopilot/log.txt"/>
   <param name="saving_location_log" value="$(arg sloc_log)"/>
 
+  <arg name="goal_angle" default="4.71"/>
+  <param name="goal_angle" value="$(arg goal_angle)" type="double"/> 
+
   <node name="save_labelled_images_depth_cont" pkg="autopilot" type="save_labelled_images_depth_cont" output="screen" args="generated_set:='$(arg sloc)'" />
   <!-- start the heurist for control-->
    <node name="teleop_autopilot_behaviour_arbitration" pkg="autopilot" type="teleop_autopilot_behaviour_arbitration" output="screen" />
