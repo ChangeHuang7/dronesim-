@@ -455,6 +455,20 @@ save_labelled_images_depth/fast:
 .PHONY : save_labelled_images_depth/fast
 
 # Convenience name for target.
+autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/rule
+.PHONY : autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/rule
+
+# Convenience name for target.
+save_labelled_images_depth_cont: autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/rule
+.PHONY : save_labelled_images_depth_cont
+
+# fast build rule for target.
+save_labelled_images_depth_cont/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build.make autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build
+.PHONY : save_labelled_images_depth_cont/fast
+
+# Convenience name for target.
 autopilot/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
 .PHONY : autopilot/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
@@ -760,6 +774,30 @@ src/save_labelled_images_depth.cpp.s:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images_depth.dir/build.make autopilot/CMakeFiles/save_labelled_images_depth.dir/src/save_labelled_images_depth.cpp.s
 .PHONY : src/save_labelled_images_depth.cpp.s
 
+src/save_labelled_images_depth_cont.o: src/save_labelled_images_depth_cont.cpp.o
+.PHONY : src/save_labelled_images_depth_cont.o
+
+# target to build an object file
+src/save_labelled_images_depth_cont.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build.make autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/src/save_labelled_images_depth_cont.cpp.o
+.PHONY : src/save_labelled_images_depth_cont.cpp.o
+
+src/save_labelled_images_depth_cont.i: src/save_labelled_images_depth_cont.cpp.i
+.PHONY : src/save_labelled_images_depth_cont.i
+
+# target to preprocess a source file
+src/save_labelled_images_depth_cont.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build.make autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/src/save_labelled_images_depth_cont.cpp.i
+.PHONY : src/save_labelled_images_depth_cont.cpp.i
+
+src/save_labelled_images_depth_cont.s: src/save_labelled_images_depth_cont.cpp.s
+.PHONY : src/save_labelled_images_depth_cont.s
+
+# target to generate assembly for a file
+src/save_labelled_images_depth_cont.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build.make autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/src/save_labelled_images_depth_cont.cpp.s
+.PHONY : src/save_labelled_images_depth_cont.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -794,6 +832,7 @@ help:
 	@echo "... save_labelled_images"
 	@echo "... save_labelled_images_dagger"
 	@echo "... save_labelled_images_depth"
+	@echo "... save_labelled_images_depth_cont"
 	@echo "... sensor_msgs_generate_messages_cpp"
 	@echo "... sensor_msgs_generate_messages_lisp"
 	@echo "... sensor_msgs_generate_messages_py"
@@ -822,6 +861,9 @@ help:
 	@echo "... src/save_labelled_images_depth.o"
 	@echo "... src/save_labelled_images_depth.i"
 	@echo "... src/save_labelled_images_depth.s"
+	@echo "... src/save_labelled_images_depth_cont.o"
+	@echo "... src/save_labelled_images_depth_cont.i"
+	@echo "... src/save_labelled_images_depth_cont.s"
 .PHONY : help
 
 

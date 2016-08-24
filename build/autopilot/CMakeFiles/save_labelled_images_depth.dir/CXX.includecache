@@ -37,6 +37,8 @@ fstream
 -
 sstream
 -
+sys/stat.h
+-
 
 /opt/ros/hydro/include/XmlRpcDecl.h
 ros/macros.h

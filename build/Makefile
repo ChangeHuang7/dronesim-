@@ -524,6 +524,19 @@ save_labelled_images_depth/fast:
 .PHONY : save_labelled_images_depth/fast
 
 #=============================================================================
+# Target rules for targets named save_labelled_images_depth_cont
+
+# Build rule for target.
+save_labelled_images_depth_cont: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 save_labelled_images_depth_cont
+.PHONY : save_labelled_images_depth_cont
+
+# fast build rule for target.
+save_labelled_images_depth_cont/fast:
+	$(MAKE) -f autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build.make autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build
+.PHONY : save_labelled_images_depth_cont/fast
+
+#=============================================================================
 # Target rules for targets named sensor_msgs_generate_messages_cpp
 
 # Build rule for target.
@@ -784,6 +797,19 @@ teleop_autopilot_evaluation/fast:
 .PHONY : teleop_autopilot_evaluation/fast
 
 #=============================================================================
+# Target rules for targets named teleop_autopilot_evaluation_wall
+
+# Build rule for target.
+teleop_autopilot_evaluation_wall: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 teleop_autopilot_evaluation_wall
+.PHONY : teleop_autopilot_evaluation_wall
+
+# fast build rule for target.
+teleop_autopilot_evaluation_wall/fast:
+	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/build
+.PHONY : teleop_autopilot_evaluation_wall/fast
+
+#=============================================================================
 # Target rules for targets named teleop_autopilot_height
 
 # Build rule for target.
@@ -851,6 +877,7 @@ help:
 	@echo "... save_labelled_images"
 	@echo "... save_labelled_images_dagger"
 	@echo "... save_labelled_images_depth"
+	@echo "... save_labelled_images_depth_cont"
 	@echo "... sensor_msgs_generate_messages_cpp"
 	@echo "... sensor_msgs_generate_messages_lisp"
 	@echo "... sensor_msgs_generate_messages_py"
@@ -871,6 +898,7 @@ help:
 	@echo "... teleop_autopilot_behaviour_arbitration"
 	@echo "... teleop_autopilot_dagger"
 	@echo "... teleop_autopilot_evaluation"
+	@echo "... teleop_autopilot_evaluation_wall"
 	@echo "... teleop_autopilot_height"
 	@echo "... teleop_autopilot_turning"
 .PHONY : help

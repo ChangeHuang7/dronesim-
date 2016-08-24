@@ -62,6 +62,7 @@
 #include <sys/stat.h>
 using namespace std;
 bool overwrite = true;//if a folder with the same name exists, overwrite this folder.
+string save_log_location="/home/jay/autopilot_ws/src/autopilot/log_wall.txt";
 
 bool takeoff=false;
 bool shuttingdown=false;
@@ -77,7 +78,7 @@ void shutdown(string msg){
   std::cout << "SHUTDOWN ################################################ "<< std::endl;
   shuttingdown=true;
   //write the message away to now which one is success and which one failures
-  ofstream res_file("/home/jay/autopilot_ws/src/autopilot/log.txt", std::ios_base::app);
+  ofstream res_file(save_log_location.c_str(), std::ios_base::app);
   if(res_file){
     res_file << msg << "\n" ;
     res_file.close();
@@ -300,6 +301,11 @@ int main(int argc, char** argv)
   //callbacks.path = "/home/jay/data/";
   //obtain saving location
   std::string saving_location = nh.resolveName("generated_set");
+  //Get save_log_location BUG still needs to be tested!
+  if(nh.resolveName("log").c_str() != ""){
+    save_log_location = nh.resolveName("log");
+    save_log_location = save_log_location +".txt";
+  }
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   callbacks.path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(callbacks.path);
@@ -341,20 +347,21 @@ int main(int argc, char** argv)
   f = status(dir);
   if(! boost::filesystem::is_directory(f)){
     if(boost::filesystem::create_directory(dir)) {
+      chmod(dir.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
       callbacks.path = "/home/jay/data/"+saving_location+"/RGB";
       boost::filesystem::path dir_rgb(callbacks.path);
       if(boost::filesystem::create_directory(dir_rgb)) {
 	std::cout << "Success in creating: "<<callbacks.path << "\n";
       }
       //change permissions
-      chmod(callbacks.path_depth, S_IRWXU | S_IRWXG | S_IRWXO);
+      chmod(callbacks.path.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
       callbacks.path_depth = "/home/jay/data/"+saving_location+"/depth";
       boost::filesystem::path dir_depth(callbacks.path_depth);
       if(boost::filesystem::create_directory(dir_depth)) {
 	std::cout << "Success in creating: "<<callbacks.path_depth << "\n";
       }
       //change permissions
-      chmod(callbacks.path_depth, S_IRWXU | S_IRWXG | S_IRWXO);
+      chmod(callbacks.path_depth.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
     }else{
       std::cout <<"Failed to make saving direction "<<callbacks.path <<"\n";
       throw std::invalid_argument( "[save_labelled_images_depth]Failed to make saving direction" );

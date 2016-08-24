@@ -27,6 +27,7 @@
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/save_labelled_images.dir
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/save_labelled_images_dagger.dir
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/save_labelled_images_depth.dir
+/home/jay/autopilot_ws/build/autopilot/CMakeFiles/save_labelled_images_depth_cont.dir
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/sensor_msgs_generate_messages_cpp.dir
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/sensor_msgs_generate_messages_lisp.dir
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/sensor_msgs_generate_messages_py.dir
@@ -40,6 +41,7 @@
 /home/jay/autopilot_ws/build/teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir
 /home/jay/autopilot_ws/build/teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir
 /home/jay/autopilot_ws/build/teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir
+/home/jay/autopilot_ws/build/teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir
 /home/jay/autopilot_ws/build/teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir
 /home/jay/autopilot_ws/build/teleop_autopilot/CMakeFiles/teleop_autopilot_turning.dir
 /home/jay/autopilot_ws/build/CMakeFiles/tests.dir

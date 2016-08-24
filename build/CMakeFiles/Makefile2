@@ -305,6 +305,7 @@ autopilot/all: autopilot/CMakeFiles/online_control.dir/all
 autopilot/all: autopilot/CMakeFiles/save_labelled_images.dir/all
 autopilot/all: autopilot/CMakeFiles/save_labelled_images_dagger.dir/all
 autopilot/all: autopilot/CMakeFiles/save_labelled_images_depth.dir/all
+autopilot/all: autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/all
 .PHONY : autopilot/all
 
 # Convenience name for "clean" pass in the directory.
@@ -330,6 +331,7 @@ autopilot/clean: autopilot/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/cle
 autopilot/clean: autopilot/CMakeFiles/save_labelled_images.dir/clean
 autopilot/clean: autopilot/CMakeFiles/save_labelled_images_dagger.dir/clean
 autopilot/clean: autopilot/CMakeFiles/save_labelled_images_depth.dir/clean
+autopilot/clean: autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/clean
 autopilot/clean: autopilot/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/clean
 autopilot/clean: autopilot/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/clean
 autopilot/clean: autopilot/CMakeFiles/sensor_msgs_generate_messages_py.dir/clean
@@ -1050,6 +1052,41 @@ clean: autopilot/CMakeFiles/save_labelled_images_depth.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target autopilot/CMakeFiles/save_labelled_images_depth_cont.dir
+
+# All Build rule for target.
+autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/all:
+	$(MAKE) -f autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build.make autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/depend
+	$(MAKE) -f autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build.make autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  9
+	@echo "Built target save_labelled_images_depth_cont"
+.PHONY : autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/all
+
+# Include target in all.
+all: autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_ws/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_ws/build/CMakeFiles 0
+.PHONY : autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/rule
+
+# Convenience name for target.
+save_labelled_images_depth_cont: autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/rule
+.PHONY : save_labelled_images_depth_cont
+
+# clean rule for target.
+autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/clean:
+	$(MAKE) -f autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/build.make autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/clean
+.PHONY : autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/clean
+
+# clean rule for target.
+clean: autopilot/CMakeFiles/save_labelled_images_depth_cont.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target autopilot/CMakeFiles/sensor_msgs_generate_messages_cpp.dir
 
 # All Build rule for target.
@@ -1523,6 +1560,7 @@ teleop_autopilot/all: teleop_autopilot/CMakeFiles/teleop_autopilot.dir/all
 teleop_autopilot/all: teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/all
 teleop_autopilot/all: teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/all
 teleop_autopilot/all: teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/all
+teleop_autopilot/all: teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/all
 teleop_autopilot/all: teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/all
 teleop_autopilot/all: teleop_autopilot/CMakeFiles/teleop_autopilot_turning.dir/all
 .PHONY : teleop_autopilot/all
@@ -1533,6 +1571,7 @@ teleop_autopilot/clean: teleop_autopilot/CMakeFiles/teleop_autopilot.dir/clean
 teleop_autopilot/clean: teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/clean
 teleop_autopilot/clean: teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/clean
 teleop_autopilot/clean: teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/clean
+teleop_autopilot/clean: teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/clean
 teleop_autopilot/clean: teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/clean
 teleop_autopilot/clean: teleop_autopilot/CMakeFiles/teleop_autopilot_turning.dir/clean
 .PHONY : teleop_autopilot/clean
@@ -1583,7 +1622,7 @@ clean: teleop_autopilot/CMakeFiles/behaviourLib.dir/clean
 teleop_autopilot/CMakeFiles/teleop_autopilot.dir/all:
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot.dir/depend
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  9
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  10
 	@echo "Built target teleop_autopilot"
 .PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot.dir/all
 
@@ -1618,7 +1657,7 @@ clean: teleop_autopilot/CMakeFiles/teleop_autopilot.dir/clean
 teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/all: teleop_autopilot/CMakeFiles/behaviourLib.dir/all
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/depend
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  10
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  11
 	@echo "Built target teleop_autopilot_behaviour_arbitration"
 .PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/all
 
@@ -1653,7 +1692,7 @@ clean: teleop_autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/cl
 teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/all:
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/depend
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  11
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  12
 	@echo "Built target teleop_autopilot_dagger"
 .PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/all
 
@@ -1688,7 +1727,7 @@ clean: teleop_autopilot/CMakeFiles/teleop_autopilot_dagger.dir/clean
 teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/all:
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/depend
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  12
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  13
 	@echo "Built target teleop_autopilot_evaluation"
 .PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/all
 
@@ -1717,13 +1756,48 @@ clean: teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir
+
+# All Build rule for target.
+teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/all:
+	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/depend
+	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  14
+	@echo "Built target teleop_autopilot_evaluation_wall"
+.PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/all
+
+# Include target in all.
+all: teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_ws/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_ws/build/CMakeFiles 0
+.PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/rule
+
+# Convenience name for target.
+teleop_autopilot_evaluation_wall: teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/rule
+.PHONY : teleop_autopilot_evaluation_wall
+
+# clean rule for target.
+teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/clean:
+	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/clean
+.PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/clean
+
+# clean rule for target.
+clean: teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir
 
 # All Build rule for target.
 teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/all:
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/depend
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  13
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  15
 	@echo "Built target teleop_autopilot_height"
 .PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/all
 
@@ -1758,7 +1832,7 @@ clean: teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/clean
 teleop_autopilot/CMakeFiles/teleop_autopilot_turning.dir/all:
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_turning.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_turning.dir/depend
 	$(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_turning.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_turning.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  14
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  16
 	@echo "Built target teleop_autopilot_turning"
 .PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_turning.dir/all
 

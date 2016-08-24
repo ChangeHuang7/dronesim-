@@ -66,6 +66,7 @@ using namespace std;
 
 string online_control="";
 string supervised_control="";
+string save_log_location="/home/jay/autopilot_ws/src/autopilot/log.txt";
 float count_average=0.001;
 float total_average=0;
 float running_average=0;
@@ -82,7 +83,7 @@ void shutdown(string msg){
   std::cout << "SHUTDOWN ################################################ :"<< msg << std::endl;
   shuttingdown=true;
   //write the message away to now which one is success and which one failures
-  ofstream res_file("/home/jay/autopilot_ws/src/autopilot/log.txt", std::ios_base::app);
+  ofstream res_file(save_log_location.c_str(), std::ios_base::app);
   if(res_file){
     res_file << msg << "\n" ;
     res_file.close();
@@ -233,7 +234,7 @@ public://initialize fields of callbacks
     cv::Mat depth_float_img = cv_ptr->image;
     double min, max;
     cv::minMaxLoc(depth_float_img, &min, &max);
-    cout << "min: " << min <<", max: "<<max <<endl;
+    // cout << "min: " << min <<", max: "<<max <<endl;
     if( min < close_threshold ){
       //BUMP!
       string msg="bump";
@@ -251,7 +252,7 @@ public://initialize fields of callbacks
     if(shuttingdown) return;
     //std::cout << "y-direction: "<< msg.pose.pose.position.y << std::endl;
     //Check from groundtruth whether drone is in the end of the trajectory
-    if (msg.pose.pose.position.y >= 17.5 && !shuttingdown){
+    if (msg.pose.pose.position.y >= 16 && !shuttingdown){
       shutdown("success");
     }
   }
@@ -282,7 +283,13 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
   image_transport::ImageTransport it(nh);
   std::string topic_depth = "/ardrone/kinect/depth/image_raw";
-
+  
+  //Get save_log_location BUG still needs to be tested!
+  //if(nh.resolveName("log").c_str() != "") save_log_location = nh.resolveName("log");
+  /*if(nh.resolveName("log").c_str() != ""){
+    save_log_location = nh.resolveName("log");
+    save_log_location = save_log_location +".txt";
+  }*/
   Callbacks callbacks;
   
   // Useful when CameraInfo is not being published

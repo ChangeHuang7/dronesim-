@@ -7,6 +7,8 @@ source_world='oa_challenge.world'
 location= '/home/jay/autopilot_ws/src/autopilot/worlds/'
 # create destination folder tmp
 directory='/home/jay/autopilot_ws/src/autopilot/worlds/auto_generated'
+# description of worlds
+description_file_handle = open('/home/jay/autopilot_ws/src/autopilot/worlds/description.txt','w')
 
 if not os.path.exists(directory):
     os.makedirs(directory)
@@ -81,9 +83,11 @@ for i_y in range(len(order_options)): # 6 order options
                     expr="<model name=\W"+obstacle+"[\W]+pose>[\W]*\d\.?[\d]*[\s][\W]*\d\.?[\d]*[\s]*[\W]*\d\.?[\d]*"
                     matches = re.findall(expr, sdf)
                     print matches
-                
                 # save world file in ./tmp folder
-                world_name=directory+'/{:04d}.world'.format(counter)
+		world_name=directory+'/{:04d}.world'.format(counter)
                 new_sdf = open(world_name,'w')
                 new_sdf.write(sdf)
-                counter=counter+1
+		# description
+		description = '/{:04d}'.format(counter) + ': '+'wall_y: '+str(order_options[i_y][0])+ ' ceiling_y: '+str(order_options[i_y][1])+ ' block_y '+str(order_options[i_y][2])+'\n'+'wall_pos_x : '+str(wall_options[i_w])+'\n'+'ceiling_z: '+str(ceiling_options[i_c])+' block_z: '+str(block_options[i_b])+'\n'
+		description_file_handle.write(description)
+		counter=counter+1

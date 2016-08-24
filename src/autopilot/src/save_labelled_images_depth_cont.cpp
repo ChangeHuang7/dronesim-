@@ -281,8 +281,10 @@ int main(int argc, char** argv)
   //obtain saving location
   std::string saving_location = nh.resolveName("generated_set");
   //Get save_log_location BUG still needs to be tested!
-  if(nh.resolveName("log").c_str() != "") save_log_location = nh.resolveName("log");
-  
+  /*if(nh.resolveName("log").c_str() != ""){
+    save_log_location = nh.resolveName("log");
+    save_log_location = save_log_location +".txt";
+  }*/
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   control_output_filename = "/home/jay/data/"+saving_location+"/control_info.txt";
   callbacks.path = "/home/jay/data/"+saving_location;

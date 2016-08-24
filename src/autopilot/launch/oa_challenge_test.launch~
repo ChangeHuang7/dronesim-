@@ -22,8 +22,8 @@
   <arg name="sloc" default="test"/>
   <!--<node name="save_labelled_images_depth" pkg="autopilot" type="save_labelled_images_depth" output="screen" args="generated_set:='$(arg sloc)'" />-->
   <!-- start the heurist for control-->
-  <node name="teleop_autopilot_turning" pkg="teleop_autopilot" type="teleop_autopilot_turning" output="screen"/>
-  <!-- keep evaluation for when the finish is reached-->
+   <node name="teleop_autopilot_behaviour_arbitration" pkg="teleop_autopilot" type="teleop_autopilot_behaviour_arbitration" output="screen" />
+ <!-- keep evaluation for when the finish is reached-->
   <node name="teleop_autopilot_evaluation" pkg="teleop_autopilot" type="teleop_autopilot_evaluation" output="screen"/>
   <!-- Spawn human -->
   <!-- <include file="$(find cvg_sim_gazebo)/launch/spawn_human.launch" >

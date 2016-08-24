@@ -62,7 +62,7 @@
 #include <sys/stat.h>
 using namespace std;
 bool overwrite = true;//if a folder with the same name exists, overwrite this folder.
-string save_log_location="/home/jay/autopilot_ws/src/autopilot/log.txt";
+string save_log_location="/home/jay/autopilot_ws/src/autopilot/log_wall.txt";
 
 bool takeoff=false;
 bool shuttingdown=false;
@@ -302,8 +302,10 @@ int main(int argc, char** argv)
   //obtain saving location
   std::string saving_location = nh.resolveName("generated_set");
   //Get save_log_location BUG still needs to be tested!
-  if(nh.resolveName("log").c_str() != "") save_log_location = nh.resolveName("log");
-  
+  /*if(nh.resolveName("log").c_str() != ""){
+    save_log_location = nh.resolveName("log");
+    save_log_location = save_log_location +".txt";
+  }*/
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   callbacks.path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(callbacks.path);
@@ -345,6 +347,7 @@ int main(int argc, char** argv)
   f = status(dir);
   if(! boost::filesystem::is_directory(f)){
     if(boost::filesystem::create_directory(dir)) {
+      chmod(dir.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
       callbacks.path = "/home/jay/data/"+saving_location+"/RGB";
       boost::filesystem::path dir_rgb(callbacks.path);
       if(boost::filesystem::create_directory(dir_rgb)) {

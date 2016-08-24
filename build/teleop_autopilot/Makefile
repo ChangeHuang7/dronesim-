@@ -217,6 +217,20 @@ teleop_autopilot_evaluation/fast:
 .PHONY : teleop_autopilot_evaluation/fast
 
 # Convenience name for target.
+teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/rule
+.PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/rule
+
+# Convenience name for target.
+teleop_autopilot_evaluation_wall: teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/rule
+.PHONY : teleop_autopilot_evaluation_wall
+
+# fast build rule for target.
+teleop_autopilot_evaluation_wall/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/build
+.PHONY : teleop_autopilot_evaluation_wall/fast
+
+# Convenience name for target.
 teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/rule:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/rule
 .PHONY : teleop_autopilot/CMakeFiles/teleop_autopilot_height.dir/rule
@@ -364,6 +378,30 @@ src/teleop_autopilot_evaluation.cpp.s:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/src/teleop_autopilot_evaluation.cpp.s
 .PHONY : src/teleop_autopilot_evaluation.cpp.s
 
+src/teleop_autopilot_evaluation_wall.o: src/teleop_autopilot_evaluation_wall.cpp.o
+.PHONY : src/teleop_autopilot_evaluation_wall.o
+
+# target to build an object file
+src/teleop_autopilot_evaluation_wall.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/src/teleop_autopilot_evaluation_wall.cpp.o
+.PHONY : src/teleop_autopilot_evaluation_wall.cpp.o
+
+src/teleop_autopilot_evaluation_wall.i: src/teleop_autopilot_evaluation_wall.cpp.i
+.PHONY : src/teleop_autopilot_evaluation_wall.i
+
+# target to preprocess a source file
+src/teleop_autopilot_evaluation_wall.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/src/teleop_autopilot_evaluation_wall.cpp.i
+.PHONY : src/teleop_autopilot_evaluation_wall.cpp.i
+
+src/teleop_autopilot_evaluation_wall.s: src/teleop_autopilot_evaluation_wall.cpp.s
+.PHONY : src/teleop_autopilot_evaluation_wall.s
+
+# target to generate assembly for a file
+src/teleop_autopilot_evaluation_wall.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/build.make teleop_autopilot/CMakeFiles/teleop_autopilot_evaluation_wall.dir/src/teleop_autopilot_evaluation_wall.cpp.s
+.PHONY : src/teleop_autopilot_evaluation_wall.cpp.s
+
 src/teleop_autopilot_height.o: src/teleop_autopilot_height.cpp.o
 .PHONY : src/teleop_autopilot_height.o
 
@@ -429,6 +467,7 @@ help:
 	@echo "... teleop_autopilot_behaviour_arbitration"
 	@echo "... teleop_autopilot_dagger"
 	@echo "... teleop_autopilot_evaluation"
+	@echo "... teleop_autopilot_evaluation_wall"
 	@echo "... teleop_autopilot_height"
 	@echo "... teleop_autopilot_turning"
 	@echo "... test"
@@ -447,6 +486,9 @@ help:
 	@echo "... src/teleop_autopilot_evaluation.o"
 	@echo "... src/teleop_autopilot_evaluation.i"
 	@echo "... src/teleop_autopilot_evaluation.s"
+	@echo "... src/teleop_autopilot_evaluation_wall.o"
+	@echo "... src/teleop_autopilot_evaluation_wall.i"
+	@echo "... src/teleop_autopilot_evaluation_wall.s"
 	@echo "... src/teleop_autopilot_height.o"
 	@echo "... src/teleop_autopilot_height.i"
 	@echo "... src/teleop_autopilot_height.s"
