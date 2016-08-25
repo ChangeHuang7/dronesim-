@@ -258,7 +258,27 @@ public://initialize fields of callbacks
     //Check from groundtruth whether drone is in the end of the trajectory
     
     switch(MODE) {
-      default:
+      case 0: // Default setting
+        // default "Get to the other side of the room" setup
+        if (msg.pose.pose.position.y >= 16 && !shuttingdown){
+          shutdown("success");
+        }
+        break;
+      case 1: // Move west setup
+      //mode wall west - x < -6
+        if(msg.pose.pose.position.x < -6 && !shuttingdown) {
+          shutdown("success");
+        }
+        break;
+
+      case 2: // Move east setup
+      //mode wall east - x > 6
+        if(msg.pose.pose.position.x > 6 && !shuttingdown) {
+          shutdown("success");
+        }
+        break;
+
+      default: // In case MODE is somehow invalid, do the default setting
         if (msg.pose.pose.position.y >= 16 && !shuttingdown){
           shutdown("success");
         }
@@ -306,6 +326,21 @@ int main(int argc, char** argv)
   }
   else {
     cout << "Log path: " << save_log_location << endl;
+  }
+
+  nh.getParam("evaluation_mode", MODE);
+
+  cout << "Evaluation ";
+  switch(MODE) {
+    case 0:
+      cout << "obstacle avoidance" << endl;
+    case 1:
+      cout << "wall west" << endl;
+    case 2:
+      cout << "wall east" << endl;
+    default:
+      // Invalid mode
+      cout << "invalid mode number, using default setting: obstacle avoidance" << endl;
   }
 
   //Get save_log_location BUG still needs to be tested!

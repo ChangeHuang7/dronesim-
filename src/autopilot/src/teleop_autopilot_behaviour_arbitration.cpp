@@ -187,6 +187,7 @@ int main(int argc, char** argv)
 
 	geometry_msgs::Twist twist;
 
+	// Get the goal angle from the launch file
 	if(!nh.getParam("goal_angle", GOAL_ANGLE)) {
 		cout << "Using default angle, ";
 	}
