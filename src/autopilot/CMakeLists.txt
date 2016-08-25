@@ -153,6 +153,7 @@ add_executable(save_labelled_images src/save_labelled_images.cpp)
 add_executable(save_labelled_images_depth src/save_labelled_images_depth.cpp)
 add_executable(save_labelled_images_depth_cont src/save_labelled_images_depth_cont.cpp)
 add_executable(online_control src/online_control.cpp)
+add_executable(online_control_cont src/online_control_cont.cpp)
 add_executable(teleop_autopilot_dagger src/teleop_autopilot_dagger.cpp)
 add_executable(teleop_autopilot_turning src/teleop_autopilot_turning.cpp)
 add_executable(teleop_autopilot_evaluation src/teleop_autopilot_evaluation.cpp)
@@ -173,6 +174,10 @@ target_link_libraries(save_labelled_images_depth
    ${OpenCV_LIBRARIES}
 )
 target_link_libraries(online_control
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+)
+target_link_libraries(online_control_cont
    ${catkin_LIBRARIES}
    ${OpenCV_LIBRARIES}
 )
