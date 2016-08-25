@@ -1,9 +1,13 @@
 # read list of world files in
 WORLDDIR="/home/jay/autopilot_ws/src/autopilot/worlds"
-WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_test_single/*.world"
+WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_train/*.world"
 
 # whether the trajectory is a success or not is saved log file. 
 logdir='/home/jay/autopilot_ws/src/autopilot'
+
+SAVINGDIR="remote_images/debug"
+rm -r "/home/jay/data/$SAVINGDIR/*"
+chmod 775 "/home/jay/data/$SAVINGDIR/*"
 
 declare -a turning_array=('0.1' '-0.1' '3' '3.2')
 # spawn dir
@@ -28,8 +32,8 @@ do
     do
         FNAME=$(basename ${world}) #get name of the world
         echo $FNAME
-        SLOC="testTMP/$(basename ${world} | cut -c1-4)" #cut .world from it
-        # SLOC="remote_images/wall_challenge/$(basename ${world} | cut -c1-4)" #cut .world from it
+        # SLOC="testTMP/$(basename ${world} | cut -c1-4)" #cut .world from it
+        SLOC="SAVINGDIR/$(basename ${world} | cut -c1-4)" #cut .world from it
 
         # Select the correct direction in which to fly
         if [ $turning_direction == '0.1' ] || [ $turning_direction == '-0.1' ]; then

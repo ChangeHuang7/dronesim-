@@ -20,7 +20,9 @@
   
   <!-- start saving images in sloc saving location-->
   <arg name="sloc" default="set_online"/>
+  <param name="saving_location" value="$(arg sloc)"/>
   <arg name="logfile" default="/home/jay/autopilot_ws/src/autopilot/log.txt"/>
+  <param name="saving_location_log" value="$(arg sloc_log)"/>
   
   <node name="save_labelled_images_depth_cont" pkg="autopilot" type="save_labelled_images_depth_cont" output="screen" args="generated_set:='$(arg sloc)'" />
   <!-- start the heurist for control-->
