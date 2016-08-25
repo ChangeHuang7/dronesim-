@@ -13,7 +13,9 @@ do
     for flying_direction in "${flying_array[@]}";
     do
 	log="$logdir/log-$turning_direction-$flying_direction"
-	if [ flying_direction == '3.14' ]; then log="$logdir/log-$turning_direction-3" fi
+	if [ $flying_direction == '3.14' ]; 
+	then log="$logdir/log-$turning_direction-3" 
+	fi
         rm -rf $log
         # for file in list launch
         for world in $WORLDFILES

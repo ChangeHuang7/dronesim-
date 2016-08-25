@@ -266,14 +266,14 @@ public://initialize fields of callbacks
         break;
       case 1: // Move west setup
       //mode wall west - x < -6
-        if(msg.pose.pose.position.x < -6 && !shuttingdown) {
+        if(msg.pose.pose.position.x < -4 && !shuttingdown) {
           shutdown("success");
         }
         break;
 
       case 2: // Move east setup
       //mode wall east - x > 6
-        if(msg.pose.pose.position.x > 6 && !shuttingdown) {
+        if(msg.pose.pose.position.x > 4 && !shuttingdown) {
           shutdown("success");
         }
         break;
@@ -317,16 +317,17 @@ int main(int argc, char** argv)
   std::string topic_depth = "/ardrone/kinect/depth/image_raw";
   
   // Get the filepath of the log
-  if(!nh.getParam("saving_location_log", save_log_location)) {
-    ROS_ERROR("No saving directory given for the log!");
-    // Shutdown this node
-    ros::shutdown();
-    // Stop running
-    exit(0);
-  }
-  else {
-    cout << "Log path: " << save_log_location << endl;
-  }
+   if(!nh.getParam("saving_location_log", save_log_location)) {
+     ROS_ERROR("No saving directory given for the log!");
+     // Shutdown this node
+     ros::shutdown();
+     // Stop running
+     exit(0);
+   }
+   else {
+     cout << "Log path: " << save_log_location << endl;
+   }
+   
 
   nh.getParam("evaluation_mode", MODE);
 
@@ -334,13 +335,17 @@ int main(int argc, char** argv)
   switch(MODE) {
     case 0:
       cout << "obstacle avoidance" << endl;
+      break;
     case 1:
       cout << "wall west" << endl;
+      break;
     case 2:
       cout << "wall east" << endl;
+      break;
     default:
       // Invalid mode
       cout << "invalid mode number, using default setting: obstacle avoidance" << endl;
+      break;
   }
 
   //Get save_log_location BUG still needs to be tested!

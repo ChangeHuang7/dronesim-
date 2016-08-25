@@ -19,17 +19,24 @@
   
   
   <arg name="sloc" default="set_online"/>
+  <param name="saving_location" value="$(arg sloc)"/>
+
   <arg name="logfile" default="/home/jay/autopilot_ws/src/autopilot/log.txt"/>
+  <param name="saving_location_log" value="$(arg logfile)"/>
   
   <!-- start saving images in sloc saving location-->
-  <node name="save_labelled_images_depth" pkg="autopilot" type="save_labelled_images_depth" output="screen" args="generated_set:='$(arg sloc)'" />
+  <node name="save_labelled_images_depth" pkg="autopilot" type="save_labelled_images_depth" args="generated_set:='$(arg sloc)'" />
   <!-- start the heurist for control-->
-  <arg name="steering_direction" default="left"/>
-  <node name="teleop_autopilot_height" pkg="autopilot" type="teleop_autopilot_height" output="screen" args="s_dir:='$(arg steering_direction)'"/>
+  <arg name="steering_direction" default="0.0"/>
+  <param name="goal_angle" value="$(arg steering_direction)" type="double"/> 
+  <arg name="MODE" default="0"/>
+  <param name="evaluation_mode" value="$(arg MODE)"/>
+
+  <node name="teleop_autopilot_behaviour_arbitration" pkg="autopilot" type="teleop_autopilot_behaviour_arbitration" output="screen"/>
   
   <!-- keep evaluation for when the finish is reached-->
   <!--<node name="teleop_autopilot_evaluation_wall" pkg="teleop_autopilot" type="teleop_autopilot_evaluation_wall" output="screen" args="log:='$(arg logfile)'"/>-->
-  <node name="teleop_autopilot_evaluation_wall" pkg="autopilot" type="teleop_autopilot_evaluation_wall" output="screen"/>
+  <node name="teleop_autopilot_evaluation" pkg="autopilot" type="teleop_autopilot_evaluation" output="screen"/>
   <!-- Spawn human -->
   <!-- <include file="$(find cvg_sim_gazebo)/launch/spawn_human.launch" >
     <arg name="human" value="$(find cvg_sim_gazebo)/urdf/human.urdf.xacro"/> 

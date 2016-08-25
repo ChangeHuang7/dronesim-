@@ -28,6 +28,9 @@
   <arg name="goal_angle" default="4.71"/>
   <param name="goal_angle" value="$(arg goal_angle)" type="double"/> 
 
+  <arg name="MODE" default="0"/>
+  <param name="MODE" value="$(arg MODE)"/> 
+
   <!-- <param name="use_depth_estim" value="true" /> -->
 
   <!-- <node name="save_labelled_images_depth_cont" pkg="autopilot" type="save_labelled_images_depth_cont" output="screen" args="generated_set:='$(arg sloc)'" /> -->

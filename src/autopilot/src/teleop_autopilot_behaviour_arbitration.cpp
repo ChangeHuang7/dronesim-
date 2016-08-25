@@ -16,7 +16,7 @@
 using namespace std;
 
 bool takeoff = false;
-int FSM_COUNTER_THRESH=100;//wait for some time before taking off
+int FSM_COUNTER_THRESH=20;//wait for some time before taking off
 int counter = 0;
 
 
@@ -124,7 +124,7 @@ void callbackGt(const nav_msgs::Odometry& msg)
 	}
 
 	CURRENT_YAW = getYaw(msg.pose.pose.orientation) + CV_PI;
-
+	// cout << "Yaw" << CURRENT_YAW << endl;
 }
 
 geometry_msgs::Twist get_twist() {
