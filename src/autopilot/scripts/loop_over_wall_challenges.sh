@@ -5,7 +5,7 @@ WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_train/*.
 # whether the trajectory is a success or not is saved log file. 
 logdir='/home/jay/autopilot_ws/src/autopilot'
 
-SAVINGDIR="remote_images/debug"
+SAVINGDIR="remote_images/wall_expert2"
 rm -r "/home/jay/data/$SAVINGDIR/*"
 chmod 775 "/home/jay/data/$SAVINGDIR/*"
 

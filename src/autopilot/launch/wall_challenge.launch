@@ -25,7 +25,7 @@
   <param name="saving_location_log" value="$(arg logfile)"/>
   
   <!-- start saving images in sloc saving location-->
-  <node name="save_labelled_images_depth" pkg="autopilot" type="save_labelled_images_depth" args="generated_set:='$(arg sloc)'" />
+  <node name="save_labelled_images_depth_cont" pkg="autopilot" type="save_labelled_images_depth_cont" args="generated_set:='$(arg sloc)'" />
   <!-- start the heurist for control-->
   <arg name="steering_direction" default="0.0"/>
   <param name="goal_angle" value="$(arg steering_direction)" type="double"/> 
