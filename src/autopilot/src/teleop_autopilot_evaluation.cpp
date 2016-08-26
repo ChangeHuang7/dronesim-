@@ -372,7 +372,7 @@ int main(int argc, char** argv)
   //ros::Subscriber subOnlineControl = nh.subscribe("/cmd_vel",1,&Callbacks::callbackOnlineControl, &callbacks);
   
   // Make subscriber to supervised control
-  //ros::Subscriber subDaggerControl = nh.subscribe("/dagger_vel",1,&Callbacks::callbackDaggerControl, &callbacks);
+  ros::Subscriber subDaggerControl = nh.subscribe("/dagger_vel",1,&Callbacks::callbackDaggerControl, &callbacks);
   
   ros::Rate loop_rate(20);
 

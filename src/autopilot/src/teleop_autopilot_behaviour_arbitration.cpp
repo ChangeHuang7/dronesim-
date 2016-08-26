@@ -63,6 +63,11 @@ void callbackDepthEstim(const sensor_msgs::ImageConstPtr& original_image) {
 	//Copy the image.data to imageBuf. Depth image is uint16 with depths in mm.
 	cv::Mat depth_float_img = cv_ptr->image;
 
+	// double min, max;
+	// cv::minMaxLoc(depth_float_img, &min, &max, NULL, NULL);
+
+	// cout << "Min: " << min << "max: " << max << endl;
+
 	updateController(depth_float_img);
 }
 

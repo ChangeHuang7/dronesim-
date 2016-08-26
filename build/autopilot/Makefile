@@ -357,6 +357,20 @@ online_control/fast:
 .PHONY : online_control/fast
 
 # Convenience name for target.
+autopilot/CMakeFiles/online_control_cont.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/online_control_cont.dir/rule
+.PHONY : autopilot/CMakeFiles/online_control_cont.dir/rule
+
+# Convenience name for target.
+online_control_cont: autopilot/CMakeFiles/online_control_cont.dir/rule
+.PHONY : online_control_cont
+
+# fast build rule for target.
+online_control_cont/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/online_control_cont.dir/build.make autopilot/CMakeFiles/online_control_cont.dir/build
+.PHONY : online_control_cont/fast
+
+# Convenience name for target.
 autopilot/CMakeFiles/roscpp_generate_messages_cpp.dir/rule:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
 .PHONY : autopilot/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
@@ -820,6 +834,30 @@ src/online_control.cpp.s:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/online_control.dir/build.make autopilot/CMakeFiles/online_control.dir/src/online_control.cpp.s
 .PHONY : src/online_control.cpp.s
 
+src/online_control_cont.o: src/online_control_cont.cpp.o
+.PHONY : src/online_control_cont.o
+
+# target to build an object file
+src/online_control_cont.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/online_control_cont.dir/build.make autopilot/CMakeFiles/online_control_cont.dir/src/online_control_cont.cpp.o
+.PHONY : src/online_control_cont.cpp.o
+
+src/online_control_cont.i: src/online_control_cont.cpp.i
+.PHONY : src/online_control_cont.i
+
+# target to preprocess a source file
+src/online_control_cont.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/online_control_cont.dir/build.make autopilot/CMakeFiles/online_control_cont.dir/src/online_control_cont.cpp.i
+.PHONY : src/online_control_cont.cpp.i
+
+src/online_control_cont.s: src/online_control_cont.cpp.s
+.PHONY : src/online_control_cont.s
+
+# target to generate assembly for a file
+src/online_control_cont.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/online_control_cont.dir/build.make autopilot/CMakeFiles/online_control_cont.dir/src/online_control_cont.cpp.s
+.PHONY : src/online_control_cont.cpp.s
+
 src/save_labelled_images.o: src/save_labelled_images.cpp.o
 .PHONY : src/save_labelled_images.o
 
@@ -1014,6 +1052,7 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... online_control"
+	@echo "... online_control_cont"
 	@echo "... rebuild_cache"
 	@echo "... roscpp_generate_messages_cpp"
 	@echo "... roscpp_generate_messages_lisp"
@@ -1053,6 +1092,9 @@ help:
 	@echo "... src/online_control.o"
 	@echo "... src/online_control.i"
 	@echo "... src/online_control.s"
+	@echo "... src/online_control_cont.o"
+	@echo "... src/online_control_cont.i"
+	@echo "... src/online_control_cont.s"
 	@echo "... src/save_labelled_images.o"
 	@echo "... src/save_labelled_images.i"
 	@echo "... src/save_labelled_images.s"

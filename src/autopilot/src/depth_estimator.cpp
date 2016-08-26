@@ -10,25 +10,122 @@
 #include <camera_calibration_parsers/parse.h>
 #include <sensor_msgs/image_encodings.h>
 
+#include <sys/stat.h>
+#include <unistd.h>
+#include <sys/types.h> 
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h> 
+#include <iostream>
+
 #include <opencv2/opencv.hpp>
 #include <boost/filesystem.hpp>
 
 image_transport::Publisher depth_pub;
 
-std::string communication_folder = "/home/jay/data/testTMP";
+std::string communication_folder = "/home/jay/data/depth_estimation";
+// std::string communication_folder_emerald = "/home/jay/data/rgb_emerald";
+std::string communication_folder_emerald = "/home/jay/Desktop/";
 std::string path_RGB_image;
 std::string im_ready_path;
 std::string depth_ready_path;
 std::string depth_estim_path;
 
+int SOCKET;
+int PORTNO = 55571;
+int COUNT =0;
+using namespace std;
+// using namespace cv;
+
 void publish_depth_estim(cv::Mat depth_estim) {
 	ros::Time time = ros::Time::now();
   cv_bridge::CvImage cvi;
   cvi.header.stamp = time;
-  cvi.encoding = sensor_msgs::image_encodings::BGR8;
+  cvi.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
   cvi.image = depth_estim;
-
+  std::cout << "Publishing image" << std::endl;
   depth_pub.publish(cvi.toImageMsg());
+}
+
+void startImageReceiver() {
+	   int sockfd;
+     socklen_t clilen;
+     struct sockaddr_in serv_addr, cli_addr;
+     // Open socket: domain, type, protocol (when 0, OS chooses appropriate protocol)
+     sockfd = socket(AF_INET, SOCK_STREAM, 0);
+     if (sockfd < 0) 
+        ROS_ERROR("ERROR opening socket");
+     // Set buffer to zeros
+     bzero((char *) &serv_addr, sizeof(serv_addr));
+     // Change input argument to int
+
+     // set fields to approptriate values
+     serv_addr.sin_family = AF_INET;
+     // Set server address to this machine
+     serv_addr.sin_addr.s_addr = INADDR_ANY;
+     // Convert port number to network byte order (suing htons) and add to serv_addr
+     serv_addr.sin_port = htons(PORTNO);
+
+     // This binds the adress of the socket to the socket itself
+     if (bind(sockfd, (struct sockaddr *) &serv_addr,
+              sizeof(serv_addr)) < 0) 
+              ROS_ERROR("ERROR on binding");
+     // Needs to be called, otherwise the program can't accept any connections
+     listen(sockfd,5);
+     clilen = sizeof(cli_addr);
+     SOCKET = accept(sockfd, 
+                 (struct sockaddr *) &cli_addr, 
+                 &clilen);
+     if (SOCKET < 0) 
+          ROS_ERROR("ERROR on accept");
+}
+
+void sendImage(cv::Mat image) {
+	// image = cv::imread("/home/jay/Desktop/depth.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+	// cv::resize(image, image, cv::Size(640,360));
+	cv::imshow("Sent image", image);
+	// cv::waitKey(500);
+	image = (image.reshape(0,1));
+	int  imgSizeTransmit = image.total()*image.elemSize();
+	cout << "Sending image " << COUNT << endl;
+	cout << "Size: " << image.size() << "Type: " << image.type() <<  "Bytes " << imgSizeTransmit << endl;
+	COUNT++;
+	write(SOCKET, image.data, imgSizeTransmit);
+  cout << "Image sent" << endl;
+
+}
+
+cv::Mat receiveImage() {
+
+  cv::Mat img = cv::Mat::zeros( 360,640, CV_8UC1);
+
+  int imgSize = img.total()*img.elemSize();
+  uchar sockData[imgSize];
+	//Receive data here
+  int bytes = 0;
+  for (int i = 0; i < imgSize; i += bytes) {
+    if ((bytes = recv(SOCKET, sockData +i, imgSize  - i, 0)) == -1) {
+      //std::cerr("recv failed", 1);
+      }
+   }
+
+	// Assign pixel value to img
+
+  int ptr=0;
+  for (int i = 0;  i < img.rows; i++) {
+      for (int j = 0; j < img.cols; j++) {                                     
+          img.at<uchar>(i,j) = (sockData[ptr]);
+          // img.at<cv::Vec3b>(i,j) = cv::Vec3b(sockData[ptr+ 0],sockData[ptr+1],sockData[ptr+2]);
+          ptr=ptr+1;
+      }
+  }
+  cv::imshow("Received", img);
+  cout << "Depthmap received!" << endl;
+
+  // write(SOCKET,"I got your message",18);
+  cv::waitKey(10);
+
+  return img;
 }
 
 void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& original_image) {
@@ -49,21 +146,47 @@ void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& origin
 
 	//C opy the image.data to imageBuf. 
 	cv::Mat rgb_image = cv_ptr->image;
-	// Write to file
-	std::vector<int> compression_params;
-  compression_params.push_back(CV_IMWRITE_JPEG_QUALITY);
-  compression_params.push_back(100);
-	cv::imwrite(path_RGB_image, rgb_image, compression_params);
-	// Write a file that signifies the jpeg is ready
-	FILE * fid = fopen(im_ready_path.c_str(), "w");
-	fclose(fid);
-	// Wait until ready file exists
-	while (!boost::filesystem::exists(depth_ready_path)) {}
-	boost::filesystem::remove(depth_ready_path);
-	// Read file
-	cv::Mat depth_estim = cv::imread(depth_estim_path,CV_LOAD_IMAGE_GRAYSCALE );
+	cout << "Size: " << rgb_image.size() << "Type: " << rgb_image.type() << endl;
 
-	publish_depth_estim(depth_estim);
+	sendImage(rgb_image);
+	cv::Mat depth_estim = receiveImage();
+	// Write to file
+	// std::vector<int> compression_params;
+ //  compression_params.push_back(CV_IMWRITE_JPEG_QUALITY);
+ //  compression_params.push_back(100);
+	// cv::imwrite(path_RGB_image, rgb_image, compression_params);
+	// // Write a file that signifies the jpeg is ready
+	// FILE * fid = fopen(im_ready_path.c_str(), "w");
+	// fclose(fid);
+	// chmod(im_ready_path.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
+
+	// // Wait until ready file exists
+	// while (!boost::filesystem::exists(depth_ready_path)) {
+	// 	if(!boost::filesystem::exists(im_ready_path)) {
+	// 		FILE * fid = fopen(im_ready_path.c_str(), "w");
+	// 		fclose(fid);
+	// 		chmod(im_ready_path.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
+	// 	}
+	// 	ros::Duration(0.001).sleep();
+
+	// }
+	// boost::filesystem::remove(depth_ready_path);
+	// boost::filesystem::remove(im_ready_path);
+
+	// // Read file
+	// cv::Mat depth_estim = cv::imread(depth_estim_path,CV_LOAD_IMAGE_GRAYSCALE );
+	cv::Mat_<float> depth_estim_float, depth_estim_float_resized;
+
+	depth_estim.convertTo(depth_estim_float, CV_32F);
+	cv::resize(depth_estim_float,depth_estim_float_resized,cv::Size(640,360));
+
+
+	// Scale matrix to fit between 0 and 5
+	depth_estim_float_resized = depth_estim_float_resized * 5 / 255;
+	publish_depth_estim(depth_estim_float_resized);
+
+	// Wait for a while, so the MATLAB script can catch up
+	ros::Duration(0.005).sleep();
 }
 
 int main(int argc, char** argv) {
@@ -79,10 +202,18 @@ int main(int argc, char** argv) {
 	// Get location for the files
 	nh.getParam("depth_estimation_path", communication_folder);
 
-	path_RGB_image= communication_folder + "/image.jpg";
-	im_ready_path= communication_folder + "/imageReady";
-	depth_ready_path= communication_folder + "/depthReady";
-	depth_estim_path= communication_folder + "/depth.jpg";
+	path_RGB_image= communication_folder_emerald + "/image.jpg";
+	im_ready_path= communication_folder_emerald + "/imageReady";
+	depth_ready_path= communication_folder_emerald + "/depthReady";
+	depth_estim_path= communication_folder_emerald + "/depth.jpg";
+
+	startImageReceiver();
+
+	// Make sure no files are currently in the folder
+	// boost::filesystem::remove(path_RGB_image);
+	// boost::filesystem::remove(im_ready_path);
+	// boost::filesystem::remove(depth_ready_path);
+	// boost::filesystem::remove(depth_estim_path);
 
 	ros::spin();
 

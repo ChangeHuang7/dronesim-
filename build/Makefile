@@ -433,6 +433,19 @@ online_control/fast:
 .PHONY : online_control/fast
 
 #=============================================================================
+# Target rules for targets named online_control_cont
+
+# Build rule for target.
+online_control_cont: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 online_control_cont
+.PHONY : online_control_cont
+
+# fast build rule for target.
+online_control_cont/fast:
+	$(MAKE) -f autopilot/CMakeFiles/online_control_cont.dir/build.make autopilot/CMakeFiles/online_control_cont.dir/build
+.PHONY : online_control_cont/fast
+
+#=============================================================================
 # Target rules for targets named roscpp_generate_messages_cpp
 
 # Build rule for target.
@@ -831,6 +844,7 @@ help:
 	@echo "... geometry_msgs_generate_messages_lisp"
 	@echo "... geometry_msgs_generate_messages_py"
 	@echo "... online_control"
+	@echo "... online_control_cont"
 	@echo "... roscpp_generate_messages_cpp"
 	@echo "... roscpp_generate_messages_lisp"
 	@echo "... roscpp_generate_messages_py"
