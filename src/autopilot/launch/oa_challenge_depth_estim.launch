@@ -22,10 +22,13 @@
   <arg name="sloc" default="set_online"/>
   <param name="saving_location" value="$(arg sloc)"/>
   <arg name="logfile" default="/home/jay/autopilot_ws/src/autopilot/log.txt"/>
-  <param name="saving_location_log" value="$(arg sloc_log)"/>
+  <!-- <param name="saving_location_log" value="$(arg sloc_log)"/> -->
   <param name="use_depth_estim" value="true"/>
+  <param name="BA_parameters_path" value="/home/jay/autopilot_ws/src/autopilot/parameters/BehaviourArbitration.xml" />
+  <param name="depth_estimation_running" value="true" />
+  <param name="depth_TCP_port" value="55560" />
   
-  <!-- <node name="save_labelled_images_depth_cont" pkg="autopilot" type="save_labelled_images_depth_cont" args="generated_set:='$(arg sloc)'" /> -->
+ <node name="save_labelled_images_depth_cont" pkg="autopilot" type="save_labelled_images_depth_cont" args="generated_set:='$(arg sloc)'" /> 
   <!-- start the heurist for control-->
   <node name="teleop_autopilot_behaviour_arbitration" pkg="autopilot" type="teleop_autopilot_behaviour_arbitration" output="screen" />
   <node name="depth_estimator" pkg="autopilot" type="depth_estimator" output="screen" />

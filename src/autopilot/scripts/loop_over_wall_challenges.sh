@@ -5,7 +5,7 @@ WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_train/*.
 # whether the trajectory is a success or not is saved log file. 
 logdir='/home/jay/autopilot_ws/src/autopilot'
 
-SAVINGDIR="remote_images/wall_expert2"
+SAVINGDIR="remote_images/wall_expert_fixed"
 rm -r "/home/jay/data/$SAVINGDIR/*"
 chmod 775 "/home/jay/data/$SAVINGDIR/*"
 
@@ -33,7 +33,7 @@ do
         FNAME=$(basename ${world}) #get name of the world
         echo $FNAME
         # SLOC="testTMP/$(basename ${world} | cut -c1-4)" #cut .world from it
-        SLOC="SAVINGDIR/$(basename ${world} | cut -c1-4)" #cut .world from it
+        SLOC="$SAVINGDIR/$(basename ${world} | cut -c1-4)" #cut .world from it
 
         # Select the correct direction in which to fly
         if [ $turning_direction == '0.1' ] || [ $turning_direction == '-0.1' ]; then

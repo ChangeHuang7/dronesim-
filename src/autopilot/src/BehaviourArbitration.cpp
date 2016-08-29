@@ -40,6 +40,42 @@ BehaviourArbitration::BehaviourArbitration() {
 
 	matchedFilterExpectedResult = 3304;
 	matchedFilterMargin = 800;
+
+	depthImageScaling = 1;
+}
+
+BehaviourArbitration::BehaviourArbitration(std::string xmlPath) {
+	cout << "Reading behaviour arbitration parameters from " << xmlPath << endl;
+	FileStorage fs;//(filename, FileStorage::READ);
+	fs.open(xmlPath, FileStorage::READ);
+
+	lambdaGoalHorz = (float) fs["lambdaGoalHorz"]; // Linear multiplier for the angular velocity
+	cout << "lambdaGoalHorz " << lambdaGoalHorz << endl;
+	lambdaObstacleHorzNormal = (float) fs["lambdaObstacleHorzNormal"];
+	lambdaObstacleHorzAggressive = (float) fs["lambdaObstacleHorzAggressive"];
+	lambdaObstacleHorz = lambdaObstacleHorzNormal; // Default value
+	cout << "lambdaObstacleHorz " << lambdaObstacleHorz << endl;
+
+	weightGoalHorz = (float) fs["weightGoalHorz"];
+	weightObstacleHorz = (float) fs["weightObstacleHorz"];
+	obstacleDistanceGainHorzNormal = (float) fs["obstacleDistanceGainHorzNormal"]; // Smaller = more sensitive 
+	obstacleDistanceGainHorzAggressive = (float) fs["obstacleDistanceGainHorzNormal"]; // Smaller = more sensitive
+	obstacleDistanceGainHorz = obstacleDistanceGainHorzNormal; // Default value
+	angularRangeHorz = ((float) fs["angularRangeHorz"]) * CV_PI/180; // Range is +-29° 
+	cout << "angularRangeHorz " << angularRangeHorz << endl;
+
+	lambdaObstacleVert = (float) fs["lambdaObstacleVert"];
+	angularRangeVert = ((float) fs["angularRangeVert"]) * CV_PI/180;
+	obstacleDistanceGainVert = (float) fs["obstacleDistanceGainVert"];//0.2;
+	noiseVariance = (float) fs["noiseVariance"];
+
+	matchedFilterKernel = (Mat_<float>(1,7) << 17,20,25,26,25,20,17);
+	obstacleArrayHorz = Mat::zeros(1,7, CV_32F);
+
+	matchedFilterExpectedResult = (float) fs["matchedFilterExpectedResult"];
+	matchedFilterMargin = (float) fs["matchedFilterMargin"];
+
+	depthImageScaling = (float) fs["depthImageScaling"];
 }
 
 
@@ -125,6 +161,9 @@ float BehaviourArbitration::avoidObstacleHorizontal(cv::Mat kinectImage, float c
 	int image_width  = kinectImage.cols;
 	int centre_row = floor(image_height/2);
 	int obstacle_bins = 64;
+
+	// Scale image
+	kinectImage = kinectImage * depthImageScaling;
 
 	detectCorner(kinectImage);
 	displayCollision(kinectImage);

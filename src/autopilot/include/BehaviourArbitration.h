@@ -7,6 +7,7 @@ class BehaviourArbitration
 {
 public:
 	BehaviourArbitration();
+	BehaviourArbitration(std::string xmlPath);
 	~BehaviourArbitration();
 
 	float avoidObstacleHorizontal(cv::Mat kinectImage, float currentBearing);
@@ -46,4 +47,6 @@ private:
 	// Corner avoiding
 	float matchedFilterExpectedResult;
 	float matchedFilterMargin;
+
+	float depthImageScaling;
 };

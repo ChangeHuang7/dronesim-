@@ -42,6 +42,8 @@
 */
 
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/contrib/contrib.hpp>
+#include <opencv2/core/core.hpp>
 
 #include <ros/ros.h>
 #include <cv_bridge/cv_bridge.h>
@@ -65,6 +67,7 @@ bool overwrite = true;//if a folder with the same name exists, overwrite this fo
 string save_log_location;
 string control_output_filename="";
 
+bool depth_estimation_flag;
 bool takeoff=false;
 bool shuttingdown=false;
 int max_count=10000;
@@ -201,7 +204,24 @@ private: //private methods of callback
       if ( save_all_image || save_image_service ) {
         try{
           cout << "Filename: " << filename << endl;
-      	  cv::imwrite(filename, image);
+
+          if (depth_estimation_flag && image.channels() == 1) {
+            double min;
+            double max;
+            cv::minMaxIdx(image, &min, &max);
+            cv::Mat adjMap;
+            // expand your range to 0..255. Similar to histEq();
+            image.convertTo(adjMap,CV_8UC1, 255 / (max-min), -min); 
+
+            cv::Mat dst;
+            cv::applyColorMap(adjMap, dst, cv::COLORMAP_JET);
+            cv::imshow("Depth estimation",image);
+            cv::imwrite(filename, dst);
+            cv::waitKey(1);
+          }
+          else {
+      	    cv::imwrite(filename, image); 
+          }
           writeVelInfo();
       	  ROS_INFO("Saved image %s", filename.c_str());
 
@@ -248,8 +268,18 @@ int main(int argc, char** argv)
   image_transport::ImageTransport it(nh);
   //std::string topic = nh.resolveName("image");
 //  std::string topic = "/ardrone/image_raw";
-  std::string topic = "/ardrone/kinect/image_raw";
-  std::string topic_depth = "/ardrone/kinect/depth/image_raw";
+  std::string topic;
+  std::string topic_depth;
+  depth_estimation_flag = false;
+  nh.getParam("depth_estimation_running", depth_estimation_flag);
+  if (depth_estimation_flag) {
+    topic = "/ardrone/image_raw";
+    topic_depth = "/autopilot/depth_estim";
+  }
+  else {  
+    topic = "/ardrone/kinect/image_raw";
+    topic_depth = "/ardrone/kinect/depth/image_raw";
+  }
 
   Callbacks callbacks;
   

@@ -32,7 +32,7 @@ std::string depth_ready_path;
 std::string depth_estim_path;
 
 int SOCKET;
-int PORTNO = 55571;
+int PORTNO;
 int COUNT =0;
 using namespace std;
 // using namespace cv;
@@ -182,7 +182,6 @@ void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& origin
 
 
 	// Scale matrix to fit between 0 and 5
-	depth_estim_float_resized = depth_estim_float_resized * 5 / 255;
 	publish_depth_estim(depth_estim_float_resized);
 
 	// Wait for a while, so the MATLAB script can catch up
@@ -201,6 +200,9 @@ int main(int argc, char** argv) {
 
 	// Get location for the files
 	nh.getParam("depth_estimation_path", communication_folder);
+
+	nh.param("depth_TCP_port", PORTNO, 55555);
+	cout << "Using port " << PORTNO << endl;
 
 	path_RGB_image= communication_folder_emerald + "/image.jpg";
 	im_ready_path= communication_folder_emerald + "/imageReady";

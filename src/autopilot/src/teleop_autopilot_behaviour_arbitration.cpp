@@ -20,20 +20,21 @@ int FSM_COUNTER_THRESH=20;//wait for some time before taking off
 int counter = 0;
 
 
-float ADJUST_HEIGHT_MAX = 3.5; float ADJUST_HEIGHT_MIN = 0.5;
+float ADJUST_HEIGHT_MAX = 2; float ADJUST_HEIGHT_MIN = 0.5; // This is for the corridor world
+// float ADJUST_HEIGHT_MAX = 3.5; float ADJUST_HEIGHT_MIN = 0.5;
 float adjust_height = 0;
 float CURRENT_YAW = 0;
 double GOAL_ANGLE = 3*CV_PI/2;
 float DYAW = 0, DPITCH = 0;
 
-BehaviourArbitration BAController;
+BehaviourArbitration * BAController = 0; // Will be initialized in main
 ros::Publisher debugPub;
 
 void updateController(cv::Mat depth_float_img) {
-	float dYawObstacle = BAController.avoidObstacleHorizontal(depth_float_img, CURRENT_YAW);
-	float dYawGoal 	   = BAController.followGoal(GOAL_ANGLE, CURRENT_YAW);
-	DYAW               = BAController.sumBehavioursHorz(dYawObstacle, dYawGoal);
-	DPITCH             = BAController.avoidObstacleVertical(depth_float_img, CURRENT_YAW);
+	float dYawObstacle = BAController->avoidObstacleHorizontal(depth_float_img, CURRENT_YAW);
+	float dYawGoal 	   = BAController->followGoal(GOAL_ANGLE, CURRENT_YAW);
+	DYAW               = BAController->sumBehavioursHorz(dYawObstacle, dYawGoal);
+	DPITCH             = BAController->avoidObstacleVertical(depth_float_img, CURRENT_YAW);
 
 	// DYAW = 0.5;
 	std_msgs::Float32 msg;
@@ -197,6 +198,17 @@ int main(int argc, char** argv)
 		cout << "Using default angle, ";
 	}
 	cout << "Goal angle: " << GOAL_ANGLE << endl;
+	std::string BA_parameters_path;
+	if(nh.getParam("BA_parameters_path", BA_parameters_path)) {
+		BAController = new BehaviourArbitration(BA_parameters_path);
+	}
+	else {
+		cout << "Using default BA paremeters" << endl;
+		BAController = new BehaviourArbitration();
+
+	}
+	cout << "Goal angle: " << GOAL_ANGLE << endl;
+
 	// BAController = new BAController();
 
 	// twist.linear.x = 0.5;//straight
