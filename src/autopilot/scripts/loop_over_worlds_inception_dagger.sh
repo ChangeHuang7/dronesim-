@@ -4,6 +4,10 @@ declare -a WORLDFILES=("0005")
 SLOC="/remote_images/set_online"
 SLOC_FULL="/home/jay/data$SLOC"
 
+set_name="$1"
+mkdir "/home/jay/data/remote_images/$set_name"
+chmod 775 "/home/jay/data/remote_images/$set_name"
+
 echo "Removing images from set_online"
 rm $SLOC_FULL/* $SLOC_FULL/RGB/* $SLOC_FULL/depth/*
 
