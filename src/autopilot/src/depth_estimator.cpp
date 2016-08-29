@@ -120,10 +120,10 @@ cv::Mat receiveImage() {
       }
   }
   cv::imshow("Received", img);
+  cv::waitKey(10);
   cout << "Depthmap received!" << endl;
 
   // write(SOCKET,"I got your message",18);
-  cv::waitKey(10);
 
   return img;
 }
@@ -149,7 +149,10 @@ void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& origin
 	cout << "Size: " << rgb_image.size() << "Type: " << rgb_image.type() << endl;
 
 	sendImage(rgb_image);
-	cv::Mat depth_estim = receiveImage();
+	// cv::Mat depth_estim = receiveImage();
+
+	// cv::Mat depth_estim = cv::imread("/home/jay/Desktop/depth.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+
 	// Write to file
 	// std::vector<int> compression_params;
  //  compression_params.push_back(CV_IMWRITE_JPEG_QUALITY);
@@ -173,19 +176,21 @@ void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& origin
 	// boost::filesystem::remove(depth_ready_path);
 	// boost::filesystem::remove(im_ready_path);
 
-	// // Read file
+	// Read file
 	// cv::Mat depth_estim = cv::imread(depth_estim_path,CV_LOAD_IMAGE_GRAYSCALE );
-	cv::Mat_<float> depth_estim_float, depth_estim_float_resized;
 
-	depth_estim.convertTo(depth_estim_float, CV_32F);
-	cv::resize(depth_estim_float,depth_estim_float_resized,cv::Size(640,360));
+	
+	// cv::Mat_<float> depth_estim_float, depth_estim_float_resized;
+
+	// depth_estim.convertTo(depth_estim_float, CV_32F);
+	// cv::resize(depth_estim_float,depth_estim_float_resized,cv::Size(640,360));
 
 
-	// Scale matrix to fit between 0 and 5
-	publish_depth_estim(depth_estim_float_resized);
+	// // Scale matrix to fit between 0 and 5
+	// publish_depth_estim(depth_estim_float_resized);
 
-	// Wait for a while, so the MATLAB script can catch up
-	ros::Duration(0.005).sleep();
+	// // Wait for a while, so the MATLAB script can catch up
+	// ros::Duration(0.005).sleep();
 }
 
 int main(int argc, char** argv) {

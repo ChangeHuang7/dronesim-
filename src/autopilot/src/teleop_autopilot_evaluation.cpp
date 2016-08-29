@@ -66,6 +66,10 @@ using namespace std;
 
 string online_control="";
 string supervised_control="";
+
+cv::Vec6f online_twist;
+cv::Vec6f supervisor_twist;
+
 string save_log_location="/home/jay/autopilot_ws/src/autopilot/log.txt";
 float count_average=0.001;
 float total_average=0;
@@ -124,40 +128,48 @@ public://initialize fields of callbacks
     geometry_msgs::Vector3 ang = msg.angular;
     //std::cout << "twist message: "<< msg << std::endl;
     //std::cout << "twist message ang z: "<< ang.z << std::endl;
+
+    online_twist[0] = lin.x;
+    online_twist[1] = lin.y;
+    online_twist[2] = lin.z;
+    online_twist[3] = ang.x;
+    online_twist[4] = ang.y;
+    online_twist[5] = ang.z;
+
     
-    std::string cmd;
-    //check stop signal if quadrotor has to hover
-    if( !(lin.x || lin.y || lin.z || ang.z)){
-      cmd = "100000000";
-    }else{
-      if(lin.y < 0){
-	cmd = "000100000";
-      }else if(lin.y > 0){
-	cmd = "000010000";
-      }else{
-	if(lin.x < 0){
-	  cmd = "010000000";
-	}else if(lin.x > 0){
-	  cmd = "001000000";
-	}else{
-	  if(lin.z < 0){
-	    cmd =  "000001000";
-	  }else if(lin.z > 0){
-	    cmd =  "000000100";
-	  }else{
-	    if(ang.z < 0){
-	      cmd =  "000000010";
-	    }else if(ang.z > 0){
-	      cmd =  "000000001";
-	    }else{
-	      cmd = "x";
-	    }
-	  }
-	}
-      }
-    }
-    online_control = cmd;
-    std::cout << "online control: "<< online_control << std::endl;
+ //    std::string cmd;
+ //    //check stop signal if quadrotor has to hover
+ //    if( !(lin.x || lin.y || lin.z || ang.z)){
+ //      cmd = "100000000";
+ //    }else{
+ //      if(lin.y < 0){
+	// cmd = "000100000";
+ //      }else if(lin.y > 0){
+	// cmd = "000010000";
+ //      }else{
+	// if(lin.x < 0){
+	//   cmd = "010000000";
+	// }else if(lin.x > 0){
+	//   cmd = "001000000";
+	// }else{
+	//   if(lin.z < 0){
+	//     cmd =  "000001000";
+	//   }else if(lin.z > 0){
+	//     cmd =  "000000100";
+	//   }else{
+	//     if(ang.z < 0){
+	//       cmd =  "000000010";
+	//     }else if(ang.z > 0){
+	//       cmd =  "000000001";
+	//     }else{
+	//       cmd = "x";
+	//     }
+	//   }
+	// }
+ //      }
+ //    }
+ //    online_control = cmd;
+ //    std::cout << "online control: "<< online_control << std::endl;
   }
 
   //listen to the supervised control
@@ -167,40 +179,47 @@ public://initialize fields of callbacks
     geometry_msgs::Vector3 ang = msg.angular;
     //std::cout << "twist message: "<< msg << std::endl;
     //std::cout << "twist message ang z: "<< ang.z << std::endl;
+
+    supervisor_twist[0] = lin.x;
+    supervisor_twist[1] = lin.y;
+    supervisor_twist[2] = lin.z;
+    supervisor_twist[3] = ang.x;
+    supervisor_twist[4] = ang.y;
+    supervisor_twist[5] = ang.z;
     
-    std::string cmd;
-    //check stop signal if quadrotor has to hover
-    if( !(lin.x || lin.y || lin.z || ang.z)){
-      cmd = "100000000";
-    }else{
-      if(lin.y < 0){
-	cmd = "000100000";
-      }else if(lin.y > 0){
-	cmd = "000010000";
-      }else{
-	if(lin.x < 0){
-	  cmd = "010000000";
-	}else if(lin.x > 0){
-	  cmd = "001000000";
-	}else{
-	  if(lin.z < 0){
-	    cmd =  "000001000";
-	  }else if(lin.z > 0){
-	    cmd =  "000000100";
-	  }else{
-	    if(ang.z < 0){
-	      cmd =  "000000010";
-	    }else if(ang.z > 0){
-	      cmd =  "000000001";
-	    }else{
-	      cmd = "x";
-	    }
-	  }
-	}
-      }
-    }
-    supervised_control = cmd;
-    std::cout << "supervised control: "<< supervised_control << std::endl;
+ //    std::string cmd;
+ //    //check stop signal if quadrotor has to hover
+ //    if( !(lin.x || lin.y || lin.z || ang.z)){
+ //      cmd = "100000000";
+ //    }else{
+ //      if(lin.y < 0){
+	// cmd = "000100000";
+ //      }else if(lin.y > 0){
+	// cmd = "000010000";
+ //      }else{
+	// if(lin.x < 0){
+	//   cmd = "010000000";
+	// }else if(lin.x > 0){
+	//   cmd = "001000000";
+	// }else{
+	//   if(lin.z < 0){
+	//     cmd =  "000001000";
+	//   }else if(lin.z > 0){
+	//     cmd =  "000000100";
+	//   }else{
+	//     if(ang.z < 0){
+	//       cmd =  "000000010";
+	//     }else if(ang.z > 0){
+	//       cmd =  "000000001";
+	//     }else{
+	//       cmd = "x";
+	//     }
+	//   }
+	// }
+ //      }
+ //    }
+ //    supervised_control = cmd;
+ //    std::cout << "supervised control: "<< supervised_control << std::endl;
   }
 
   //general callback function for the depth map
@@ -300,15 +319,20 @@ private: //private fields of callback
 void evaluate(){
   if(!takeoff) return;
   //check if supervised control is equal to estimated control
-  int result = 0;
-  if(online_control.compare(supervised_control)==1)result = 1;
+  // int result = 0;
+  // if(online_control.compare(supervised_control)==1)result = 1;
   //update total average
+
+  float result = cv::norm(online_twist - supervisor_twist);
+
+  count_average++;
   total_average=total_average+(result-total_average)/count_average;
   //update running average
   running_average=running_average+(result-running_average)/running_width;
   
   cout << "total average: "<<total_average<<". running average "<<running_average<< " over last "<<running_width<<" frames."<<endl;
 }
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "teleop_autopilot", ros::init_options::AnonymousName);
@@ -369,7 +393,7 @@ int main(int argc, char** argv)
   ros::Subscriber subTakeoff = nh.subscribe("/ardrone/takeoff",1,&Callbacks::callbackTakeoff, &callbacks);
   
   // Make subscriber to online control estimate from the network
-  //ros::Subscriber subOnlineControl = nh.subscribe("/cmd_vel",1,&Callbacks::callbackOnlineControl, &callbacks);
+  ros::Subscriber subOnlineControl = nh.subscribe("/cmd_vel",1,&Callbacks::callbackOnlineControl, &callbacks);
   
   // Make subscriber to supervised control
   ros::Subscriber subDaggerControl = nh.subscribe("/dagger_vel",1,&Callbacks::callbackDaggerControl, &callbacks);
@@ -377,7 +401,7 @@ int main(int argc, char** argv)
   ros::Rate loop_rate(20);
 
   while(ros::ok()){
-    //evaluate();
+    evaluate();
     loop_rate.sleep();
     ros::spinOnce();
   }

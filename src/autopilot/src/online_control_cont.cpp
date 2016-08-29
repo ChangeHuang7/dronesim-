@@ -50,16 +50,16 @@
 #include <sstream>     // std::cout
 
 #include <std_msgs/Empty.h>
-//#include <unistd.h>
-//#include <std_srvs/Empty.h>
-//#include <algorithm>
+#include <unistd.h>
+#include <std_srvs/Empty.h>
+#include <algorithm>
 
-//#include "stdio.h"
-//#include <string>
+#include "stdio.h"
+#include <string>
 
-//#include <stdlib.h>
-//#include <sys/stat.h>
-//#include <boost/bind.hpp>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <boost/bind.hpp>
 
 using namespace std;
 bool takeoff = false;
@@ -147,9 +147,13 @@ int main(int argc, char** argv)
   // Make Publisher to takeoff in order to set the velocity.
   ros::Publisher pubTakeoff = nh.advertise<std_msgs::Empty>("/ardrone/takeoff", 1);
   
-  ros::Rate loop_rate(20);
+  ros::Rate loop_rate(10);
 
   geometry_msgs::Twist twist;
+
+  int initial_file = 0;
+  nh.getParam("last_control_output", initial_file);
+  frameNumber = initial_file;
   
   while(ros::ok()){
     read_control();

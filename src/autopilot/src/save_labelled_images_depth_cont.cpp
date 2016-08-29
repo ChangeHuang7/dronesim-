@@ -66,8 +66,9 @@ using namespace std;
 bool overwrite = true;//if a folder with the same name exists, overwrite this folder.
 string save_log_location;
 string control_output_filename="";
-
+string control_output_supervisor_filename="";
 bool depth_estimation_flag;
+bool dagger_running = false;
 bool takeoff=false;
 bool shuttingdown=false;
 int max_count=10000;
@@ -152,8 +153,17 @@ public://initialize fields of callbacks
       return;
     //Copy the image.data to imageBuf. Depth image is uint16 with depths in m.
     cv::Mat depth_float_img = cv_ptr->image;
-    cv::Mat depth_mono8_img;
-    depthToCV8UC1(depth_float_img, depth_mono8_img);
+      cv::Mat depth_mono8_img;
+    if (depth_estimation_flag && depth_float_img.channels() == 1) {
+      depth_mono8_img = depth_float_img;
+      // cout << "Converting " << depth_float_img << endl;
+      // cv::imshow("Depth estimation",depth_float_img/255);
+      // cv::waitKey(50);
+    }
+    else {
+      // expand your range to 0..255. Similar to histEq();
+      depthToCV8UC1(depth_float_img, depth_mono8_img);
+    }
 //     double min, max;
 //     cv::minMaxLoc(depth_float_img, &min, &max);	
 //     std::cout << "minmax float: " << min << "; " << max << "\n";
@@ -176,6 +186,10 @@ public://initialize fields of callbacks
   void callbackCmd(const geometry_msgs::Twist& msg)
   {
     latest_twist = msg; 
+  }
+
+  void daggerCallbackCmd(const geometry_msgs::Twist& msg) {
+    latest_supervisor_twist = msg;
   }
   
 private: //private methods of callback
@@ -203,27 +217,29 @@ private: //private methods of callback
       
       if ( save_all_image || save_image_service ) {
         try{
-          cout << "Filename: " << filename << endl;
+          // cout << "Filename: " << filename << endl;
 
           if (depth_estimation_flag && image.channels() == 1) {
             double min;
             double max;
-            cv::minMaxIdx(image, &min, &max);
             cv::Mat adjMap;
             // expand your range to 0..255. Similar to histEq();
-            image.convertTo(adjMap,CV_8UC1, 255 / (max-min), -min); 
+            // image.convertTo(adjMap,CV_8UC1, 255 / (max-min), -min); 
+            image.convertTo(adjMap,CV_8UC1); 
 
+            cv::minMaxIdx(adjMap, &min, &max);
+            // cout << "Min " << min << " Max " << max << " Type " << image.type() << endl;
             cv::Mat dst;
             cv::applyColorMap(adjMap, dst, cv::COLORMAP_JET);
-            cv::imshow("Depth estimation",image);
+            cv::imshow("Depth estimation",dst);
+            cv::waitKey(50);
             cv::imwrite(filename, dst);
-            cv::waitKey(1);
           }
           else {
       	    cv::imwrite(filename, image); 
           }
           writeVelInfo();
-      	  ROS_INFO("Saved image %s", filename.c_str());
+      	  // ROS_INFO("Saved image %s", filename.c_str());
 
       	  save_image_service = false;
       	}catch(runtime_error& ex){
@@ -250,6 +266,16 @@ private: //private methods of callback
                             << " " << latest_twist.angular.x << " " << latest_twist.angular.y << " " << latest_twist.angular.z << endl;
     control_output_file.close();
 
+    if(dagger_running) {
+      ofstream control_output_file_supervisor;
+      control_output_file_supervisor.open(control_output_supervisor_filename.c_str(), ios::app);
+      char countArray[11];
+      sprintf(countArray, "%010d", (int) count_);
+      control_output_file_supervisor << countArray << " " << latest_supervisor_twist.linear.x << " " << latest_supervisor_twist.linear.y << " " << latest_supervisor_twist.linear.z
+                              << " " << latest_supervisor_twist.angular.x << " " << latest_supervisor_twist.angular.y << " " << latest_supervisor_twist.angular.z << endl;
+      control_output_file_supervisor.close();
+    }
+
   }
 
 private: //private fields of callback
@@ -258,7 +284,7 @@ private: //private fields of callback
   bool has_camera_info_;
   size_t count_;//size_t
   // string control;
-  geometry_msgs::Twist latest_twist;
+  geometry_msgs::Twist latest_twist, latest_supervisor_twist;
 };
 
 int main(int argc, char** argv)
@@ -286,16 +312,9 @@ int main(int argc, char** argv)
   //callbacks.control ="10000000";
   //callbacks.path = "/home/jay/data/";
 
-  //obtain saving location
-  std::string saving_location;
-  if(!nh.getParam("saving_location", saving_location)) {
-    // if getParam returns falls, parameter was not set, don't save images!
-    ROS_ERROR("No saving directory given, not saving images!");
-    // Shutdown this node
-    ros::shutdown();
-    // Stop running
-    exit(0);
-  } //nh.resolveName("generated_set");
+  
+
+  nh.getParam("dagger_running", dagger_running);
 
   // // Get the filepath of the log
   // if(!nh.getParam("saving_location_log", save_log_location)) {
@@ -308,12 +327,27 @@ int main(int argc, char** argv)
   // else {
   //   cout << "Log path: " << save_log_location << endl;
   // }
-  
+  //obtain saving location
+  std::string saving_location;
+  if(!nh.getParam("saving_location", saving_location)) {
+    // if getParam returns falls, parameter was not set, don't save images!
+    ROS_ERROR("No saving directory given, not saving images!");
+    // Shutdown this node
+    ros::shutdown();
+    // Stop running
+    exit(0);
+  } //nh.resolveName("generated_set");
+
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   control_output_filename = "/home/jay/data/"+saving_location+"/control_info.txt";
-  callbacks.path = "/home/jay/data/"+saving_location;
-  boost::filesystem::path dir(callbacks.path);
+  control_output_supervisor_filename = "/home/jay/data/"+saving_location+"/control_info_supervisor.txt";
+  std::string main_path = "/home/jay/data/"+saving_location;
+  boost::filesystem::path dir(main_path);
   boost::filesystem::file_status f = status(dir);
+  callbacks.path=main_path+"/RGB";
+  callbacks.path_depth=main_path+"/depth";
+  
+  if(!dagger_running){
   if(boost::filesystem::is_directory(f)){//directory exists
     if(!overwrite){
       //check if the subfolders exists both for depth and RGB
@@ -347,8 +381,9 @@ int main(int argc, char** argv)
     }else{//if overwrite => remove the folders
       boost::filesystem::remove_all(dir);
     }
-  }//Create new folders if they dont exist.
-  f = status(dir);
+  }
+  f = status(dir);}
+  //Create new folders if they dont exist.
   if(! boost::filesystem::is_directory(f)){
     if(boost::filesystem::create_directory(dir)) {
       //change 
@@ -381,6 +416,7 @@ int main(int argc, char** argv)
 
   // Make subscriber to cmd_vel in order to set the name.
   ros::Subscriber subControl = nh.subscribe("/cmd_vel",1,&Callbacks::callbackCmd, &callbacks);
+  ros::Subscriber subControl_dagger = nh.subscribe("/dagger_vel",1,&Callbacks::daggerCallbackCmd, &callbacks);
   // [hover, back, forward, turn right, turn left, down, up, clockwise, ccw]
   // Adapt name instead of left0000.jpg it should be 00000-gt1.jpg when receiving control 1 ~ straight
   ros::NodeHandle local_nh("~");

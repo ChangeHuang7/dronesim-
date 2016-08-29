@@ -182,7 +182,17 @@ int main(int argc, char** argv)
 	ros::Subscriber subControl = nh.subscribe("/ground_truth/state",1,callbackGt);
 
 	// Make subscriber to cmd_vel in order to set the name.
-	ros::Publisher pubControl = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1000);
+	ros::Publisher pubControl;
+	bool dagger_running = false;
+	nh.getParam("dagger_running", dagger_running);
+	if (!dagger_running) {
+		pubControl = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1000);
+		cout << "Behaviour Arbitration is controlling the drone" << endl;
+	}
+	else {
+		pubControl = nh.advertise<geometry_msgs::Twist>("/dagger_vel", 1000);
+		cout << "Behaviour Arbitration is publishing on /dagger_vel" << endl;
+	}
 	
 	// Make Publisher to cmd_vel in order to set the velocity.
 	ros::Publisher pubTakeoff = nh.advertise<std_msgs::Empty>("/ardrone/takeoff", 1);
@@ -205,7 +215,6 @@ int main(int argc, char** argv)
 	else {
 		cout << "Using default BA paremeters" << endl;
 		BAController = new BehaviourArbitration();
-
 	}
 	cout << "Goal angle: " << GOAL_ANGLE << endl;
 
