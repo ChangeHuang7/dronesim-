@@ -159,6 +159,7 @@ add_executable(teleop_autopilot_turning src/teleop_autopilot_turning.cpp)
 add_executable(teleop_autopilot_evaluation src/teleop_autopilot_evaluation.cpp)
 add_executable(teleop_autopilot_behaviour_arbitration src/teleop_autopilot_behaviour_arbitration.cpp)
 add_executable(depth_estimator src/depth_estimator.cpp)
+add_executable(waypoint_tracker src/waypoint_navigation.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -203,6 +204,10 @@ target_link_libraries(teleop_autopilot_behaviour_arbitration
    behaviourLib
 )
 target_link_libraries(depth_estimator
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBRARIES}
+)
+target_link_libraries(waypoint_tracker
    ${catkin_LIBRARIES}
    ${OpenCV_LIBRARIES}
 )

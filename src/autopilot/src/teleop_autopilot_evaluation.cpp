@@ -73,10 +73,14 @@ cv::Vec6f online_twist;
 cv::Vec6f supervisor_twist;
 
 string save_log_location="/home/jay/autopilot_ws/src/autopilot/log.txt";
+string save_statistics_loc;
+string save_running_average_loc;
 float count_average=0.001;
 float total_average=0;
 float running_average=0;
 float running_width=100;
+float min_running_average = 1e5;
+float max_running_average = -1e5;
 
 float close_threshold=0.41;
 
@@ -106,6 +110,13 @@ void shutdown(string msg){
     file.close();
     buffer >> pid;
   }
+
+  //Save statistics
+  std::fstream fs;
+  fs.open(save_statistics_loc.c_str(),ios_base::in);
+  fs << "Total average " << total_average << endl
+    << "Minimum running average: " << min_running_average << ", maximum running average: " << max_running_average << endl;
+  fs.close();
   
   command << "gnome-terminal -x sh -c 'kill -9 "<< pid <<"'";
   string command_str = command.str();
@@ -331,8 +342,19 @@ void evaluate(){
   total_average=total_average+(result-total_average)/count_average;
   //update running average
   running_average=running_average+(result-running_average)/running_width;
+
+  //Update minimum and maximum running averages
+  if (min_running_average > running_average)
+    min_running_average = running_average;
+  if (max_running_average < running_average) 
+    max_running_average = running_average;
   
   cout << "total average: "<<total_average<<". running average "<<running_average<< " over last "<<running_width<<" frames."<<endl;
+  std::fstream fs;
+  fs.open(save_running_average_loc.c_str(),ios_base::app);
+  fs << running_average;
+  fs.close();
+
 }
 
 int main(int argc, char** argv)
@@ -353,7 +375,17 @@ int main(int argc, char** argv)
    else {
      cout << "Log path: " << save_log_location << endl;
    }
-   
+  std::string stats_loc;
+  if(!nh.getParam("saving_location", stats_loc)) {
+    ROS_ERROR("No saving directory given for the statistics!");
+    // Shutdown this node
+    ros::shutdown();
+    // Stop running
+    exit(0);
+  }
+  save_statistics_loc = "/home/jay/data/" + stats_loc + "/stats";
+  save_running_average_loc = "/home/jay/data/" + stats_loc + "/running_average";
+  cout << "Saving statistics in " << save_statistics_loc << endl;
 
   nh.getParam("evaluation_mode", MODE);
 

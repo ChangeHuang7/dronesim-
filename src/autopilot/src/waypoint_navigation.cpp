@@ -36,26 +36,22 @@
 
 
 #include <ros/ros.h>
-#include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 
 #include <fstream>      // std::ifstream
 #include <sstream>     // std::cout
 
-#include <std_msgs/Empty.h>
-#include <unistd.h>
-#include <std_srvs/Empty.h>
-#include <algorithm>
+#include <std_msgs/Float32.h>
 
 #include "stdio.h"
 #include <string>
-
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <boost/bind.hpp>
+#include <cmath>
 
 using namespace std;
 
+const double PI = 3.1415926535897;
+const float STANDARD_RANGE = 2;
+ros::Publisher pubGoalAngle;
 string waypoint_filename;
 
 struct Waypoint {
@@ -65,39 +61,27 @@ struct Waypoint {
 };
 
 vector<Waypoint> waypointList;
+int lastWaypoint = -1;
 
 void callbackGt(const nav_msgs::Odometry& msg)
 {
-  
-}
+  // Check if drone is close to next waypoint
+  float dx = waypointList.at(lastWaypoint + 1).x - msg.pose.pose.position.x;
+  float dy = waypointList.at(lastWaypoint + 1).y - msg.pose.pose.position.y;
+  float distance = sqrt(pow(dx, 2) + pow(dy, 2));
+  cout << "Distance to next waypoint (" << waypointList.at(lastWaypoint + 1).x << ", " << waypointList.at(lastWaypoint + 1).y
+    << "): " << distance << endl;
+  if (distance < waypointList.at(lastWaypoint + 1).range) {
+    // Publish message to controller
+    std_msgs::Float32 msg;
+    msg.data = waypointList.at(lastWaypoint + 1).dir;
+    pubGoalAngle.publish(msg);
+    // Increment waypoint counter
+    lastWaypoint++;
 
-//Read control out of file and update control_state
-void read_control(){
-  //Check folder for new control and set the state accordingly
-  //only apply velocity in case of new control
-  int control = -1;
-  int i = frameNumber+1;
-  stringstream name;
-  name << control_location << i << ".txt";
-  string name_str = name.str();
-  ifstream file(name_str.c_str());
-
-  float x_lin, y_lin, z_lin, x_ang, y_ang ,z_ang;
-  if(file)
-  {
-    // File should have 6 characters seperated by a space, going from linear xyz to angular xyz
-    file >> x_lin >> y_lin >> z_lin >> x_ang >> y_ang >> z_ang;
-    cout << x_lin << " " <<  y_lin << " " <<  z_lin << " " <<  x_ang << " " <<  y_ang << " " <<  z_ang << endl;
-    // Update twist if there was a file
-    twist.linear.x = x_lin;
-    twist.linear.y = y_lin;
-    twist.linear.z = z_lin;
-    twist.angular.x = x_ang;
-    twist.angular.y = y_ang;
-    twist.angular.z = z_ang;
-    frameNumber++;
+    cout << "Reached " << lastWaypoint << ", now moving to " << lastWaypoint + 1 << endl;
   }
-  
+
 }
 
 void initWaypoints() {
@@ -107,13 +91,24 @@ void initWaypoints() {
   float x_temp, y_temp, z_temp;
   int id;
   float direction;
-  while (file >> x_temp >> y_temp >> z_temp >> id >> direction) {
-    cout << "Waypoint " << id << ": (x,y,z) (" << x_temp << ", "  <<  y_temp << ", "  z_temp << "), Direction: " << direction << endl;
+  while (file >> id >> x_temp >> y_temp >> z_temp) {
+    cout << "Waypoint " << id << ": (x,y,z) (" << x_temp << ", "  <<  y_temp << ", " << z_temp << ")" << endl;
     Waypoint newWaypoint;
     newWaypoint.x = x_temp; newWaypoint.y = y_temp; newWaypoint.z = z_temp;
     newWaypoint.id = id;
-    newWaypoint.dir = direction;
+    newWaypoint.dir = 0;
+    newWaypoint.range = STANDARD_RANGE;
+    waypointList.push_back(newWaypoint);
   }
+
+  // Calculate the goal directions
+  for (unsigned int i = 0; i < waypointList.size() - 1; i++) {
+    float dx = waypointList.at(i+1).x - waypointList.at(i).x;
+    float dy = waypointList.at(i+1).y - waypointList.at(i).y;
+
+    waypointList.at(i).dir = atan2(dy, dx) + PI;
+    cout << "Direction waypoint " << i << ": " << waypointList.at(i).dir << endl;
+  } 
 }
 
 int main(int argc, char** argv)
@@ -127,19 +122,19 @@ int main(int argc, char** argv)
   
   // Make subscriber to ground_truth in order to get the psotion.
   ros::Subscriber subControl = nh.subscribe("/ground_truth/state",1,callbackGt);
-  
-  ros::Rate loop_rate(10);
+  // Init publisher to controller
+  pubGoalAngle = nh.advertise<std_msgs::Float32>("/autopilot/goal_angle",10);
+  // Sleep to make sure the controller node is active before publishing first message
+  ros::Duration(1).sleep();
 
-  geometry_msgs::Twist twist;
-
-  int initial_file = 0;
-  nh.getParam("last_control_output", initial_file);
-  frameNumber = initial_file;
-  
-  while(ros::ok()){
-
-    
-    loop_rate.sleep();
-    ros::spinOnce();
+  // Get waypoint filename
+  if(!nh.getParam("waypoint_loc", waypoint_filename)) {
+    cout << "No waypoint file" << endl;
+    exit(-1);
   }
+  cout << "Reading waypoint file: " << waypoint_filename << endl;
+
+  ros::Rate loop_rate(10);
+  initWaypoints();
+  ros::spin();
 } 
