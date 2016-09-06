@@ -23,8 +23,7 @@ echo $LAUNCHFILE
 #declare -a WORLDFILES=("0005" "0010" "0024" "0026" "0036" "0045" "0055" "0066" "0074" "0083")
 #declare -a WORLDFILES=("0005")
 
-WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_one/*.world"
-#WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_train/*.world"
+WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_train/*.world"
 #WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_selected/*.world"
 #WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_train_100/*.world"
 
@@ -57,9 +56,9 @@ do
 #  	COMMAND="roslaunch autopilot $LAUNCHFILE\
 #  	 sloc:=$SLOC current_world:='/oa_challenges_train_100/$WORLD.world'\
 #  	  sloc_log:=$log last_control_output:=$lastFile port:=55560"
- 	COMMAND="roslaunch autopilot $LAUNCHFILE\
-  	 sloc:=$SLOC current_world:='/oa_challenges_train/$WORLD.world'\
-	 sloc_log:=$log last_control_output:=$lastFile port:=55560"
+  	COMMAND="roslaunch autopilot $LAUNCHFILE\
+   	 sloc:=$SLOC current_world:='/oa_challenges_train/$WORLD.world'\
+ 	 sloc_log:=$log last_control_output:=$lastFile port:=55560"
  	
  	echo $COMMAND
  	            

@@ -44,7 +44,7 @@
   <node name="teleop_autopilot_evaluation" pkg="autopilot" type="teleop_autopilot_evaluation" output="screen"/>
   
   <!-- start the heurist for control-->
-  <!-- <param name="evaluation_mode" value="$(arg MODE)"/>-->
+  <param name="evaluation_mode" value="$(arg MODE)"/>
   
   <!-- keep evaluation for when the finish is reached-->
   <!--<node name="teleop_autopilot_evaluation_wall" pkg="teleop_autopilot" type="teleop_autopilot_evaluation_wall" output="screen" args="log:='$(arg logfile)'"/>-->

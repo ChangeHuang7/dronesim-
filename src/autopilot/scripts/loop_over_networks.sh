@@ -1,6 +1,6 @@
-/home/jay/autopilot_ws/src/autopilot/scripts/loop_over_worlds_inception_dagger.sh test_networks c dagger_big_fi
-echo 'started next run'
-/home/jay/autopilot_ws/src/autopilot/scripts/loop_over_worlds_inception_dagger.sh test_networks c dagger_4G_wsize_300
-echo 'started third run'
-/home/jay/autopilot_ws/src/autopilot/scripts/loop_over_worlds_inception_dagger.sh test_networks c dagger_sliding
-echo 'finished'
+for i in $(seq 40 20 200):
+do
+  echo "wall_window: $i"
+  /home/jay/autopilot_ws/src/autopilot/scripts/loop_over_wall_challenges.sh "wall_10_$(($i-20))" c "winwall_wsize_$i"
+done
+/home/jay/autopilot_ws/src/autopilot/scripts/loop_over_wall_challenges.sh wall_0010_200 c

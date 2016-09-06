@@ -6,7 +6,8 @@
   <!--use line for spawning world from .dae mesh in gz model folder-->
     <arg name="world_name" value="$(find autopilot)/worlds/$(arg current_world)"/>     
   </include>
-  
+  <param name='world_name' value="$(arg current_world)"/>
+
   <!--drone flies in +x or -x direction-->
   <arg name="spawn_dir" default="3.14"/>
   <!-- Spawn simulated quadrotor uav -->

@@ -7,16 +7,13 @@ fi
 
 # read list of world files in
 #WORLDDIR="/home/jay/autopilot_ws/src/autopilot/worlds"
-WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_train/*.world"
+#WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_train/*.world"
+WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_one/*.world"
 
 # whether the trajectory is a success or not is saved log file. 
 #logdir='/home/jay/autopilot_ws/src/autopilot'
 SLOC="/remote_images/set_online"
 SLOC_FULL="/home/jay/data$SLOC"
-
-#SAVINGDIR="remote_images/wall_expert_fixed"
-#rm -r "/home/jay/data/$SAVINGDIR/*"
-#chmod 775 "/home/jay/data/$SAVINGDIR/*"
 
 set_name="$1"
 mkdir "/home/jay/data/remote_images/$set_name"
@@ -94,5 +91,13 @@ do
     done
 done
 
-rm -rf /home/jay/data/control_output/* /home/jay/data/remote_features/*
-echo 'finished'
+# Signal pilot_eval to clear inner state
+echo "$3" > "/home/jay/data/remote_features/change_network"
+echo "send $3"
+
+sleep 30
+
+rm /home/jay/data/remote_features/change_network
+
+#rm -rf /home/jay/data/control_output/* /home/jay/data/remote_features/*
+#echo 'finished'
