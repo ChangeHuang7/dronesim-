@@ -144,7 +144,12 @@ void callbackGt(const nav_msgs::Odometry& msg)
 	}
 
 	CURRENT_YAW = getYaw(msg.pose.pose.orientation) + CV_PI;
-	// cout << "Yaw" << CURRENT_YAW << endl;
+	cout << "GOAL_ANGLE: " << GOAL_ANGLE << endl;
+}
+
+void callbackGoalAngle(const std_msgs::Float32& msg) {
+	GOAL_ANGLE = (double) msg.data;
+	cout << "Adjusting goal" << endl;
 }
 
 /*
@@ -231,11 +236,18 @@ int main(int argc, char** argv)
 		sub_image_depth = it.subscribe(
 			topic_depth, 1, callbackWithoutCameraInfoWithDepth);
 	}
+	// Get the goal angle from the launch file
+	if(!nh.getParam("goal_angle", GOAL_ANGLE)) {
+		cout << "Using default angle, ";
+	}
+	cout << "Goal angle: " << GOAL_ANGLE << endl;
 
 
 	// Make subscriber to ground_truth in order to get the psotion.
 	//ros::Subscriber subControl = nh.subscribe("/ground_truth/state/pose/pose/position",1,&Callbacks::callbackGt, &callbacks);
 	ros::Subscriber subControl = nh.subscribe("/ground_truth/state",1,callbackGt);
+	ros::Subscriber subGoalAngle = nh.subscribe("/autopilot/goal_angle",1,callbackGoalAngle);
+
 
 	// Make subscriber to cmd_vel in order to set the name.
 	ros::Publisher pubControl;
@@ -260,11 +272,6 @@ int main(int argc, char** argv)
 
 	geometry_msgs::Twist twist;
 
-	// Get the goal angle from the launch file
-	if(!nh.getParam("goal_angle", GOAL_ANGLE)) {
-		cout << "Using default angle, ";
-	}
-	cout << "Goal angle: " << GOAL_ANGLE << endl;
 	std::string BA_parameters_path;
 	if(nh.getParam("BA_parameters_path", BA_parameters_path)) {
 		BAController = new BehaviourArbitration(BA_parameters_path);

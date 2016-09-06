@@ -76,6 +76,8 @@ BehaviourArbitration::BehaviourArbitration(std::string xmlPath) {
 	matchedFilterMargin = (float) fs["matchedFilterMargin"];
 
 	depthImageScaling = (float) fs["depthImageScaling"];
+	cout << "depthImageScaling " << depthImageScaling << endl;
+
 }
 
 
