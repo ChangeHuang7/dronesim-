@@ -63,7 +63,7 @@
 
 using namespace std;
 bool takeoff = false;
-int FSM_COUNTER_THRESH=100;
+int FSM_COUNTER_THRESH=100;//wait for some time before taking off
 int FSM_COUNTER = 0;
 
 float speed_scale = 0.5;//10/20; //if the frame rate at training is 30 and the framerate at testing is 3 the speed should be 10 time lower.

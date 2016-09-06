@@ -6,7 +6,7 @@ source_world='oa_challenge.world'
 # read world file from example
 location= '/home/jay/autopilot_ws/src/autopilot/worlds/'
 # create destination folder tmp
-directory='/home/jay/autopilot_ws/src/autopilot/worlds/auto_generated'
+directory='/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_train'
 # description of worlds
 description_file_handle = open('/home/jay/autopilot_ws/src/autopilot/worlds/description.txt','w')
 
@@ -34,7 +34,7 @@ max_ceiling_height = 1.5
 ceiling_options = [4, 3.75]
 
 #2 options for the position of the block
-max_block_height = 1.5
+max_block_height = 1.
 block_options = [0, max_block_height/2]
 
 counter=0

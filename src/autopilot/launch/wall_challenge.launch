@@ -18,29 +18,36 @@
   </include>
   
   
-  <arg name="sloc" default="set_online"/>
+  <arg name="sloc" default="/remote_images/set_online/"/>
   <param name="saving_location" value="$(arg sloc)"/>
+  
+  <!-- set log location-->
+  <arg name="sloc_log" default="/home/jay/autopilot_ws/src/autopilot/log.txt"/>
+  <param name="saving_location_log" value="$(arg sloc_log)"/>
+  
+  <arg name="goal_angle" default="4.71"/>
+  <param name="goal_angle" value="$(arg goal_angle)" type="double"/> 
 
-  <arg name="logfile" default="/home/jay/autopilot_ws/src/autopilot/log.txt"/>
-  <param name="saving_location_log" value="$(arg logfile)"/>
+  <arg name="MODE" default="0"/>
+  <param name="MODE" value="$(arg MODE)"/> 
+  <arg name="last_control_output" default="0"/>
+  <param name="last_control_output" value="$(arg last_control_output)"/> 
+  <param name="dagger_running" value="true"/> 
+
   
   <!-- start saving images in sloc saving location-->
-  <node name="save_labelled_images_depth" pkg="autopilot" type="save_labelled_images_depth" args="generated_set:='$(arg sloc)'" />
+  <node name="save_labelled_images_depth_cont" pkg="autopilot" type="save_labelled_images_depth_cont" output="log" />
+  <!-- start annotating images according to heuristic control-->
+  <node name="teleop_autopilot_behaviour_arbitration" pkg="autopilot" type="teleop_autopilot_behaviour_arbitration" output="log" />
+  <!-- start online control node-->
+  <node name="online_control_cont" pkg="autopilot" type="online_control_cont" output="log" />
+  <node name="teleop_autopilot_evaluation" pkg="autopilot" type="teleop_autopilot_evaluation" output="screen"/>
+  
   <!-- start the heurist for control-->
-  <arg name="steering_direction" default="0.0"/>
-  <param name="goal_angle" value="$(arg steering_direction)" type="double"/> 
-  <arg name="MODE" default="0"/>
   <param name="evaluation_mode" value="$(arg MODE)"/>
-
-  <node name="teleop_autopilot_behaviour_arbitration" pkg="autopilot" type="teleop_autopilot_behaviour_arbitration" output="screen"/>
   
   <!-- keep evaluation for when the finish is reached-->
   <!--<node name="teleop_autopilot_evaluation_wall" pkg="teleop_autopilot" type="teleop_autopilot_evaluation_wall" output="screen" args="log:='$(arg logfile)'"/>-->
-  <node name="teleop_autopilot_evaluation" pkg="autopilot" type="teleop_autopilot_evaluation" output="screen"/>
-  <!-- Spawn human -->
-  <!-- <include file="$(find cvg_sim_gazebo)/launch/spawn_human.launch" >
-    <arg name="human" value="$(find cvg_sim_gazebo)/urdf/human.urdf.xacro"/> 
-  </include>-->
 
  <!--<node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>-->
 <!-- <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" />-->

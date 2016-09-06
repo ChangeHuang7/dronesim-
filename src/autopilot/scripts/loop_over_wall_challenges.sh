@@ -1,9 +1,29 @@
+# Check saving location
+if [ -z "$1" ]
+then
+	echo "No save location"
+	exit
+fi
+
 # read list of world files in
-WORLDDIR="/home/jay/autopilot_ws/src/autopilot/worlds"
-WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_test_single/*.world"
+#WORLDDIR="/home/jay/autopilot_ws/src/autopilot/worlds"
+WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_train/*.world"
 
 # whether the trajectory is a success or not is saved log file. 
-logdir='/home/jay/autopilot_ws/src/autopilot'
+#logdir='/home/jay/autopilot_ws/src/autopilot'
+SLOC="/remote_images/set_online"
+SLOC_FULL="/home/jay/data$SLOC"
+
+#SAVINGDIR="remote_images/wall_expert_fixed"
+#rm -r "/home/jay/data/$SAVINGDIR/*"
+#chmod 775 "/home/jay/data/$SAVINGDIR/*"
+
+set_name="$1"
+mkdir "/home/jay/data/remote_images/$set_name"
+chmod 775 "/home/jay/data/remote_images/$set_name"
+
+echo "Removing images from set_online"
+rm $SLOC_FULL/* $SLOC_FULL/RGB/* $SLOC_FULL/depth/*
 
 declare -a turning_array=('0.1' '-0.1' '3' '3.2')
 # spawn dir
@@ -13,24 +33,21 @@ declare -a flying_array=('3.14' '0')
 i=0
 for turning_direction in "${turning_array[@]}";
 do
-    # for flying_direction in "${flying_array[@]}";
-    # do
-	# log="$logdir/log-$turning_direction"
-
-    log="$logdir/log_$i"
+    log="/home/jay/data/remote_images/$set_name/log"
     ((i++))
-	# if [ $flying_direction == '3.14' ]; 
-	# then log="$logdir/log-$turning_direction-3" 
-	# fi
-    #rm -rf $log
-    # for file in list launch
-    for world in $WORLDFILES
+    for WORLD in $WORLDFILES
     do
-        FNAME=$(basename ${world}) #get name of the world
-        echo $FNAME
-        SLOC="testTMP/$(basename ${world} | cut -c1-4)" #cut .world from it
-        # SLOC="remote_images/wall_challenge/$(basename ${world} | cut -c1-4)" #cut .world from it
-
+        WORLD=$(basename ${WORLD} | cut -c1-4) #get name of the world
+        echo $WORLD
+        
+        SLOC_dest="/home/jay/data/remote_images/$set_name/${WORLD}_$i"
+ 	
+ 	# Get final entry in control output
+ 	control_dir="/home/jay/data/control_output/*"
+ 	lastFile=($(ls -rt /home/jay/data/control_output | tail --lines=1))
+ 	lastFile="${lastFile%.*}"
+ 	echo $lastFile
+ 	
         # Select the correct direction in which to fly
         if [ $turning_direction == '0.1' ] || [ $turning_direction == '-0.1' ]; then
             flying_direction_current=${flying_array[0]}
@@ -40,17 +57,42 @@ do
             MODE=1
         fi
         echo "Flying direction: $flying_direction_current"
+	echo "Turning direction: $MODE"
 
-        COMMAND="roslaunch autopilot wall_challenge.launch sloc:=${SLOC}_$i current_world:='/wall_challenges_train/$FNAME' steering_direction:=$flying_direction_current logfile:=$log spawn_dir:=$turning_direction MODE:=$MODE"
+        COMMAND="roslaunch autopilot wall_challenge.launch sloc:=${SLOC}\
+        current_world:='/wall_challenges_train/$WORLD.world'\
+        steering_direction:=$flying_direction_current\
+        sloc_log:=$log last_control_output:=$lastFile\
+        spawn_dir:=$turning_direction MODE:=$MODE"
+        
         echo $COMMAND
-                
+        
         xterm -hold -e $COMMAND &
-        pidlaunch=$!
-        echo $pidlaunch > "$WORLDDIR/../.pid"
-        while kill -0 $pidlaunch; 
-        do sleep 0.5
-        done
-        sleep 0.1m
-        # done
+  	pidlaunch=$!
+  	echo $pidlaunch > "/home/jay/autopilot_ws/src/autopilot/.pid"
+  	while kill -0 $pidlaunch; 
+  	do sleep 0.5
+  	done
+	
+ 	# Signal pilot_eval to clear inner state
+	echo "empty file" > "/home/jay/data/remote_features/clear_memory"
+
+ 	# When killed, copy everything to other folder
+ 	mkdir -p $SLOC_dest
+ 	chmod 775 $SLOC_dest
+ 	echo "Copying to dagger folder"
+ 	cp -r $SLOC_FULL/* $SLOC_dest
+ 	echo "Removing images from set_online"
+ 	
+ 	# Remove everything in the folder
+ 	rm $SLOC_FULL/* $SLOC_FULL/RGB/* $SLOC_FULL/depth/*
+ 	
+        sleep 1m
+        
+ 	#make file free again
+ 	rm /home/jay/data/remote_features/clear_memory
     done
 done
+
+rm -rf /home/jay/data/control_output/* /home/jay/data/remote_features/*
+echo 'finished'

@@ -18,6 +18,7 @@
 /home/jay/autopilot_ws/build/gtest/CMakeFiles/gtest.dir
 /home/jay/autopilot_ws/build/gtest/CMakeFiles/gtest_main.dir
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/online_control.dir
+/home/jay/autopilot_ws/build/autopilot/CMakeFiles/online_control_cont.dir
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/roscpp_generate_messages_cpp.dir
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/roscpp_generate_messages_lisp.dir
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/roscpp_generate_messages_py.dir

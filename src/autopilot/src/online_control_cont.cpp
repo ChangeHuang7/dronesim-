@@ -50,16 +50,16 @@
 #include <sstream>     // std::cout
 
 #include <std_msgs/Empty.h>
-//#include <unistd.h>
-//#include <std_srvs/Empty.h>
-//#include <algorithm>
+#include <unistd.h>
+#include <std_srvs/Empty.h>
+#include <algorithm>
 
-//#include "stdio.h"
-//#include <string>
+#include "stdio.h"
+#include <string>
 
-//#include <stdlib.h>
-//#include <sys/stat.h>
-//#include <boost/bind.hpp>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <boost/bind.hpp>
 
 using namespace std;
 bool takeoff = false;
@@ -70,7 +70,7 @@ float speed_scale = 0.5;//10/20; //if the frame rate at training is 30 and the f
 
 int control_state = 0; //define some states that override the general obstacle avoidance behavior: 0 ~ wait, 1 ~ do obstacle avoidance, 2 ~ turn for a random amount of time in 1 direction
 int frameNumber = 0; //next frame we are waiting for.
-string control_location = "/home/tom/Desktop/control_output/";
+string control_location = "/home/jay/data/control_output/";
 int adjust_height = 0; //0 means no adjust, 1 means go up, -1 means go down
 
 geometry_msgs::Twist twist;
@@ -132,7 +132,7 @@ void read_control(){
 int main(int argc, char** argv)
 {
   stringstream command;
-  command << "exec rm -r "+control_location+"/*"; 
+  //command << "exec rm -r "+control_location+"/*"; 
   //empty control location
   system(command.str().c_str());
   ros::init(argc, argv, "autopilot", ros::init_options::AnonymousName);
@@ -147,9 +147,13 @@ int main(int argc, char** argv)
   // Make Publisher to takeoff in order to set the velocity.
   ros::Publisher pubTakeoff = nh.advertise<std_msgs::Empty>("/ardrone/takeoff", 1);
   
-  ros::Rate loop_rate(20);
+  ros::Rate loop_rate(10);
 
   geometry_msgs::Twist twist;
+
+  int initial_file = 0;
+  nh.getParam("last_control_output", initial_file);
+  frameNumber = initial_file;
   
   while(ros::ok()){
     read_control();
