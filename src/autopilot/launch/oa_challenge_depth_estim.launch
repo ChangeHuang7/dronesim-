@@ -21,10 +21,11 @@
   <!-- start saving images in sloc saving location-->
   <arg name="sloc" default="set_online"/>
   <param name="saving_location" value="$(arg sloc)"/>
-  <arg name="logfile" default="/home/jay/autopilot_ws/src/autopilot/log.txt"/>
-  <!-- <param name="saving_location_log" value="$(arg sloc_log)"/> -->
+  <arg name="sloc_log" default="/home/jay/data/set_online/log.txt"/>
+  <param name="saving_location_log" value="$(arg sloc_log)"/>
+  
   <param name="use_depth_estim" value="true"/>
-  <param name="BA_parameters_path" value="/home/jay/autopilot_ws/src/autopilot/parameters/BehaviourArbitration.xml" />
+  <param name="BA_parameters_path" value="/home/jay/autopilot_ws/src/autopilot/parameters/BehaviourArbitrationOAChallenge.xml" />
   <param name="depth_estimation_running" value="true" />
   <arg name="port" default="55560"/>
   <param name="depth_TCP_port" value="$(arg port)" />
@@ -32,11 +33,11 @@
  <node name="save_labelled_images_depth_cont" pkg="autopilot" type="save_labelled_images_depth_cont" args="generated_set:='$(arg sloc)'" output="screen"/> 
   <!-- start the heurist for control-->
   <node name="teleop_autopilot_behaviour_arbitration" pkg="autopilot" type="teleop_autopilot_behaviour_arbitration" output="screen" />
-  <node name="depth_estimator" pkg="autopilot" type="depth_estimator" output="screen" />
+  <node name="depth_estimator" pkg="autopilot" type="depth_estimator" />
   
  <!-- keep evaluation for when the finish is reached-->
 <!-- <node name="teleop_autopilot_evaluation" pkg="teleop_autopilot" type="teleop_autopilot_evaluation" output="screen" args="log:='$(arg logfile)'"/>-->
- <!-- <node name="teleop_autopilot_evaluation" pkg="autopilot" type="teleop_autopilot_evaluation" output="screen"/> -->
+ <node name="teleop_autopilot_evaluation" pkg="autopilot" type="teleop_autopilot_evaluation" output="screen"/>
   <!-- Spawn human -->
   <!-- <include file="$(find cvg_sim_gazebo)/launch/spawn_human.launch" >
     <arg name="human" value="$(find cvg_sim_gazebo)/urdf/human.urdf.xacro"/> 

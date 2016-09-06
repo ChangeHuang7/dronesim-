@@ -19,7 +19,7 @@
   </include>
   
   <!-- start saving images in sloc saving location-->
-  <arg name="sloc" default="/data/testTMP/"/>
+  <arg name="sloc" default="/testTMP/"/>
   <param name="saving_location" value="$(arg sloc)"/>
   <!-- set log location-->
   <arg name="sloc_log" default="/home/jay/autopilot_ws/src/autopilot/log.txt"/>
@@ -30,14 +30,16 @@
 
   <arg name="MODE" default="0"/>
   <param name="MODE" value="$(arg MODE)"/> 
+  <param name="BA_parameters_path" value="/home/jay/autopilot_ws/src/autopilot/parameters/BehaviourArbitrationDiscrete.xml"/> 
+  <param name="discretized_twist" value="true"/> 
 
   <!-- <param name="use_depth_estim" value="true" /> -->
 
-  <!-- <node name="save_labelled_images_depth_cont" pkg="autopilot" type="save_labelled_images_depth_cont" output="screen" args="generated_set:='$(arg sloc)'" /> -->
+  <node name="save_labelled_images_depth_cont" pkg="autopilot" type="save_labelled_images_depth_cont" output="screen" args="generated_set:='$(arg sloc)'" />
   <!-- start the heurist for control-->
    <node name="teleop_autopilot_behaviour_arbitration" pkg="autopilot" type="teleop_autopilot_behaviour_arbitration" output="screen" />
  <!-- keep evaluation for when the finish is reached-->
-  <node name="teleop_autopilot_evaluation" pkg="autopilot" type="teleop_autopilot_evaluation" output="screen"/>
+  <!-- <node name="teleop_autopilot_evaluation" pkg="autopilot" type="teleop_autopilot_evaluation" output="screen"/> -->
   <!-- Spawn human -->
   <!-- <include file="$(find cvg_sim_gazebo)/launch/spawn_human.launch" >
     <arg name="human" value="$(find cvg_sim_gazebo)/urdf/human.urdf.xacro"/> 

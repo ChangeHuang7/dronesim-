@@ -1,4 +1,4 @@
-<?xml version=1?>
+<?xml version="1"?>
 <sdf version='1.4'>
   <world name='default'>
     <light name='sun' type='directional'>

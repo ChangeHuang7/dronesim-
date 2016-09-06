@@ -132,7 +132,7 @@ void read_control(){
 int main(int argc, char** argv)
 {
   stringstream command;
-  command << "exec rm -r "+control_location+"/*"; 
+  //command << "exec rm -r "+control_location+"/*"; 
   //empty control location
   system(command.str().c_str());
   ros::init(argc, argv, "autopilot", ros::init_options::AnonymousName);

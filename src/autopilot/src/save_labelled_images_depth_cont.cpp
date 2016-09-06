@@ -58,6 +58,8 @@
 #include <algorithm>
 #include <std_msgs/Empty.h>
 
+#include <boost/math/special_functions/sign.hpp>
+
 #include <fstream>      // std::ifstream
 #include <sstream>     // std::cout
 
@@ -71,6 +73,7 @@ bool depth_estimation_flag;
 bool dagger_running = false;
 bool takeoff=false;
 bool shuttingdown=false;
+bool discretized_twist = false;
 int max_count=10000;
 boost::format g_format;
 bool save_all_image, save_image_service;
@@ -238,7 +241,12 @@ private: //private methods of callback
           else {
       	    cv::imwrite(filename, image); 
           }
-          writeVelInfo();
+          if(discretized_twist) {
+            writeDiscreteVelInfo();
+          }
+          else {
+            writeVelInfo();
+          }
       	  // ROS_INFO("Saved image %s", filename.c_str());
 
       	  save_image_service = false;
@@ -256,8 +264,166 @@ private: //private methods of callback
     return true;
   }
 
+  void writeDiscreteVelInfo() {
+    ofstream control_output_file;
+    control_output_file.open(control_output_filename.c_str(), ios::app);
+    char countArray[11];
+    sprintf(countArray, "%010d", (int) count_);
+    control_output_file << countArray << " ";
+
+    /* 
+    STATE: denotes which label should be written out
+        STATE   0         | 1         | 2         | 3         | 4         | 5         | 6         | 7         | 8 
+        LABEL   100000000 | 010000000 | 001000000 | 000100000 | 000010000 | 000001000 | 000000100 | 000000010 | 000000001
+        MEANING forward   | qck. down | slo down  | slo up    | qck up    | qck right | slo right | slo left  | qck left
+
+        By changing the disc_factor to correspond to the behaviour arbitrition, labels will automatically adjust to having 
+        more discrete possibilities
+        If you do this, you also need to change the length of velArray. It should have a size of #possible_states * 2
+        Also change the final STATE += x to its appropriate value
+    */
+
+    int STATE;
+    // Check which if lin.z is zero, ang.z is zero or both
+    if (abs(latest_twist.linear.z) > 1e-5) {
+      // Moving up or down
+      int disc_factor = 21;
+      float b = 2.0/(disc_factor-1);
+
+      STATE = latest_twist.linear.z / b + (disc_factor+1)/2;
+      if (latest_twist.linear.z > 0) {
+        STATE--;
+      }
+    }
+    else if (abs(latest_twist.angular.z) > 1e-5) {
+      // Turning left or right
+      int disc_factor = 21;
+      float b = 2.0/(disc_factor-1);
+
+      STATE = latest_twist.linear.z / b + (disc_factor+1)/2;
+      // Offset to encode angular movement
+      if (latest_twist.linear.z > 0) {
+        STATE--;
+      }
+      STATE += 20;
+    }
+    else {
+      STATE = 0;
+    }
+
+    char velArray[82];
+    sprintf(velArray, "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0");
+    velArray[STATE*2] = '1';
+    // cout << velArray << endl;
+    control_output_file << velArray << endl;
+
+   if(dagger_running) {
+    ofstream control_output_file_supervisor;
+    control_output_file_supervisor.open(control_output_supervisor_filename.c_str(), ios::app);
+    char countArraySup[11];
+    sprintf(countArraySup, "%010d", (int) count_);
+    control_output_file_supervisor << countArraySup << " ";
+
+    /* 
+    STATE: denotes which label should be written out
+        STATE   0         | 1         | 2         | 3         | 4         | 5         | 6         | 7         | 8 
+        LABEL   100000000 | 010000000 | 001000000 | 000100000 | 000010000 | 000001000 | 000000100 | 000000010 | 000000001
+        MEANING forward   | qck. down | slo down  | slo up    | qck up    | qck right | slo right | slo left  | qck left
+
+        By changing the disc_factor to correspond to the behaviour arbitrition, labels will automatically adjust to having 
+        more discrete possibilities
+        If you do this, you also need to change the length of velArray. It should have a size of #possible_states * 2
+        Also change the final STATE += x to its appropriate value
+    */
+
+    STATE = 0;
+    // Check which if lin.z is zero, ang.z is zero or both
+    if (abs(latest_supervisor_twist.linear.z) > 1e-5) {
+      // Moving up or down
+      int disc_factor = 21;
+      float b = 2.0/(disc_factor-1);
+
+      STATE = latest_supervisor_twist.linear.z / b + (disc_factor+1)/2;
+      if (latest_supervisor_twist.linear.z > 0) {
+        STATE--;
+      }
+    }
+    else if (abs(latest_supervisor_twist.angular.z) > 1e-5) {
+      // Turning left or right
+      int disc_factor = 21;
+      float b = 2.0/(disc_factor-1);
+
+      STATE = latest_supervisor_twist.linear.z / b + (disc_factor+1)/2;
+      // Offset to encode angular movement
+      if (latest_supervisor_twist.linear.z > 0) {
+        STATE--;
+      }
+      STATE += 20;
+    }
+    else {
+      STATE = 0;
+    }
+
+    sprintf(velArray, "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0");
+    velArray[STATE*2] = '1';
+    // cout << velArray << endl;
+    control_output_file_supervisor << velArray << endl;
+    
+   }
+  }
+
+  geometry_msgs::Twist clip_twist(geometry_msgs::Twist twist) {
+    geometry_msgs::Twist new_twist;
+    if (abs(twist.linear.x) > 1) { //x
+      new_twist.linear.x = 1*boost::math::sign(twist.linear.x);
+    }
+    else {
+      new_twist.linear.x = twist.linear.x;
+    }
+
+    if (abs(twist.linear.y) > 1) { //y
+      new_twist.linear.y = 1*boost::math::sign(twist.linear.y);
+    }
+    else {
+      new_twist.linear.y = twist.linear.y;
+    }
+
+    if (abs(twist.linear.z) > 1) { //z
+      new_twist.linear.z = 1*boost::math::sign(twist.linear.z);
+    }
+    else {
+      new_twist.linear.z = twist.linear.z;
+    }
+
+    if (abs(twist.angular.x) > 1) { // roll
+      new_twist.angular.x = 1*boost::math::sign(twist.angular.x);
+    }
+    else {
+      new_twist.angular.x = twist.angular.x;
+    }
+
+    if (abs(twist.angular.y) > 1) { //pitch
+      new_twist.angular.y = 1*boost::math::sign(twist.angular.y);
+    }
+    else {
+      new_twist.angular.y = twist.angular.y;
+    }
+
+    if (abs(twist.angular.z) > 1) { //yaw
+      new_twist.angular.z = 1*boost::math::sign(twist.angular.z);
+    }
+    else {
+      new_twist.angular.z = twist.angular.z;
+    }
+
+    return new_twist;
+
+  }
+
   /* Writes velocity (control) info to file */
   void writeVelInfo() {
+
+    latest_twist = clip_twist(latest_twist);
     ofstream control_output_file;
     control_output_file.open(control_output_filename.c_str(), ios::app);
     char countArray[11];
@@ -267,6 +433,7 @@ private: //private methods of callback
     control_output_file.close();
 
     if(dagger_running) {
+      latest_supervisor_twist = clip_twist(latest_supervisor_twist);
       ofstream control_output_file_supervisor;
       control_output_file_supervisor.open(control_output_supervisor_filename.c_str(), ios::app);
       char countArray[11];
@@ -315,6 +482,7 @@ int main(int argc, char** argv)
   
 
   nh.getParam("dagger_running", dagger_running);
+  nh.getParam("discretized_twist", discretized_twist);
 
   // // Get the filepath of the log
   // if(!nh.getParam("saving_location_log", save_log_location)) {

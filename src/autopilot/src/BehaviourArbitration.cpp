@@ -152,6 +152,10 @@ void BehaviourArbitration::detectCorner(cv::Mat kinectImage) {
 	}
 }
 
+cv::Mat BehaviourArbitration::scaleDepthImage(cv::Mat kinectImage) {
+	return kinectImage * depthImageScaling;
+}
+
 /*
  * Returns the angular velocity outputted by the behaviour arbitration scheme
  * This is the obstacle avoid behaviour, should be summed with heading goal
@@ -162,8 +166,6 @@ float BehaviourArbitration::avoidObstacleHorizontal(cv::Mat kinectImage, float c
 	int centre_row = floor(image_height/2);
 	int obstacle_bins = 64;
 
-	// Scale image
-	kinectImage = kinectImage * depthImageScaling;
 
 	detectCorner(kinectImage);
 	displayCollision(kinectImage);

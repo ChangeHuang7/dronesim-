@@ -13,8 +13,10 @@
 #include <std_msgs/Float32.h>
 
 #include <std_msgs/Empty.h>
+
 using namespace std;
 
+bool discretized_twist = false;
 bool takeoff = false;
 int FSM_COUNTER_THRESH=20;//wait for some time before taking off
 int counter = 0;
@@ -31,10 +33,22 @@ BehaviourArbitration * BAController = 0; // Will be initialized in main
 ros::Publisher debugPub;
 
 void updateController(cv::Mat depth_float_img) {
-	float dYawObstacle = BAController->avoidObstacleHorizontal(depth_float_img, CURRENT_YAW);
+	// Scale whole image using a scalar. The anount is a parameter of the controller
+	cv::Mat scaledImage = BAController->scaleDepthImage(depth_float_img);
+	// cv::Mat_<float> scaledImage;
+	// cv::exp(depth_float_img/255, scaledImage);
+	// scaledImage -=1;
+	double min, max;
+	cv::minMaxLoc(depth_float_img, &min, &max, NULL, NULL);
+	cout << "Min " << min << "Max " << max << endl;
+
+	cv::minMaxLoc(scaledImage, &min, &max, NULL, NULL);
+	cout << "Min " << min << "Max " << max << endl;
+
+	float dYawObstacle = BAController->avoidObstacleHorizontal(scaledImage, CURRENT_YAW);
 	float dYawGoal 	   = BAController->followGoal(GOAL_ANGLE, CURRENT_YAW);
 	DYAW               = BAController->sumBehavioursHorz(dYawObstacle, dYawGoal);
-	DPITCH             = BAController->avoidObstacleVertical(depth_float_img, CURRENT_YAW);
+	DPITCH             = BAController->avoidObstacleVertical(scaledImage, CURRENT_YAW);
 
 	// DYAW = 0.5;
 	std_msgs::Float32 msg;
@@ -133,23 +147,65 @@ void callbackGt(const nav_msgs::Odometry& msg)
 	// cout << "Yaw" << CURRENT_YAW << endl;
 }
 
+/*
+ * Returns the discretized value "value_cont". disc_factor is the amount of available discrete values between -1 and 1.
+ */
+float discretize_value(float value_cont, int disc_factor) {
+	float b = 2.0/(disc_factor-1);
+	float a = -1.0;
+		cout << b << endl;
+
+	while (abs(a-value_cont) >= b/2 && a <= 1) {
+		// Keep adding b until the closest discrete value is found.
+		a += b;
+	}
+	cout << "Continuous " << value_cont << " Discrete " << a << " Discretizing factor " << disc_factor << endl;
+	return a;
+}
+
 geometry_msgs::Twist get_twist() {
 	//take off after FSM counter greater than the threshold
 	if(counter > FSM_COUNTER_THRESH) takeoff=true;
-  
+  	// DYAW = std::max(-1.0f, std::min(DYAW, 1.0f));
+  	// DPITCH = std::max(-1.0f, std::min(DPITCH, 1.0f));
 	geometry_msgs::Twist twist;
+	if(!discretized_twist) {
+		// twist.linear.x = 1 - abs(DYAW);
+		twist.linear.x = 0.8;
+		twist.linear.y = 0.0;
+		twist.linear.z = DPITCH + adjust_height;
 
-	twist.linear.x = 0.8;
-	twist.linear.y = 0.0;
-	twist.linear.z = DPITCH + adjust_height;
+		twist.angular.x = 0.0;
+		twist.angular.y = 0.0;
+		twist.angular.z = DYAW;
+		
+		
+		counter=counter+1;
+		return twist;
+	}
+	else {
 
-	twist.angular.x = 0.0;
-	twist.angular.y = 0.0;
-	twist.angular.z = DYAW;
-	
-	
-	counter=counter+1;
-	return twist;
+		twist.linear.x = 0.8;
+		twist.linear.y = 0.0;
+		twist.linear.z = 0.0;
+
+		twist.angular.x = 0.0;
+		twist.angular.y = 0.0;
+		twist.angular.z = 0.0;
+
+		// Choose to rotate or to go up or down
+		if (abs(DYAW) > abs(DPITCH)) {	
+			// Discretize rotation values
+			twist.angular.z = discretize_value(DYAW, 21);
+		}
+		else {
+			// Discretize altitude values
+			twist.linear.z = discretize_value(DPITCH, 21);
+		}
+		counter++;
+		// Return twist
+		return twist;
+	}
 }
 
 int main(int argc, char** argv)
@@ -197,7 +253,8 @@ int main(int argc, char** argv)
 	// Make Publisher to cmd_vel in order to set the velocity.
 	ros::Publisher pubTakeoff = nh.advertise<std_msgs::Empty>("/ardrone/takeoff", 1);
   
-	ros::Rate loop_rate(10);
+	ros::Rate loop_rate(20);
+	// ros::Rate loop_rate(10);
 
 	debugPub = nh.advertise<std_msgs::Float32>("debug_autopilot", 1000);
 
@@ -217,6 +274,8 @@ int main(int argc, char** argv)
 		BAController = new BehaviourArbitration();
 	}
 	cout << "Goal angle: " << GOAL_ANGLE << endl;
+
+	nh.getParam("discretized_twist", discretized_twist);
 
 	// BAController = new BAController();
 

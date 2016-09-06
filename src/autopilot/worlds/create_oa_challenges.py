@@ -6,7 +6,7 @@ source_world='oa_challenge.world'
 # read world file from example
 location= '/home/jay/autopilot_ws/src/autopilot/worlds/'
 # create destination folder tmp
-directory='/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_train'
+directory='/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_train_100plus'
 # description of worlds
 description_file_handle = open('/home/jay/autopilot_ws/src/autopilot/worlds/description.txt','w')
 
@@ -16,14 +16,14 @@ if not os.path.exists(directory):
 f_sdf = open(location+source_world,'r')
 sdf = f_sdf.read()
 
-y_c = 14 #3 positions of the obstacles are: -14, 0, 14
+y_c = 13 #3 positions of the obstacles are: -14, 0, 14
 order_options = [] #6 possible options in which 3 objects are ordered
-order_options.append([-y_c, 0, y_c])
 order_options.append([-y_c, y_c, 0])
 order_options.append([0, y_c, -y_c])
 order_options.append([0, -y_c, y_c])
 order_options.append([y_c, 0, -y_c])
 order_options.append([y_c, -y_c, 0])
+order_options.append([-y_c, 0, y_c])
 
 #4 options for where the opening in the wall is supposed to be
 wall_options = [-7.5, -2.5, 2.5, 7.5]
@@ -34,8 +34,8 @@ max_ceiling_height = 1.5
 ceiling_options = [4, 3.75]
 
 #2 options for the position of the block
-max_block_height = 1.5
-block_options = [0, max_block_height/2]
+max_block_height = 1.
+block_options = [0, max_block_height/2, max_block_height]
 
 counter=0
 

@@ -2,7 +2,7 @@
 
 import os
 
-path = "/home/jay/data/remote_images/stijn_continuous_expert/"
+path = "/home/jay/data/remote_images/dagger_lstm_depth/0012/"
 
 list_depth = os.listdir(path + "depth")
 list_RGB = os.listdir(path + "RGB")

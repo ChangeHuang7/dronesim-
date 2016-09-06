@@ -1,0 +1,432 @@
+/0000: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0
+/0001: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0.5
+/0002: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 1.0
+/0003: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0
+/0004: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0.5
+/0005: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 1.0
+/0006: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0
+/0007: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0.5
+/0008: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 1.0
+/0009: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0
+/0010: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0.5
+/0011: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 1.0
+/0012: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0
+/0013: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0.5
+/0014: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 1.0
+/0015: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0
+/0016: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0.5
+/0017: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 1.0
+/0018: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0
+/0019: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0.5
+/0020: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 1.0
+/0021: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0
+/0022: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0.5
+/0023: order: wall_y: -13 ceiling_y: 13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 1.0
+/0024: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0
+/0025: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0.5
+/0026: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 1.0
+/0027: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0
+/0028: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0.5
+/0029: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 1.0
+/0030: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0
+/0031: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0.5
+/0032: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 1.0
+/0033: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0
+/0034: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0.5
+/0035: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 1.0
+/0036: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0
+/0037: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0.5
+/0038: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 1.0
+/0039: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0
+/0040: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0.5
+/0041: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 1.0
+/0042: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0
+/0043: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0.5
+/0044: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 1.0
+/0045: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0
+/0046: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0.5
+/0047: order: wall_y: 0 ceiling_y: 13 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 1.0
+/0048: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0
+/0049: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0.5
+/0050: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 1.0
+/0051: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0
+/0052: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0.5
+/0053: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 1.0
+/0054: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0
+/0055: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0.5
+/0056: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 1.0
+/0057: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0
+/0058: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0.5
+/0059: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 1.0
+/0060: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0
+/0061: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0.5
+/0062: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 1.0
+/0063: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0
+/0064: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0.5
+/0065: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 1.0
+/0066: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0
+/0067: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0.5
+/0068: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 1.0
+/0069: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0
+/0070: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0.5
+/0071: order: wall_y: 0 ceiling_y: -13 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 1.0
+/0072: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0
+/0073: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0.5
+/0074: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 1.0
+/0075: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0
+/0076: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0.5
+/0077: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 1.0
+/0078: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0
+/0079: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0.5
+/0080: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 1.0
+/0081: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0
+/0082: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0.5
+/0083: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 1.0
+/0084: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0
+/0085: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0.5
+/0086: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 1.0
+/0087: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0
+/0088: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0.5
+/0089: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 1.0
+/0090: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0
+/0091: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0.5
+/0092: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 1.0
+/0093: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0
+/0094: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0.5
+/0095: order: wall_y: 13 ceiling_y: 0 block_y -13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 1.0
+/0096: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0
+/0097: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0.5
+/0098: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 1.0
+/0099: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0
+/0100: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0.5
+/0101: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 1.0
+/0102: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0
+/0103: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0.5
+/0104: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 1.0
+/0105: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0
+/0106: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0.5
+/0107: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 1.0
+/0108: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0
+/0109: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0.5
+/0110: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 1.0
+/0111: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0
+/0112: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0.5
+/0113: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 1.0
+/0114: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0
+/0115: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0.5
+/0116: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 1.0
+/0117: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0
+/0118: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0.5
+/0119: order: wall_y: 13 ceiling_y: -13 block_y 0
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 1.0
+/0120: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0
+/0121: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 0.5
+/0122: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 4 block_z: 1.0
+/0123: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0
+/0124: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 0.5
+/0125: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -7.5
+ceiling_z: 3.75 block_z: 1.0
+/0126: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0
+/0127: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 0.5
+/0128: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 4 block_z: 1.0
+/0129: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0
+/0130: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 0.5
+/0131: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : -2.5
+ceiling_z: 3.75 block_z: 1.0
+/0132: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0
+/0133: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 0.5
+/0134: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 4 block_z: 1.0
+/0135: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0
+/0136: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 0.5
+/0137: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 2.5
+ceiling_z: 3.75 block_z: 1.0
+/0138: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0
+/0139: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 0.5
+/0140: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 4 block_z: 1.0
+/0141: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0
+/0142: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 0.5
+/0143: order: wall_y: -13 ceiling_y: 0 block_y 13
+wall_pos_x : 7.5
+ceiling_z: 3.75 block_z: 1.0

@@ -22,7 +22,7 @@
   <arg name="sloc" default="/remote_images/set_online/"/>
   <param name="saving_location" value="$(arg sloc)"/>
   <!-- set log location-->
-  <arg name="sloc_log" default="/home/jay/autopilot_ws/src/autopilot/log.txt"/>
+  <arg name="sloc_log" default="/home/jay/autopilot_ws/src/autopilot/log_test.txt"/>
   <param name="saving_location_log" value="$(arg sloc_log)"/>
 
   <arg name="goal_angle" default="4.71"/>
@@ -55,7 +55,7 @@
 
 
     
-    <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" />
+    <!-- <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" /> -->
   
     <!-- JAY: Uncomment this line below if you want to launch your autopilot teleop imediately -->
    <!-- <node name="teleop" pkg="teleop_autopilot" type="teleop_autopilot" output="screen"/>-->

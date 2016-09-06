@@ -67,6 +67,8 @@ using namespace std;
 string online_control="";
 string supervised_control="";
 
+string world;
+
 cv::Vec6f online_twist;
 cv::Vec6f supervisor_twist;
 
@@ -91,7 +93,7 @@ void shutdown(string msg){
   //write the message away to now which one is success and which one failures
   ofstream res_file(save_log_location.c_str(), std::ios_base::app);
   if(res_file){
-    res_file << msg << "\n" ;
+    res_file << world << msg << "\n" ;
     res_file.close();
   }
   stringstream command;
@@ -339,7 +341,7 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
   image_transport::ImageTransport it(nh);
   std::string topic_depth = "/ardrone/kinect/depth/image_raw";
-  
+  nh.getParam("world_name", world);
   // Get the filepath of the log
    if(!nh.getParam("saving_location_log", save_log_location)) {
      ROS_ERROR("No saving directory given for the log!");

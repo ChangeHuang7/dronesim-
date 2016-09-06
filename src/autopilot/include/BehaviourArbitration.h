@@ -10,6 +10,8 @@ public:
 	BehaviourArbitration(std::string xmlPath);
 	~BehaviourArbitration();
 
+	cv::Mat scaleDepthImage(cv::Mat kinectImage);
+
 	float avoidObstacleHorizontal(cv::Mat kinectImage, float currentBearing);
 	float avoidObstacleVertical(cv::Mat kinectImage, float currentBearing);
 
