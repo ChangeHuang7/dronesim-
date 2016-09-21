@@ -95,6 +95,12 @@ void shutdown(string msg){
   std::cout << "SHUTDOWN ################################################ :"<< msg << std::endl;
   shuttingdown=true;
   //write the message away to now which one is success and which one failures
+  //Save statistics
+  std::fstream fs;
+  fs.open(save_statistics_loc.c_str(),ios_base::app);
+  fs << "Total average " << total_average << endl
+    << "Minimum running average: " << min_running_average << ", maximum running average: " << max_running_average << endl;
+  fs.close();
   ofstream res_file(save_log_location.c_str(), std::ios_base::app);
   if(res_file){
     res_file << world << msg << "\n" ;
@@ -111,12 +117,6 @@ void shutdown(string msg){
     buffer >> pid;
   }
 
-  //Save statistics
-  std::fstream fs;
-  fs.open(save_statistics_loc.c_str(),ios_base::in);
-  fs << "Total average " << total_average << endl
-    << "Minimum running average: " << min_running_average << ", maximum running average: " << max_running_average << endl;
-  fs.close();
   
   command << "gnome-terminal -x sh -c 'kill -9 "<< pid <<"'";
   string command_str = command.str();
@@ -352,7 +352,7 @@ void evaluate(){
   cout << "total average: "<<total_average<<". running average "<<running_average<< " over last "<<running_width<<" frames."<<endl;
   std::fstream fs;
   fs.open(save_running_average_loc.c_str(),ios_base::app);
-  fs << running_average;
+  fs << running_average << endl;
   fs.close();
 
 }

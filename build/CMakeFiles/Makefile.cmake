@@ -15,11 +15,15 @@ SET(CMAKE_MAKEFILE_DEPENDS
   "catkin/catkin_generated/version/package.cmake"
   "catkin_generated/order_packages.cmake"
   "teleop_twist_keyboard/catkin_generated/package.cmake"
+  "video_stream_opencv/catkin_generated/ordered_paths.cmake"
+  "video_stream_opencv/catkin_generated/package.cmake"
   "/home/jay/autopilot_ws/src/CMakeLists.txt"
   "/home/jay/autopilot_ws/src/autopilot/CMakeLists.txt"
   "/home/jay/autopilot_ws/src/autopilot/package.xml"
   "/home/jay/autopilot_ws/src/teleop_twist_keyboard/CMakeLists.txt"
   "/home/jay/autopilot_ws/src/teleop_twist_keyboard/package.xml"
+  "/home/jay/autopilot_ws/src/video_stream_opencv/CMakeLists.txt"
+  "/home/jay/autopilot_ws/src/video_stream_opencv/package.xml"
   "/home/jay/catkin_ws/devel/share/ardrone_autonomy/cmake/ardrone_autonomy-msg-extras.cmake"
   "/home/jay/catkin_ws/devel/share/ardrone_autonomy/cmake/ardrone_autonomyConfig-version.cmake"
   "/home/jay/catkin_ws/devel/share/ardrone_autonomy/cmake/ardrone_autonomyConfig.cmake"
@@ -208,6 +212,7 @@ SET(CMAKE_MAKEFILE_PRODUCTS
   "gtest/CMakeFiles/CMakeDirectoryInformation.cmake"
   "teleop_twist_keyboard/CMakeFiles/CMakeDirectoryInformation.cmake"
   "autopilot/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "video_stream_opencv/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -263,4 +268,6 @@ SET(CMAKE_DEPEND_INFO_FILES
   "autopilot/CMakeFiles/tf_generate_messages_cpp.dir/DependInfo.cmake"
   "autopilot/CMakeFiles/tf_generate_messages_lisp.dir/DependInfo.cmake"
   "autopilot/CMakeFiles/tf_generate_messages_py.dir/DependInfo.cmake"
+  "autopilot/CMakeFiles/waypoint_tracker.dir/DependInfo.cmake"
+  "video_stream_opencv/CMakeFiles/video_stream.dir/DependInfo.cmake"
   )

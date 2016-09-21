@@ -53,6 +53,7 @@
 #include <boost/filesystem.hpp>
 #include <string>
 #include <geometry_msgs/Twist.h>
+#include <nav_msgs/Odometry.h>
 #include <stdexcept>
 #include <std_srvs/Empty.h>
 #include <algorithm>
@@ -67,6 +68,7 @@
 using namespace std;
 bool overwrite = true;//if a folder with the same name exists, overwrite this folder.
 string save_log_location;
+string save_pos_log_location;
 string control_output_filename="";
 string control_output_supervisor_filename="";
 bool depth_estimation_flag;
@@ -74,7 +76,10 @@ bool dagger_running = false;
 bool takeoff=false;
 bool shuttingdown=false;
 bool discretized_twist = false;
+
 int max_count=10000;
+int gtID = 0;
+
 boost::format g_format;
 bool save_all_image, save_image_service;
 std::string encoding;
@@ -193,6 +198,27 @@ public://initialize fields of callbacks
 
   void daggerCallbackCmd(const geometry_msgs::Twist& msg) {
     latest_supervisor_twist = msg;
+  }
+
+  void callbackGt(const nav_msgs::Odometry& msg)
+  {
+    // if (msg.pose.pose.position.z > ADJUST_HEIGHT_MAX){
+    //   adjust_height=-1;
+    // }else if (msg.pose.pose.position.z < ADJUST_HEIGHT_MIN){ // Was 0.5
+    //   adjust_height=1;
+    // }else{
+    //   adjust_height=0;
+    // }
+    
+    double posx = msg.pose.pose.position.x;
+    double posy = msg.pose.pose.position.y;    
+    ofstream position_log_file;
+    position_log_file.open(save_pos_log_location.c_str(), ios::app);
+    position_log_file << gtID << " " << posx << " " << posy << endl;
+    position_log_file.close();
+    gtID++;
+
+
   }
   
 private: //private methods of callback
@@ -509,6 +535,8 @@ int main(int argc, char** argv)
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   control_output_filename = "/home/jay/data/"+saving_location+"/control_info.txt";
   control_output_supervisor_filename = "/home/jay/data/"+saving_location+"/control_info_supervisor.txt";
+  save_pos_log_location = "/home/jay/data/"+saving_location+"/position.txt";
+
   std::string main_path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(main_path);
   boost::filesystem::file_status f = status(dir);
@@ -597,6 +625,7 @@ int main(int argc, char** argv)
   
   // Subscribe to the takeoff message in order to know when to start the saving procedure
   ros::Subscriber subTakeoff = nh.subscribe("/ardrone/takeoff",1,&Callbacks::callbackTakeoff, &callbacks);
+  ros::Subscriber subGt = nh.subscribe("/ground_truth/state",1,&Callbacks::callbackGt, &callbacks);
   
   ros::spin();
 } 

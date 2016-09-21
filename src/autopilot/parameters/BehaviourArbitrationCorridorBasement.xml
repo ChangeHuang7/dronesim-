@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!---->
+<opencv_storage>
+<lambdaGoalHorz>
+0.50
+</lambdaGoalHorz>
+<!-- Linearly increases angular velocity  -->
+<lambdaObstacleHorzNormal>
+5
+</lambdaObstacleHorzNormal>	
+<lambdaObstacleHorzAggressive>
+50
+</lambdaObstacleHorzAggressive>
+<weightGoalHorz>
+0.0
+</weightGoalHorz>
+<weightObstacleHorz>
+0.7
+</weightObstacleHorz>
+<!-- Increase to decrease sensitivity -->
+<obstacleDistanceGainHorzNormal> 
+0.25
+</obstacleDistanceGainHorzNormal>
+<obstacleDistanceGainHorzAggressive>
+0.005
+</obstacleDistanceGainHorzAggressive>
+<angularRangeHorz>
+76
+<!-- 50 -->
+</angularRangeHorz>
+<momentum_cancellation>
+-0.5
+</momentum_cancellation>
+<lambdaObstacleVert>
+0
+</lambdaObstacleVert>
+<angularRangeVert>
+40
+</angularRangeVert>
+<obstacleDistanceGainVert>
+0.22
+</obstacleDistanceGainVert>
+<noiseVariance>
+0.2
+</noiseVariance>
+<matchedFilterExpectedResult>
+2000
+</matchedFilterExpectedResult>
+<matchedFilterMargin>
+800
+</matchedFilterMargin>
+<depthImageScaling>
+0.019608
+<!-- 1 -->
+</depthImageScaling>
+
+</opencv_storage>

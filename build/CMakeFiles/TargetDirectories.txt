@@ -49,3 +49,5 @@
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/tf_generate_messages_cpp.dir
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/tf_generate_messages_lisp.dir
 /home/jay/autopilot_ws/build/autopilot/CMakeFiles/tf_generate_messages_py.dir
+/home/jay/autopilot_ws/build/video_stream_opencv/CMakeFiles/video_stream.dir
+/home/jay/autopilot_ws/build/autopilot/CMakeFiles/waypoint_tracker.dir

@@ -91,6 +91,7 @@ IF(NOT CMAKE_INSTALL_LOCAL_ONLY)
   INCLUDE("/home/jay/autopilot_ws/build/gtest/cmake_install.cmake")
   INCLUDE("/home/jay/autopilot_ws/build/teleop_twist_keyboard/cmake_install.cmake")
   INCLUDE("/home/jay/autopilot_ws/build/autopilot/cmake_install.cmake")
+  INCLUDE("/home/jay/autopilot_ws/build/video_stream_opencv/cmake_install.cmake")
 
 ENDIF(NOT CMAKE_INSTALL_LOCAL_ONLY)
 

@@ -17,7 +17,7 @@
 0.4
 </weightObstacleHorz>
 <obstacleDistanceGainHorzNormal>
-0.2
+0.15
 </obstacleDistanceGainHorzNormal>
 <obstacleDistanceGainHorzAggressive>
 0.005

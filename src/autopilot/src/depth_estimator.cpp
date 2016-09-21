@@ -21,7 +21,8 @@
 #include <opencv2/opencv.hpp>
 #include <boost/filesystem.hpp>
 
-// #define RECEIVE_DEPTH_MAP
+#define RECEIVE_DEPTH_MAP
+// #define FLIPIMAGE
 
 image_transport::Publisher depth_pub;
 
@@ -92,6 +93,9 @@ void sendImage(cv::Mat image) {
 	// cv::resize(image, image, cv::Size(640,360));
 	cv::imshow("Sent image", image);
 	// cv::waitKey(500);
+#ifdef FLIPIMAGE
+	cv::flip(image, image, 0);
+#endif
 	image = (image.reshape(0,1));
 	int  imgSizeTransmit = image.total()*image.elemSize();
 	cout << "Sending image " << COUNT << endl;

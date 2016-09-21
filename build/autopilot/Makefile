@@ -762,6 +762,20 @@ tf_generate_messages_py/fast:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/tf_generate_messages_py.dir/build.make autopilot/CMakeFiles/tf_generate_messages_py.dir/build
 .PHONY : tf_generate_messages_py/fast
 
+# Convenience name for target.
+autopilot/CMakeFiles/waypoint_tracker.dir/rule:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/waypoint_tracker.dir/rule
+.PHONY : autopilot/CMakeFiles/waypoint_tracker.dir/rule
+
+# Convenience name for target.
+waypoint_tracker: autopilot/CMakeFiles/waypoint_tracker.dir/rule
+.PHONY : waypoint_tracker
+
+# fast build rule for target.
+waypoint_tracker/fast:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/waypoint_tracker.dir/build.make autopilot/CMakeFiles/waypoint_tracker.dir/build
+.PHONY : waypoint_tracker/fast
+
 src/BehaviourArbitration.o: src/BehaviourArbitration.cpp.o
 .PHONY : src/BehaviourArbitration.o
 
@@ -1026,6 +1040,30 @@ src/teleop_autopilot_turning.cpp.s:
 	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/teleop_autopilot_turning.dir/build.make autopilot/CMakeFiles/teleop_autopilot_turning.dir/src/teleop_autopilot_turning.cpp.s
 .PHONY : src/teleop_autopilot_turning.cpp.s
 
+src/waypoint_navigation.o: src/waypoint_navigation.cpp.o
+.PHONY : src/waypoint_navigation.o
+
+# target to build an object file
+src/waypoint_navigation.cpp.o:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/waypoint_tracker.dir/build.make autopilot/CMakeFiles/waypoint_tracker.dir/src/waypoint_navigation.cpp.o
+.PHONY : src/waypoint_navigation.cpp.o
+
+src/waypoint_navigation.i: src/waypoint_navigation.cpp.i
+.PHONY : src/waypoint_navigation.i
+
+# target to preprocess a source file
+src/waypoint_navigation.cpp.i:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/waypoint_tracker.dir/build.make autopilot/CMakeFiles/waypoint_tracker.dir/src/waypoint_navigation.cpp.i
+.PHONY : src/waypoint_navigation.cpp.i
+
+src/waypoint_navigation.s: src/waypoint_navigation.cpp.s
+.PHONY : src/waypoint_navigation.s
+
+# target to generate assembly for a file
+src/waypoint_navigation.cpp.s:
+	cd /home/jay/autopilot_ws/build && $(MAKE) -f autopilot/CMakeFiles/waypoint_tracker.dir/build.make autopilot/CMakeFiles/waypoint_tracker.dir/src/waypoint_navigation.cpp.s
+.PHONY : src/waypoint_navigation.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1083,6 +1121,7 @@ help:
 	@echo "... tf_generate_messages_cpp"
 	@echo "... tf_generate_messages_lisp"
 	@echo "... tf_generate_messages_py"
+	@echo "... waypoint_tracker"
 	@echo "... src/BehaviourArbitration.o"
 	@echo "... src/BehaviourArbitration.i"
 	@echo "... src/BehaviourArbitration.s"
@@ -1116,6 +1155,9 @@ help:
 	@echo "... src/teleop_autopilot_turning.o"
 	@echo "... src/teleop_autopilot_turning.i"
 	@echo "... src/teleop_autopilot_turning.s"
+	@echo "... src/waypoint_navigation.o"
+	@echo "... src/waypoint_navigation.i"
+	@echo "... src/waypoint_navigation.s"
 .PHONY : help
 
 

@@ -11,19 +11,20 @@ then
 	exit
 fi
 # Switch between discrete or continuous supervised control labels...
-if [ "$2" == "d" ]
-then
-    LAUNCHFILE="online_control_dis_dagger.launch"
-else
+# if [ "$2" == "d" ]
+# then
+#     LAUNCHFILE="online_control_dis_dagger.launch"
+# else
 
-    LAUNCHFILE="online_control_con_dagger.launch"
-fi
+LAUNCHFILE="online_control_con_dagger.launch"
+# fi
 echo $LAUNCHFILE
 
 #declare -a WORLDFILES=("0005" "0010" "0024" "0026" "0036" "0045" "0055" "0066" "0074" "0083")
 #declare -a WORLDFILES=("0005")
 
-WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_train/*.world"
+WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/sequential_oa/*.world"
+#WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_test/*.world"
 #WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_selected/*.world"
 #WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/oa_challenges_train_100/*.world"
 
@@ -75,7 +76,7 @@ do
  	# When killed, copy everything to other folder
 	mkdir -p $SLOC_dest
   	chmod 775 $SLOC_dest
-  	echo "Copying to dagger folder"
+  	echo "Copying to dagger folder $set_name"
   	cp -r $SLOC_FULL/* $SLOC_dest
   	echo "Removing images from set_online"
  	# Remove everything in the folder
@@ -86,9 +87,15 @@ do
  	#make file free again
  	rm /home/jay/data/remote_features/clear_memory
 done
+
+if [ -z "$2" ]
+then
+exit
+fi
+
 # Signal pilot_eval to clear inner state
-echo "$3" > "/home/jay/data/remote_features/change_network"
-echo "send $3"
+echo "$2" > "/home/jay/data/remote_features/change_network"
+echo "send $2"
 
 sleep 30
 

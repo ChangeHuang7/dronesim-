@@ -18,7 +18,7 @@ using namespace std;
 
 bool discretized_twist = false;
 bool takeoff = false;
-int FSM_COUNTER_THRESH=20;//wait for some time before taking off
+int FSM_COUNTER_THRESH=400;//wait for some time before taking off
 int counter = 0;
 
 

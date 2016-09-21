@@ -16,3 +16,5 @@ success
 bump
 success
 bump
+/wall_challenges_train/0010.worldbump
+/wall_challenges_train/0010.worldbump

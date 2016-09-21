@@ -312,6 +312,7 @@ autopilot/all: autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/a
 autopilot/all: autopilot/CMakeFiles/teleop_autopilot_dagger.dir/all
 autopilot/all: autopilot/CMakeFiles/teleop_autopilot_evaluation.dir/all
 autopilot/all: autopilot/CMakeFiles/teleop_autopilot_turning.dir/all
+autopilot/all: autopilot/CMakeFiles/waypoint_tracker.dir/all
 .PHONY : autopilot/all
 
 # Convenience name for "clean" pass in the directory.
@@ -359,6 +360,7 @@ autopilot/clean: autopilot/CMakeFiles/tf2_msgs_generate_messages_py.dir/clean
 autopilot/clean: autopilot/CMakeFiles/tf_generate_messages_cpp.dir/clean
 autopilot/clean: autopilot/CMakeFiles/tf_generate_messages_lisp.dir/clean
 autopilot/clean: autopilot/CMakeFiles/tf_generate_messages_py.dir/clean
+autopilot/clean: autopilot/CMakeFiles/waypoint_tracker.dir/clean
 .PHONY : autopilot/clean
 
 # Convenience name for "preinstall" pass in the directory.
@@ -1771,6 +1773,91 @@ autopilot/CMakeFiles/tf_generate_messages_py.dir/clean:
 
 # clean rule for target.
 clean: autopilot/CMakeFiles/tf_generate_messages_py.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target autopilot/CMakeFiles/waypoint_tracker.dir
+
+# All Build rule for target.
+autopilot/CMakeFiles/waypoint_tracker.dir/all:
+	$(MAKE) -f autopilot/CMakeFiles/waypoint_tracker.dir/build.make autopilot/CMakeFiles/waypoint_tracker.dir/depend
+	$(MAKE) -f autopilot/CMakeFiles/waypoint_tracker.dir/build.make autopilot/CMakeFiles/waypoint_tracker.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  16
+	@echo "Built target waypoint_tracker"
+.PHONY : autopilot/CMakeFiles/waypoint_tracker.dir/all
+
+# Include target in all.
+all: autopilot/CMakeFiles/waypoint_tracker.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+autopilot/CMakeFiles/waypoint_tracker.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_ws/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 autopilot/CMakeFiles/waypoint_tracker.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_ws/build/CMakeFiles 0
+.PHONY : autopilot/CMakeFiles/waypoint_tracker.dir/rule
+
+# Convenience name for target.
+waypoint_tracker: autopilot/CMakeFiles/waypoint_tracker.dir/rule
+.PHONY : waypoint_tracker
+
+# clean rule for target.
+autopilot/CMakeFiles/waypoint_tracker.dir/clean:
+	$(MAKE) -f autopilot/CMakeFiles/waypoint_tracker.dir/build.make autopilot/CMakeFiles/waypoint_tracker.dir/clean
+.PHONY : autopilot/CMakeFiles/waypoint_tracker.dir/clean
+
+# clean rule for target.
+clean: autopilot/CMakeFiles/waypoint_tracker.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory video_stream_opencv
+
+# Convenience name for "all" pass in the directory.
+video_stream_opencv/all: video_stream_opencv/CMakeFiles/video_stream.dir/all
+.PHONY : video_stream_opencv/all
+
+# Convenience name for "clean" pass in the directory.
+video_stream_opencv/clean: video_stream_opencv/CMakeFiles/video_stream.dir/clean
+.PHONY : video_stream_opencv/clean
+
+# Convenience name for "preinstall" pass in the directory.
+video_stream_opencv/preinstall:
+.PHONY : video_stream_opencv/preinstall
+
+#=============================================================================
+# Target rules for target video_stream_opencv/CMakeFiles/video_stream.dir
+
+# All Build rule for target.
+video_stream_opencv/CMakeFiles/video_stream.dir/all:
+	$(MAKE) -f video_stream_opencv/CMakeFiles/video_stream.dir/build.make video_stream_opencv/CMakeFiles/video_stream.dir/depend
+	$(MAKE) -f video_stream_opencv/CMakeFiles/video_stream.dir/build.make video_stream_opencv/CMakeFiles/video_stream.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles  15
+	@echo "Built target video_stream"
+.PHONY : video_stream_opencv/CMakeFiles/video_stream.dir/all
+
+# Include target in all.
+all: video_stream_opencv/CMakeFiles/video_stream.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+video_stream_opencv/CMakeFiles/video_stream.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_ws/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 video_stream_opencv/CMakeFiles/video_stream.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_ws/build/CMakeFiles 0
+.PHONY : video_stream_opencv/CMakeFiles/video_stream.dir/rule
+
+# Convenience name for target.
+video_stream: video_stream_opencv/CMakeFiles/video_stream.dir/rule
+.PHONY : video_stream
+
+# clean rule for target.
+video_stream_opencv/CMakeFiles/video_stream.dir/clean:
+	$(MAKE) -f video_stream_opencv/CMakeFiles/video_stream.dir/build.make video_stream_opencv/CMakeFiles/video_stream.dir/clean
+.PHONY : video_stream_opencv/CMakeFiles/video_stream.dir/clean
+
+# clean rule for target.
+clean: video_stream_opencv/CMakeFiles/video_stream.dir/clean
 .PHONY : clean
 
 #=============================================================================

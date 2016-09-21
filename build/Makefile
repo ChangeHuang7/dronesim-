@@ -809,6 +809,32 @@ tf_generate_messages_py/fast:
 	$(MAKE) -f autopilot/CMakeFiles/tf_generate_messages_py.dir/build.make autopilot/CMakeFiles/tf_generate_messages_py.dir/build
 .PHONY : tf_generate_messages_py/fast
 
+#=============================================================================
+# Target rules for targets named waypoint_tracker
+
+# Build rule for target.
+waypoint_tracker: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 waypoint_tracker
+.PHONY : waypoint_tracker
+
+# fast build rule for target.
+waypoint_tracker/fast:
+	$(MAKE) -f autopilot/CMakeFiles/waypoint_tracker.dir/build.make autopilot/CMakeFiles/waypoint_tracker.dir/build
+.PHONY : waypoint_tracker/fast
+
+#=============================================================================
+# Target rules for targets named video_stream
+
+# Build rule for target.
+video_stream: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 video_stream
+.PHONY : video_stream
+
+# fast build rule for target.
+video_stream/fast:
+	$(MAKE) -f video_stream_opencv/CMakeFiles/video_stream.dir/build.make video_stream_opencv/CMakeFiles/video_stream.dir/build
+.PHONY : video_stream/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -873,6 +899,8 @@ help:
 	@echo "... tf_generate_messages_cpp"
 	@echo "... tf_generate_messages_lisp"
 	@echo "... tf_generate_messages_py"
+	@echo "... waypoint_tracker"
+	@echo "... video_stream"
 .PHONY : help
 
 
