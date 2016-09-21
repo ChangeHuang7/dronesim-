@@ -31,11 +31,14 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
+# Escaping for special characters.
+EQUALS = =
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jay/autopilot_ws/src
+CMAKE_SOURCE_DIR = /home/jay/autopilot_temp/dronesim-/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jay/autopilot_ws/build
+CMAKE_BINARY_DIR = /home/jay/autopilot_temp/dronesim-/build
 
 # Utility rule file for _catkin_empty_exported_target.
 
@@ -53,10 +56,10 @@ teleop_twist_keyboard/CMakeFiles/_catkin_empty_exported_target.dir/build: _catki
 .PHONY : teleop_twist_keyboard/CMakeFiles/_catkin_empty_exported_target.dir/build
 
 teleop_twist_keyboard/CMakeFiles/_catkin_empty_exported_target.dir/clean:
-	cd /home/jay/autopilot_ws/build/teleop_twist_keyboard && $(CMAKE_COMMAND) -P CMakeFiles/_catkin_empty_exported_target.dir/cmake_clean.cmake
+	cd /home/jay/autopilot_temp/dronesim-/build/teleop_twist_keyboard && $(CMAKE_COMMAND) -P CMakeFiles/_catkin_empty_exported_target.dir/cmake_clean.cmake
 .PHONY : teleop_twist_keyboard/CMakeFiles/_catkin_empty_exported_target.dir/clean
 
 teleop_twist_keyboard/CMakeFiles/_catkin_empty_exported_target.dir/depend:
-	cd /home/jay/autopilot_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jay/autopilot_ws/src /home/jay/autopilot_ws/src/teleop_twist_keyboard /home/jay/autopilot_ws/build /home/jay/autopilot_ws/build/teleop_twist_keyboard /home/jay/autopilot_ws/build/teleop_twist_keyboard/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/jay/autopilot_temp/dronesim-/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jay/autopilot_temp/dronesim-/src /home/jay/autopilot_temp/dronesim-/src/teleop_twist_keyboard /home/jay/autopilot_temp/dronesim-/build /home/jay/autopilot_temp/dronesim-/build/teleop_twist_keyboard /home/jay/autopilot_temp/dronesim-/build/teleop_twist_keyboard/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : teleop_twist_keyboard/CMakeFiles/_catkin_empty_exported_target.dir/depend
 

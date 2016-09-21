@@ -1,8 +1,8 @@
-prefix=/home/jay/autopilot_ws/devel
+prefix=/home/jay/autopilot_temp/dronesim-/devel
 
 Name: teleop_twist_keyboard
 Description: Description of teleop_twist_keyboard
 Version: 0.6.0
 Cflags: 
-Libs: -L/home/jay/autopilot_ws/devel/lib 
+Libs: -L/home/jay/autopilot_temp/dronesim-/devel/lib 
 Requires: 

@@ -22,13 +22,14 @@
 #include <boost/filesystem.hpp>
 
 #define RECEIVE_DEPTH_MAP
-// #define FLIPIMAGE
+
+// #define SOCKET_COMS
 
 image_transport::Publisher depth_pub;
 
-std::string communication_folder = "/home/jay/data/depth_estimation";
+std::string communication_folder = "/home/jay/Documents/ros_matlab_comms";
 // std::string communication_folder_emerald = "/home/jay/data/rgb_emerald";
-std::string communication_folder_emerald = "/home/jay/Desktop/";
+// std::string communication_folder_emerald = "/home/jay/Desktop/";
 std::string path_RGB_image;
 std::string im_ready_path;
 std::string depth_ready_path;
@@ -92,22 +93,24 @@ void sendImage(cv::Mat image) {
 	// image = cv::imread("/home/jay/Desktop/depth.jpg", CV_LOAD_IMAGE_GRAYSCALE);
 	// cv::resize(image, image, cv::Size(640,360));
 	cv::imshow("Sent image", image);
-	// cv::waitKey(500);
-#ifdef FLIPIMAGE
-	cv::flip(image, image, 0);
-#endif
-	image = (image.reshape(0,1));
-	int  imgSizeTransmit = image.total()*image.elemSize();
-	cout << "Sending image " << COUNT << endl;
-	cout << "Size: " << image.size() << "Type: " << image.type() <<  "Bytes " << imgSizeTransmit << endl;
-	COUNT++;
-	write(SOCKET, image.data, imgSizeTransmit);
-  cout << "Image sent" << endl;
-
+	cv::waitKey(10);
+	#ifdef SOCKET_COMS
+		image = (image.reshape(0,1));
+		int  imgSizeTransmit = image.total()*image.elemSize();
+		cout << "Sending image " << COUNT << endl;
+		cout << "Size: " << image.size() << "Type: " << image.type() <<  "Bytes " << imgSizeTransmit << endl;
+		COUNT++;
+		write(SOCKET, image.data, imgSizeTransmit);
+		cout << "Image sent" << endl;
+	#else
+		cv::imwrite(path_RGB_image, image);
+		FILE * fid = fopen(im_ready_path.c_str(), "w");
+		fclose(fid);
+	#endif
 }
 
 cv::Mat receiveImage() {
-
+#ifdef SOCKET_COMS
   cv::Mat img = cv::Mat::zeros( 360,640, CV_8UC1);
 
   int imgSize = img.total()*img.elemSize();
@@ -130,6 +133,13 @@ cv::Mat receiveImage() {
           ptr=ptr+1;
       }
   }
+#else
+  while (!boost::filesystem::exists(depth_ready_path)) {
+  	usleep(10e3);
+  }
+  boost::filesystem::remove(depth_ready_path);
+  cv::Mat img = cv::imread(depth_estim_path, 0);
+ #endif
   cv::imshow("Received", img);
   cv::waitKey(10);
   cout << "Depthmap received!" << endl;
@@ -159,7 +169,22 @@ void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& origin
 	cv::Mat rgb_image = cv_ptr->image;
 	cout << "Size: " << rgb_image.size() << "Type: " << rgb_image.type() << endl;
 
-	sendImage(rgb_image);
+// Split the image into different channels
+  vector<cv::Mat> rgbChannels(3);
+  cv::split(rgb_image, rgbChannels);
+
+  cv::Mat bgr_image;
+   
+  // 
+  vector<cv::Mat> channels;
+  channels.push_back(rgbChannels[2]);
+  channels.push_back(rgbChannels[1]);
+  channels.push_back(rgbChannels[0]);
+
+  /// Merge the three channels
+  cv::merge(channels, bgr_image);
+
+	sendImage(bgr_image);
 
 	#ifdef RECEIVE_DEPTH_MAP
 		cv::Mat depth_estim = receiveImage();
@@ -194,10 +219,12 @@ void callbackWithoutCameraInfoWithDepth(const sensor_msgs::ImageConstPtr& origin
 
 		
 		cv::Mat_<float> depth_estim_float, depth_estim_float_resized;
-
+		cout << "Converting" << endl;
 		depth_estim.convertTo(depth_estim_float, CV_32F);
+		cout << "Converted" << endl;
 		cv::resize(depth_estim_float,depth_estim_float_resized,cv::Size(640,360));
-
+		cv::imshow("Resized image", depth_estim_float_resized/255);
+		cv::waitKey(10);
 
 		// Scale matrix to fit between 0 and 5
 		publish_depth_estim(depth_estim_float_resized);
@@ -213,23 +240,24 @@ int main(int argc, char** argv) {
 	image_transport::ImageTransport it(nh);
 
 	image_transport::Subscriber sub_image = it.subscribe(
-			"/ardrone/image_raw", 1, callbackWithoutCameraInfoWithDepth);
+			"/bebop/image_raw", 1, callbackWithoutCameraInfoWithDepth);
 
 	depth_pub = it.advertise("/autopilot/depth_estim", 100);
 
 	// Get location for the files
-	nh.getParam("depth_estimation_path", communication_folder);
+	// nh.getParam("depth_estimation_path", communication_folder);
 
 	nh.param("depth_TCP_port", PORTNO, 55555);
 	cout << "Using port " << PORTNO << endl;
 
-	path_RGB_image= communication_folder_emerald + "/image.jpg";
-	im_ready_path= communication_folder_emerald + "/imageReady";
-	depth_ready_path= communication_folder_emerald + "/depthReady";
-	depth_estim_path= communication_folder_emerald + "/depth.jpg";
+	path_RGB_image= communication_folder + "/image.jpg";
+	im_ready_path= communication_folder + "/imageReady";
+	depth_ready_path= communication_folder + "/depthReady";
+	depth_estim_path= communication_folder + "/depth.jpg";
 
-	startImageReceiver();
-
+	#ifdef SOCKET_COMS
+		startImageReceiver();
+	#endif
 	// Make sure no files are currently in the folder
 	// boost::filesystem::remove(path_RGB_image);
 	// boost::filesystem::remove(im_ready_path);

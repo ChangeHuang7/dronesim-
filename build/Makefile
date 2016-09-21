@@ -35,11 +35,14 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
+# Escaping for special characters.
+EQUALS = =
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jay/autopilot_ws/src
+CMAKE_SOURCE_DIR = /home/jay/autopilot_temp/dronesim-/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jay/autopilot_ws/build
+CMAKE_BINARY_DIR = /home/jay/autopilot_temp/dronesim-/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -117,9 +120,9 @@ test/fast: test
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_ws/build/CMakeFiles /home/jay/autopilot_ws/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_temp/dronesim-/build/CMakeFiles /home/jay/autopilot_temp/dronesim-/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_ws/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/autopilot_temp/dronesim-/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -158,6 +161,19 @@ clean_test_results: cmake_check_build_system
 clean_test_results/fast:
 	$(MAKE) -f CMakeFiles/clean_test_results.dir/build.make CMakeFiles/clean_test_results.dir/build
 .PHONY : clean_test_results/fast
+
+#=============================================================================
+# Target rules for targets named download_extra_data
+
+# Build rule for target.
+download_extra_data: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 download_extra_data
+.PHONY : download_extra_data
+
+# fast build rule for target.
+download_extra_data/fast:
+	$(MAKE) -f CMakeFiles/download_extra_data.dir/build.make CMakeFiles/download_extra_data.dir/build
+.PHONY : download_extra_data/fast
 
 #=============================================================================
 # Target rules for targets named doxygen
@@ -314,45 +330,6 @@ actionlib_msgs_generate_messages_py: cmake_check_build_system
 actionlib_msgs_generate_messages_py/fast:
 	$(MAKE) -f autopilot/CMakeFiles/actionlib_msgs_generate_messages_py.dir/build.make autopilot/CMakeFiles/actionlib_msgs_generate_messages_py.dir/build
 .PHONY : actionlib_msgs_generate_messages_py/fast
-
-#=============================================================================
-# Target rules for targets named ardrone_autonomy_generate_messages_cpp
-
-# Build rule for target.
-ardrone_autonomy_generate_messages_cpp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ardrone_autonomy_generate_messages_cpp
-.PHONY : ardrone_autonomy_generate_messages_cpp
-
-# fast build rule for target.
-ardrone_autonomy_generate_messages_cpp/fast:
-	$(MAKE) -f autopilot/CMakeFiles/ardrone_autonomy_generate_messages_cpp.dir/build.make autopilot/CMakeFiles/ardrone_autonomy_generate_messages_cpp.dir/build
-.PHONY : ardrone_autonomy_generate_messages_cpp/fast
-
-#=============================================================================
-# Target rules for targets named ardrone_autonomy_generate_messages_lisp
-
-# Build rule for target.
-ardrone_autonomy_generate_messages_lisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ardrone_autonomy_generate_messages_lisp
-.PHONY : ardrone_autonomy_generate_messages_lisp
-
-# fast build rule for target.
-ardrone_autonomy_generate_messages_lisp/fast:
-	$(MAKE) -f autopilot/CMakeFiles/ardrone_autonomy_generate_messages_lisp.dir/build.make autopilot/CMakeFiles/ardrone_autonomy_generate_messages_lisp.dir/build
-.PHONY : ardrone_autonomy_generate_messages_lisp/fast
-
-#=============================================================================
-# Target rules for targets named ardrone_autonomy_generate_messages_py
-
-# Build rule for target.
-ardrone_autonomy_generate_messages_py: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ardrone_autonomy_generate_messages_py
-.PHONY : ardrone_autonomy_generate_messages_py
-
-# fast build rule for target.
-ardrone_autonomy_generate_messages_py/fast:
-	$(MAKE) -f autopilot/CMakeFiles/ardrone_autonomy_generate_messages_py.dir/build.make autopilot/CMakeFiles/ardrone_autonomy_generate_messages_py.dir/build
-.PHONY : ardrone_autonomy_generate_messages_py/fast
 
 #=============================================================================
 # Target rules for targets named behaviourLib
@@ -641,45 +618,6 @@ std_msgs_generate_messages_py/fast:
 .PHONY : std_msgs_generate_messages_py/fast
 
 #=============================================================================
-# Target rules for targets named std_srvs_generate_messages_cpp
-
-# Build rule for target.
-std_srvs_generate_messages_cpp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_cpp
-.PHONY : std_srvs_generate_messages_cpp
-
-# fast build rule for target.
-std_srvs_generate_messages_cpp/fast:
-	$(MAKE) -f autopilot/CMakeFiles/std_srvs_generate_messages_cpp.dir/build.make autopilot/CMakeFiles/std_srvs_generate_messages_cpp.dir/build
-.PHONY : std_srvs_generate_messages_cpp/fast
-
-#=============================================================================
-# Target rules for targets named std_srvs_generate_messages_lisp
-
-# Build rule for target.
-std_srvs_generate_messages_lisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_lisp
-.PHONY : std_srvs_generate_messages_lisp
-
-# fast build rule for target.
-std_srvs_generate_messages_lisp/fast:
-	$(MAKE) -f autopilot/CMakeFiles/std_srvs_generate_messages_lisp.dir/build.make autopilot/CMakeFiles/std_srvs_generate_messages_lisp.dir/build
-.PHONY : std_srvs_generate_messages_lisp/fast
-
-#=============================================================================
-# Target rules for targets named std_srvs_generate_messages_py
-
-# Build rule for target.
-std_srvs_generate_messages_py: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_py
-.PHONY : std_srvs_generate_messages_py
-
-# fast build rule for target.
-std_srvs_generate_messages_py/fast:
-	$(MAKE) -f autopilot/CMakeFiles/std_srvs_generate_messages_py.dir/build.make autopilot/CMakeFiles/std_srvs_generate_messages_py.dir/build
-.PHONY : std_srvs_generate_messages_py/fast
-
-#=============================================================================
 # Target rules for targets named teleop_autopilot_behaviour_arbitration
 
 # Build rule for target.
@@ -822,19 +760,6 @@ waypoint_tracker/fast:
 	$(MAKE) -f autopilot/CMakeFiles/waypoint_tracker.dir/build.make autopilot/CMakeFiles/waypoint_tracker.dir/build
 .PHONY : waypoint_tracker/fast
 
-#=============================================================================
-# Target rules for targets named video_stream
-
-# Build rule for target.
-video_stream: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 video_stream
-.PHONY : video_stream
-
-# fast build rule for target.
-video_stream/fast:
-	$(MAKE) -f video_stream_opencv/CMakeFiles/video_stream.dir/build.make video_stream_opencv/CMakeFiles/video_stream.dir/build
-.PHONY : video_stream/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -842,6 +767,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... clean_test_results"
+	@echo "... download_extra_data"
 	@echo "... doxygen"
 	@echo "... edit_cache"
 	@echo "... install"
@@ -861,9 +787,6 @@ help:
 	@echo "... actionlib_msgs_generate_messages_cpp"
 	@echo "... actionlib_msgs_generate_messages_lisp"
 	@echo "... actionlib_msgs_generate_messages_py"
-	@echo "... ardrone_autonomy_generate_messages_cpp"
-	@echo "... ardrone_autonomy_generate_messages_lisp"
-	@echo "... ardrone_autonomy_generate_messages_py"
 	@echo "... behaviourLib"
 	@echo "... depth_estimator"
 	@echo "... geometry_msgs_generate_messages_cpp"
@@ -886,9 +809,6 @@ help:
 	@echo "... std_msgs_generate_messages_cpp"
 	@echo "... std_msgs_generate_messages_lisp"
 	@echo "... std_msgs_generate_messages_py"
-	@echo "... std_srvs_generate_messages_cpp"
-	@echo "... std_srvs_generate_messages_lisp"
-	@echo "... std_srvs_generate_messages_py"
 	@echo "... teleop_autopilot_behaviour_arbitration"
 	@echo "... teleop_autopilot_dagger"
 	@echo "... teleop_autopilot_evaluation"
@@ -900,7 +820,6 @@ help:
 	@echo "... tf_generate_messages_lisp"
 	@echo "... tf_generate_messages_py"
 	@echo "... waypoint_tracker"
-	@echo "... video_stream"
 .PHONY : help
 
 

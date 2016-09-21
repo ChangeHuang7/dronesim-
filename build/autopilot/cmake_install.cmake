@@ -1,8 +1,8 @@
-# Install script for directory: /home/jay/autopilot_ws/src/autopilot
+# Install script for directory: /home/jay/autopilot_temp/dronesim-/src/autopilot
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  SET(CMAKE_INSTALL_PREFIX "/home/jay/autopilot_ws/install")
+  SET(CMAKE_INSTALL_PREFIX "/home/jay/autopilot_temp/dronesim-/install")
 ENDIF(NOT DEFINED CMAKE_INSTALL_PREFIX)
 STRING(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -33,17 +33,17 @@ IF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 ENDIF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/jay/autopilot_ws/build/autopilot/catkin_generated/installspace/autopilot.pc")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/jay/autopilot_temp/dronesim-/build/autopilot/catkin_generated/installspace/autopilot.pc")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/autopilot/cmake" TYPE FILE FILES
-    "/home/jay/autopilot_ws/build/autopilot/catkin_generated/installspace/autopilotConfig.cmake"
-    "/home/jay/autopilot_ws/build/autopilot/catkin_generated/installspace/autopilotConfig-version.cmake"
+    "/home/jay/autopilot_temp/dronesim-/build/autopilot/catkin_generated/installspace/autopilotConfig.cmake"
+    "/home/jay/autopilot_temp/dronesim-/build/autopilot/catkin_generated/installspace/autopilotConfig-version.cmake"
     )
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/autopilot" TYPE FILE FILES "/home/jay/autopilot_ws/src/autopilot/package.xml")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/autopilot" TYPE FILE FILES "/home/jay/autopilot_temp/dronesim-/src/autopilot/package.xml")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 

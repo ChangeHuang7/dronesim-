@@ -31,11 +31,14 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
+# Escaping for special characters.
+EQUALS = =
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jay/autopilot_ws/src
+CMAKE_SOURCE_DIR = /home/jay/autopilot_temp/dronesim-/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jay/autopilot_ws/build
+CMAKE_BINARY_DIR = /home/jay/autopilot_temp/dronesim-/build
 
 # Utility rule file for actionlib_generate_messages_cpp.
 
@@ -53,10 +56,10 @@ autopilot/CMakeFiles/actionlib_generate_messages_cpp.dir/build: actionlib_genera
 .PHONY : autopilot/CMakeFiles/actionlib_generate_messages_cpp.dir/build
 
 autopilot/CMakeFiles/actionlib_generate_messages_cpp.dir/clean:
-	cd /home/jay/autopilot_ws/build/autopilot && $(CMAKE_COMMAND) -P CMakeFiles/actionlib_generate_messages_cpp.dir/cmake_clean.cmake
+	cd /home/jay/autopilot_temp/dronesim-/build/autopilot && $(CMAKE_COMMAND) -P CMakeFiles/actionlib_generate_messages_cpp.dir/cmake_clean.cmake
 .PHONY : autopilot/CMakeFiles/actionlib_generate_messages_cpp.dir/clean
 
 autopilot/CMakeFiles/actionlib_generate_messages_cpp.dir/depend:
-	cd /home/jay/autopilot_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jay/autopilot_ws/src /home/jay/autopilot_ws/src/autopilot /home/jay/autopilot_ws/build /home/jay/autopilot_ws/build/autopilot /home/jay/autopilot_ws/build/autopilot/CMakeFiles/actionlib_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/jay/autopilot_temp/dronesim-/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jay/autopilot_temp/dronesim-/src /home/jay/autopilot_temp/dronesim-/src/autopilot /home/jay/autopilot_temp/dronesim-/build /home/jay/autopilot_temp/dronesim-/build/autopilot /home/jay/autopilot_temp/dronesim-/build/autopilot/CMakeFiles/actionlib_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : autopilot/CMakeFiles/actionlib_generate_messages_cpp.dir/depend
 

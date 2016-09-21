@@ -31,11 +31,14 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
+# Escaping for special characters.
+EQUALS = =
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jay/autopilot_ws/src
+CMAKE_SOURCE_DIR = /home/jay/autopilot_temp/dronesim-/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jay/autopilot_ws/build
+CMAKE_BINARY_DIR = /home/jay/autopilot_temp/dronesim-/build
 
 # Include any dependencies generated for this target.
 include autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/depend.make
@@ -47,18 +50,18 @@ include autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/progress
 include autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/flags.make
 
 autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o: autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/flags.make
-autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o: /home/jay/autopilot_ws/src/autopilot/src/teleop_autopilot_behaviour_arbitration.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles $(CMAKE_PROGRESS_1)
+autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o: /home/jay/autopilot_temp/dronesim-/src/autopilot/src/teleop_autopilot_behaviour_arbitration.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_temp/dronesim-/build/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o"
-	cd /home/jay/autopilot_ws/build/autopilot && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o -c /home/jay/autopilot_ws/src/autopilot/src/teleop_autopilot_behaviour_arbitration.cpp
+	cd /home/jay/autopilot_temp/dronesim-/build/autopilot && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o -c /home/jay/autopilot_temp/dronesim-/src/autopilot/src/teleop_autopilot_behaviour_arbitration.cpp
 
 autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.i"
-	cd /home/jay/autopilot_ws/build/autopilot && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/jay/autopilot_ws/src/autopilot/src/teleop_autopilot_behaviour_arbitration.cpp > CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.i
+	cd /home/jay/autopilot_temp/dronesim-/build/autopilot && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/jay/autopilot_temp/dronesim-/src/autopilot/src/teleop_autopilot_behaviour_arbitration.cpp > CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.i
 
 autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.s"
-	cd /home/jay/autopilot_ws/build/autopilot && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/jay/autopilot_ws/src/autopilot/src/teleop_autopilot_behaviour_arbitration.cpp -o CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.s
+	cd /home/jay/autopilot_temp/dronesim-/build/autopilot && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/jay/autopilot_temp/dronesim-/src/autopilot/src/teleop_autopilot_behaviour_arbitration.cpp -o CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.s
 
 autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o.requires:
 .PHONY : autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o.requires
@@ -76,110 +79,106 @@ teleop_autopilot_behaviour_arbitration_OBJECTS = \
 # External object files for target teleop_autopilot_behaviour_arbitration
 teleop_autopilot_behaviour_arbitration_EXTERNAL_OBJECTS =
 
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libcamera_info_manager.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libcv_bridge.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_videostab.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_video.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_superres.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_stitching.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_photo.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_ocl.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_objdetect.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_nonfree.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_ml.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_legacy.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_imgproc.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_highgui.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_gpu.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_flann.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_features2d.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_core.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_contrib.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_calib3d.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libimage_transport.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/libtinyxml.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libclass_loader.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/libPocoFoundation.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libdl.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libroslib.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libcamera_calibration_parsers.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libtf.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libtf2_ros.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libactionlib.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libmessage_filters.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libroscpp.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/libboost_signals-mt.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/libboost_filesystem-mt.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libxmlrpcpp.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libtf2.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libroscpp_serialization.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/librosconsole.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/librosconsole_log4cxx.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/librosconsole_backend_interface.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/liblog4cxx.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/libboost_regex-mt.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/librostime.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/libboost_date_time-mt.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/libboost_system-mt.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/libboost_thread-mt.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libpthread.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libcpp_common.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libconsole_bridge.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_videostab.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_video.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_superres.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_stitching.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_photo.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_ocl.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_objdetect.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_nonfree.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_ml.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_legacy.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_imgproc.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_highgui.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_gpu.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_flann.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_features2d.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_core.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_contrib.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_calib3d.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /home/jay/autopilot_ws/devel/lib/libbehaviourLib.so
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_videostab.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_superres.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_stitching.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_contrib.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_nonfree.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_ocl.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_gpu.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_photo.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_objdetect.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_legacy.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_video.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_ml.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_calib3d.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_features2d.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_highgui.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_imgproc.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_flann.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/hydro/lib/libopencv_core.so.2.4.9
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make
-/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable /home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration"
-	cd /home/jay/autopilot_ws/build/autopilot && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/link.txt --verbose=$(VERBOSE)
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build.make
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libcv_bridge.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_videostab.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_video.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_superres.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_stitching.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_photo.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_ocl.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_objdetect.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_ml.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_legacy.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_highgui.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_gpu.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_flann.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_features2d.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_core.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_contrib.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_calib3d.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libimage_transport.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libtinyxml.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libclass_loader.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/libPocoFoundation.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libdl.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libroslib.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libcamera_calibration_parsers.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libtf.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libtf2_ros.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libactionlib.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libmessage_filters.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libroscpp.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libboost_signals.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libxmlrpcpp.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libtf2.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libroscpp_serialization.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/librosconsole.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/librosconsole_log4cxx.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/librosconsole_backend_interface.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/liblog4cxx.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libboost_regex.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/librostime.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /opt/ros/indigo/lib/libcpp_common.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libboost_system.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libboost_thread.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libpthread.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_videostab.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_video.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_superres.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_stitching.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_photo.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_ocl.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_objdetect.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_ml.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_legacy.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_highgui.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_gpu.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_flann.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_features2d.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_core.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_contrib.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_calib3d.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /home/jay/autopilot_temp/dronesim-/devel/lib/libbehaviourLib.so
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_videostab.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_superres.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_stitching.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_ocl.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_gpu.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_photo.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_legacy.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_contrib.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_video.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_objdetect.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_ml.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_calib3d.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_features2d.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_highgui.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_flann.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: /usr/lib/x86_64-linux-gnu/libopencv_core.so.2.4.8
+/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration: autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable /home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration"
+	cd /home/jay/autopilot_temp/dronesim-/build/autopilot && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build: /home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration
+autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build: /home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_behaviour_arbitration
 .PHONY : autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/build
 
 autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/requires: autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/src/teleop_autopilot_behaviour_arbitration.cpp.o.requires
 .PHONY : autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/requires
 
 autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/clean:
-	cd /home/jay/autopilot_ws/build/autopilot && $(CMAKE_COMMAND) -P CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/cmake_clean.cmake
+	cd /home/jay/autopilot_temp/dronesim-/build/autopilot && $(CMAKE_COMMAND) -P CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/cmake_clean.cmake
 .PHONY : autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/clean
 
 autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/depend:
-	cd /home/jay/autopilot_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jay/autopilot_ws/src /home/jay/autopilot_ws/src/autopilot /home/jay/autopilot_ws/build /home/jay/autopilot_ws/build/autopilot /home/jay/autopilot_ws/build/autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/jay/autopilot_temp/dronesim-/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jay/autopilot_temp/dronesim-/src /home/jay/autopilot_temp/dronesim-/src/autopilot /home/jay/autopilot_temp/dronesim-/build /home/jay/autopilot_temp/dronesim-/build/autopilot /home/jay/autopilot_temp/dronesim-/build/autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : autopilot/CMakeFiles/teleop_autopilot_behaviour_arbitration.dir/depend
 

@@ -53,7 +53,6 @@
 #include <boost/filesystem.hpp>
 #include <string>
 #include <geometry_msgs/Twist.h>
-#include <nav_msgs/Odometry.h>
 #include <stdexcept>
 #include <std_srvs/Empty.h>
 #include <algorithm>
@@ -68,7 +67,6 @@
 using namespace std;
 bool overwrite = true;//if a folder with the same name exists, overwrite this folder.
 string save_log_location;
-string save_pos_log_location;
 string control_output_filename="";
 string control_output_supervisor_filename="";
 bool depth_estimation_flag;
@@ -76,10 +74,7 @@ bool dagger_running = false;
 bool takeoff=false;
 bool shuttingdown=false;
 bool discretized_twist = false;
-
 int max_count=10000;
-int gtID = 0;
-
 boost::format g_format;
 bool save_all_image, save_image_service;
 std::string encoding;
@@ -173,15 +168,16 @@ public://initialize fields of callbacks
       depthToCV8UC1(depth_float_img, depth_mono8_img);
     }
 //     double min, max;
-//     cv::minMaxLoc(depth_float_img, &min, &max);	
+//     cv::minMaxLoc(depth_float_img, &min, &max);  
 //     std::cout << "minmax float: " << min << "; " << max << "\n";
-//     cv::minMaxLoc(depth_mono8_img, &min, &max);	
+//     cv::minMaxLoc(depth_mono8_img, &min, &max);  
 //     std::cout << "minmax mono: " << min << "; " << max << "\n";
 //     
     // save the image
     std::string filename;
+    cout << "Getting depth" << endl;
     if (!saveImage(depth_mono8_img, filename, true))
-	return;
+  return;
     count_++;
     //if(static_cast<int>(count_) >= max_count) shutdown("stuck");
   }
@@ -198,27 +194,6 @@ public://initialize fields of callbacks
 
   void daggerCallbackCmd(const geometry_msgs::Twist& msg) {
     latest_supervisor_twist = msg;
-  }
-
-  void callbackGt(const nav_msgs::Odometry& msg)
-  {
-    // if (msg.pose.pose.position.z > ADJUST_HEIGHT_MAX){
-    //   adjust_height=-1;
-    // }else if (msg.pose.pose.position.z < ADJUST_HEIGHT_MIN){ // Was 0.5
-    //   adjust_height=1;
-    // }else{
-    //   adjust_height=0;
-    // }
-    
-    double posx = msg.pose.pose.position.x;
-    double posy = msg.pose.pose.position.y;    
-    ofstream position_log_file;
-    position_log_file.open(save_pos_log_location.c_str(), ios::app);
-    position_log_file << gtID << " " << posx << " " << posy << endl;
-    position_log_file.close();
-    gtID++;
-
-
   }
   
 private: //private methods of callback
@@ -243,7 +218,7 @@ private: //private methods of callback
       	  filename = (g_format % path_depth % count_ % "jpg").str();
       	}
       } catch (...) { g_format.clear(); }
-      
+      cout << "Filename " << filename << endl;
       if ( save_all_image || save_image_service ) {
         try{
           // cout << "Filename: " << filename << endl;
@@ -492,13 +467,15 @@ int main(int argc, char** argv)
   depth_estimation_flag = false;
   nh.getParam("depth_estimation_running", depth_estimation_flag);
   if (depth_estimation_flag) {
-    topic = "/ardrone/image_raw";
+    topic = "/bebop/image_raw";
     topic_depth = "/autopilot/depth_estim";
   }
   else {  
     topic = "/ardrone/kinect/image_raw";
     topic_depth = "/ardrone/kinect/depth/image_raw";
   }
+  cout << "Topic RGB: " << topic<< endl;
+  cout << "Topic depth: " << topic_depth<< endl;
 
   Callbacks callbacks;
   
@@ -535,8 +512,6 @@ int main(int argc, char** argv)
   //if(saving_location.compare("generated_set")) saving_location = "remote_images/set_online";
   control_output_filename = "/home/jay/data/"+saving_location+"/control_info.txt";
   control_output_supervisor_filename = "/home/jay/data/"+saving_location+"/control_info_supervisor.txt";
-  save_pos_log_location = "/home/jay/data/"+saving_location+"/position.txt";
-
   std::string main_path = "/home/jay/data/"+saving_location;
   boost::filesystem::path dir(main_path);
   boost::filesystem::file_status f = status(dir);
@@ -611,7 +586,7 @@ int main(int argc, char** argv)
       topic_depth, 1, boost::bind(&Callbacks::callbackWithoutCameraInfoWithDepth, &callbacks, _1));
 
   // Make subscriber to cmd_vel in order to set the name.
-  ros::Subscriber subControl = nh.subscribe("/cmd_vel",1,&Callbacks::callbackCmd, &callbacks);
+  ros::Subscriber subControl = nh.subscribe("/bebop/cmd_vel",1,&Callbacks::callbackCmd, &callbacks);
   ros::Subscriber subControl_dagger = nh.subscribe("/dagger_vel",1,&Callbacks::daggerCallbackCmd, &callbacks);
   // [hover, back, forward, turn right, turn left, down, up, clockwise, ccw]
   // Adapt name instead of left0000.jpg it should be 00000-gt1.jpg when receiving control 1 ~ straight
@@ -624,8 +599,7 @@ int main(int argc, char** argv)
   ros::ServiceServer save = local_nh.advertiseService ("save", service);
   
   // Subscribe to the takeoff message in order to know when to start the saving procedure
-  ros::Subscriber subTakeoff = nh.subscribe("/ardrone/takeoff",1,&Callbacks::callbackTakeoff, &callbacks);
-  ros::Subscriber subGt = nh.subscribe("/ground_truth/state",1,&Callbacks::callbackGt, &callbacks);
+  ros::Subscriber subTakeoff = nh.subscribe("/bebop/takeoff",1,&Callbacks::callbackTakeoff, &callbacks);
   
   ros::spin();
 } 

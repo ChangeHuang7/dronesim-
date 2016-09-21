@@ -2,31 +2,37 @@
 <!---->
 <opencv_storage>
 <lambdaGoalHorz>
-0.5
+0.50
 </lambdaGoalHorz>
+<!-- Linearly increases angular velocity  -->
 <lambdaObstacleHorzNormal>
-20
+5
 </lambdaObstacleHorzNormal>	
 <lambdaObstacleHorzAggressive>
 50
 </lambdaObstacleHorzAggressive>
 <weightGoalHorz>
-0.3
+0.0
 </weightGoalHorz>
 <weightObstacleHorz>
 0.7
 </weightObstacleHorz>
-<obstacleDistanceGainHorzNormal>
-0.225
+<!-- Increase to decrease sensitivity -->
+<obstacleDistanceGainHorzNormal> 
+0.25
 </obstacleDistanceGainHorzNormal>
 <obstacleDistanceGainHorzAggressive>
 0.005
 </obstacleDistanceGainHorzAggressive>
 <angularRangeHorz>
-58
+76
+<!-- 50 -->
 </angularRangeHorz>
+<momentum_cancellation>
+-0.5
+</momentum_cancellation>
 <lambdaObstacleVert>
-10
+0
 </lambdaObstacleVert>
 <angularRangeVert>
 40

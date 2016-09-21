@@ -1,7 +1,7 @@
 FILE(REMOVE_RECURSE
   "CMakeFiles/teleop_autopilot_turning.dir/src/teleop_autopilot_turning.cpp.o"
-  "/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_turning.pdb"
-  "/home/jay/autopilot_ws/devel/lib/autopilot/teleop_autopilot_turning"
+  "/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_turning.pdb"
+  "/home/jay/autopilot_temp/dronesim-/devel/lib/autopilot/teleop_autopilot_turning"
 )
 
 # Per-language clean rules from dependency scanning.

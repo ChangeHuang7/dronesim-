@@ -31,11 +31,14 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
+# Escaping for special characters.
+EQUALS = =
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jay/autopilot_ws/src
+CMAKE_SOURCE_DIR = /home/jay/autopilot_temp/dronesim-/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jay/autopilot_ws/build
+CMAKE_BINARY_DIR = /home/jay/autopilot_temp/dronesim-/build
 
 # Utility rule file for doxygen.
 
@@ -43,8 +46,6 @@ CMAKE_BINARY_DIR = /home/jay/autopilot_ws/build
 include CMakeFiles/doxygen.dir/progress.make
 
 CMakeFiles/doxygen:
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/jay/autopilot_ws/build/CMakeFiles $(CMAKE_PROGRESS_1)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "doxygen found"
 
 doxygen: CMakeFiles/doxygen
 doxygen: CMakeFiles/doxygen.dir/build.make
@@ -59,6 +60,6 @@ CMakeFiles/doxygen.dir/clean:
 .PHONY : CMakeFiles/doxygen.dir/clean
 
 CMakeFiles/doxygen.dir/depend:
-	cd /home/jay/autopilot_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jay/autopilot_ws/src /home/jay/autopilot_ws/src /home/jay/autopilot_ws/build /home/jay/autopilot_ws/build /home/jay/autopilot_ws/build/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/jay/autopilot_temp/dronesim-/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jay/autopilot_temp/dronesim-/src /home/jay/autopilot_temp/dronesim-/src /home/jay/autopilot_temp/dronesim-/build /home/jay/autopilot_temp/dronesim-/build /home/jay/autopilot_temp/dronesim-/build/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/doxygen.dir/depend
 

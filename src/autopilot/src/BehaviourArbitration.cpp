@@ -106,7 +106,7 @@ void BehaviourArbitration::displayObstacleArrayHorz(cv::Mat obstacleMap) {
 	// }
 	// cout << "Kernel: " << matchedFilterKernel << endl;
 	cout << "Filter result: " << matchedFilterResult << endl;
-	imshow("Depth info horizontal", displayImage);
+	// imshow("Depth info horizontal", displayImage);
 	waitKey(1);
 
 }
@@ -124,7 +124,7 @@ void BehaviourArbitration::displayObstacleArrayVert(cv::Mat obstacleMap) {
 		putText(displayImage, depthString, testPos, fontFace, fontScale, cv::Scalar(255,0,0), thickness,8);
 		testPos += Point(0,30);
 	}
-	imshow("Depth info vertical", displayImage);
+	// imshow("Depth info vertical", displayImage);
 	waitKey(1);
 
 }
@@ -137,7 +137,7 @@ void BehaviourArbitration::displayCollision(cv::Mat kinectImage) {
 	if (minVal <= 0.5) {
 		rectangle(displayImage, Rect(Point(0,0), Point(200,200)),Scalar(0,0,255), CV_FILLED);
 	}
-	imshow("Collision image", displayImage);
+	// imshow("Collision image", displayImage);
 	waitKey(1);
 }
 
@@ -166,6 +166,7 @@ float BehaviourArbitration::avoidObstacleHorizontal(cv::Mat kinectImage, float c
 	int image_height = kinectImage.rows;
 	int image_width  = kinectImage.cols;
 	int centre_row = floor(image_height/2);
+	// int centre_row = image_height - 50;
 	int obstacle_bins = 64;
 
 

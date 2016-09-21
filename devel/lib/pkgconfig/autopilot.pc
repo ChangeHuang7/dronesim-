@@ -1,8 +1,8 @@
-prefix=/home/jay/autopilot_ws/devel
+prefix=/home/jay/autopilot_temp/dronesim-/devel
 
 Name: autopilot
 Description: Description of autopilot
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/jay/autopilot_ws/devel/lib 
+Libs: -L/home/jay/autopilot_temp/dronesim-/devel/lib 
 Requires: 

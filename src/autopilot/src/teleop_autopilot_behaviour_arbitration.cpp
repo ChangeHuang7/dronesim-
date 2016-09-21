@@ -11,26 +11,48 @@
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_datatypes.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/UInt8.h>
 
+
+#include <fstream>      // std::ifstream
+#include <sstream>     // std::cout
 #include <std_msgs/Empty.h>
 
 using namespace std;
+using namespace cv;
+
+ros::Publisher pubControl;
+ros::Time last_toggle;
+bool auto_control = false;
 
 bool discretized_twist = false;
 bool takeoff = false;
-int FSM_COUNTER_THRESH=400;//wait for some time before taking off
+int FSM_COUNTER_THRESH=20;//wait for some time before taking off
 int counter = 0;
 
-
+float DRIFT_CORR = 0.0;
 float ADJUST_HEIGHT_MAX = 2; float ADJUST_HEIGHT_MIN = 0.5; // This is for the corridor world
 // float ADJUST_HEIGHT_MAX = 3.5; float ADJUST_HEIGHT_MIN = 0.5;
 float adjust_height = 0;
 float CURRENT_YAW = 0;
+float MOMENTUM_CANCELLATION = 0;
 double GOAL_ANGLE = 3*CV_PI/2;
 float DYAW = 0, DPITCH = 0;
 
+std::string saving_location = "experiments/";
+
+ros::Time experiment_start, experiment_end;
+
 BehaviourArbitration * BAController = 0; // Will be initialized in main
 ros::Publisher debugPub;
+
+template <typename T>
+std::string to_string(T value)
+{
+  std::ostringstream os ;
+  os << value ;
+  return os.str() ;
+}
 
 void updateController(cv::Mat depth_float_img) {
 	// Scale whole image using a scalar. The anount is a parameter of the controller
@@ -168,6 +190,45 @@ float discretize_value(float value_cont, int disc_factor) {
 	return a;
 }
 
+void display_command_image() {
+	cv::Mat feedback_image = cv::Mat::zeros(240, 320, CV_8UC3);
+	int cols = feedback_image.cols;
+	int rows = feedback_image.rows;
+
+	// Draw yaw feedback
+	if (DYAW < 0) {
+		rectangle(feedback_image, Point(cols/2, rows/2 - 5), Point(cols/2 - DYAW*cols/2, rows/2 + 5), Scalar(0, 0, 255), CV_FILLED);
+	}
+	else {
+		rectangle(feedback_image, Point(cols/2 - DYAW*cols/2, rows/2 + 5), Point(cols/2, rows/2 - 5) , Scalar(0, 0, 255), CV_FILLED);
+	}
+
+	// Draw pitch feedback
+	if (DPITCH < 0) {
+		rectangle(feedback_image, Point(cols/2+5, rows/2 + DPITCH*rows/2), Point(cols/2-5, rows/2) ,Scalar(0, 0, 255), CV_FILLED);
+	}
+	else {
+		rectangle(feedback_image, Point(cols/2-5, rows/2), Point(cols/2+5, rows/2 + DPITCH*rows/2) ,Scalar(0, 0, 255), CV_FILLED);
+	}
+
+	string text = to_string(DRIFT_CORR);
+	int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
+	double fontScale = 1;
+	int thickness = 1;  
+	cv::Point textOrg(10, 30);
+	cv::putText(feedback_image, text, textOrg, fontFace, fontScale, Scalar::all(255), thickness,8);
+	cout << "DPITCH " << DPITCH << endl;
+	cout << "DYAW " << DYAW << endl;
+	imshow("Control output",feedback_image);
+	waitKey(10);
+}
+
+void correct_drift(const nav_msgs::Odometry& msg) {
+	DRIFT_CORR = - msg.twist.twist.linear.y * MOMENTUM_CANCELLATION;
+	// clip it
+	DRIFT_CORR = std::min(std::max(DRIFT_CORR, -0.01f), 0.01f);
+}
+
 geometry_msgs::Twist get_twist() {
 	//take off after FSM counter greater than the threshold
 	if(counter > FSM_COUNTER_THRESH) takeoff=true;
@@ -176,41 +237,92 @@ geometry_msgs::Twist get_twist() {
 	geometry_msgs::Twist twist;
 	if(!discretized_twist) {
 		// twist.linear.x = 1 - abs(DYAW);
-		twist.linear.x = 0.8;
-		twist.linear.y = 0.0;
-		twist.linear.z = DPITCH + adjust_height;
+		if(abs(DYAW) < 0.1) {
+			twist.linear.x = 0.025;
+		}
+		else {
+			twist.linear.x = 0.025;
+		}
+		cout << "MOMENTUM_CANCELLATION " << MOMENTUM_CANCELLATION << endl;
+		
+		// twist.linear.y = DRIFT_CORR;
+		// twist.angular.x = - DYAW * MOMENTUM_CANCELLATION;
+		cout << "Linear y: " << twist.linear.y << endl;
+		twist.linear.z = DPITCH;
 
-		twist.angular.x = 0.0;
+		// twist.angular.x = 0.0;
 		twist.angular.y = 0.0;
 		twist.angular.z = DYAW;
 		
-		
+		display_command_image();
+
 		counter=counter+1;
 		return twist;
 	}
-	else {
+	// else {
 
-		twist.linear.x = 0.8;
-		twist.linear.y = 0.0;
-		twist.linear.z = 0.0;
+	// 	twist.linear.x = 0.8;
+	// 	twist.linear.y = 0.0;
+	// 	twist.linear.z = 0.0;
+	// 	twist.angular.x = 0.0;
+	// 	twist.angular.y = 0.0;
+	// 	twist.angular.z = 0.0;
 
-		twist.angular.x = 0.0;
-		twist.angular.y = 0.0;
-		twist.angular.z = 0.0;
+	// 	// Choose to rotate or to go up or down
+	// 	if (abs(DYAW) > abs(DPITCH)) {	
+	// 		// Discretize rotation values
+	// 		twist.angular.z = discretize_value(DYAW, 21);
+	// 	}
+	// 	else {
+	// 		// Discretize altitude values
+	// 		twist.linear.z = discretize_value(DPITCH, 21);
+	// 	}
+	// 	counter++;
+	// 	// Return twist
+	// 	return twist;
+	// }
+}
 
-		// Choose to rotate or to go up or down
-		if (abs(DYAW) > abs(DPITCH)) {	
-			// Discretize rotation values
-			twist.angular.z = discretize_value(DYAW, 21);
-		}
-		else {
-			// Discretize altitude values
-			twist.linear.z = discretize_value(DPITCH, 21);
-		}
-		counter++;
-		// Return twist
-		return twist;
-	}
+
+void toggleControl(std_msgs::UInt8 msg) {
+    // Button debouncing, pressing button may trigger 3 or more messages at a time
+    if (ros::Time::now().toSec() > last_toggle.toSec() +1) {
+        auto_control = !auto_control;
+        cout << "Toggling auto_control to " << auto_control << endl;
+        last_toggle = ros::Time::now();
+
+        // If auto control was inactive, note down when experiment started
+        if (auto_control) {
+        	experiment_start = ros::Time::now();
+        }
+        // else experiment had ended, log it
+        else {
+        	experiment_end = ros::Time::now();
+
+        	cout << "Experiment time: " << (experiment_end - experiment_start).toSec() << endl;
+        	cout << "Current time: " << ros::Time::now() << endl;
+        	string experiment_log_filename = "/home/jay/data/" + saving_location + "time";
+		    ofstream experiment_duration_file;
+		    experiment_duration_file.open(experiment_log_filename.c_str(), ios::app);
+		    experiment_duration_file << "Time: " << (experiment_end - experiment_start).toSec() << endl;
+        }
+    }
+}
+
+// geometry_msgs::Twist saturateAltitude(geometry_msgs::Twist velCommand) {
+//     if (altitude > 5) {
+//         cout << "Going too high, saturating! " << altitude << endl;
+//         velCommand.linear.z = 0;
+//     }
+//     return velCommand;
+// }
+
+void publish_velocity_command(geometry_msgs::Twist velCommand) {
+    if (auto_control) {
+        // velCommand = saturateAltitude(velCommand);
+        pubControl.publish(velCommand);
+        // cout << "Publishing velocity" << endl;
+    }
 }
 
 int main(int argc, char** argv)
@@ -241,20 +353,22 @@ int main(int argc, char** argv)
 		cout << "Using default angle, ";
 	}
 	cout << "Goal angle: " << GOAL_ANGLE << endl;
+    nh.getParam("saving_location", saving_location);
 
 
 	// Make subscriber to ground_truth in order to get the psotion.
 	//ros::Subscriber subControl = nh.subscribe("/ground_truth/state/pose/pose/position",1,&Callbacks::callbackGt, &callbacks);
 	ros::Subscriber subControl = nh.subscribe("/ground_truth/state",1,callbackGt);
 	ros::Subscriber subGoalAngle = nh.subscribe("/autopilot/goal_angle",1,callbackGoalAngle);
+	ros::Subscriber sub_auto_control = nh.subscribe(nh.resolveName("bebop/manual_control"), 1000, &toggleControl);
+	ros::Subscriber sub_drift_corr = nh.subscribe("bebop/odom", 1, &correct_drift);
 
 
 	// Make subscriber to cmd_vel in order to set the name.
-	ros::Publisher pubControl;
 	bool dagger_running = false;
 	nh.getParam("dagger_running", dagger_running);
 	if (!dagger_running) {
-		pubControl = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1000);
+		pubControl = nh.advertise<geometry_msgs::Twist>("/bebop/cmd_vel", 1000);
 		cout << "Behaviour Arbitration is controlling the drone" << endl;
 	}
 	else {
@@ -263,7 +377,7 @@ int main(int argc, char** argv)
 	}
 	
 	// Make Publisher to cmd_vel in order to set the velocity.
-	ros::Publisher pubTakeoff = nh.advertise<std_msgs::Empty>("/ardrone/takeoff", 1);
+	// ros::Publisher pubTakeoff = nh.advertise<std_msgs::Empty>("/ardrone/takeoff", 1);
   
 	ros::Rate loop_rate(20);
 	// ros::Rate loop_rate(10);
@@ -275,6 +389,12 @@ int main(int argc, char** argv)
 	std::string BA_parameters_path;
 	if(nh.getParam("BA_parameters_path", BA_parameters_path)) {
 		BAController = new BehaviourArbitration(BA_parameters_path);
+		cout << "Reading behaviour arbitration parameters from " << BA_parameters_path << endl;
+		FileStorage fs;//(filename, FileStorage::READ);
+		fs.open(BA_parameters_path, FileStorage::READ);
+		MOMENTUM_CANCELLATION = (float) fs["momentum_cancellation"];
+		cout << "Momentum cancellation: " << MOMENTUM_CANCELLATION << endl;
+		// fs.close();
 	}
 	else {
 		cout << "Using default BA paremeters" << endl;
@@ -284,6 +404,7 @@ int main(int argc, char** argv)
 
 	nh.getParam("discretized_twist", discretized_twist);
 
+    last_toggle = ros::Time(0);
 	// BAController = new BAController();
 
 	// twist.linear.x = 0.5;//straight
@@ -296,12 +417,11 @@ int main(int argc, char** argv)
 	//while(nh.ok()){
 	while(ros::ok()){
 		twist = get_twist();
-
-		pubControl.publish(twist);
-		if(takeoff){
-		      std_msgs::Empty msg;
-		      pubTakeoff.publish(msg);
-		    }
+		publish_velocity_command(twist);
+		// if(takeoff){
+		//       std_msgs::Empty msg;
+		//       pubTakeoff.publish(msg);
+		//     }
 		loop_rate.sleep();
 		ros::spinOnce();
 	}

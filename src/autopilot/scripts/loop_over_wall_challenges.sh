@@ -5,19 +5,10 @@ then
 	exit
 fi
 
-if [ "$1" == "cwall_train" ]
-then 
-  WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_train/*.world"
-elif [ "$1" == "cwall_test" ]
-then 
-  WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_test/*.world"
-fi
-echo $WORLDFILES
 # read list of world files in
 #WORLDDIR="/home/jay/autopilot_ws/src/autopilot/worlds"
 #WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_train/*.world"
-
-#WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_one/*.world"
+WORLDFILES="/home/jay/autopilot_ws/src/autopilot/worlds/wall_challenges_one/*.world"
 
 # whether the trajectory is a success or not is saved log file. 
 #logdir='/home/jay/autopilot_ws/src/autopilot'
@@ -93,7 +84,7 @@ do
  	# Remove everything in the folder
  	rm $SLOC_FULL/* $SLOC_FULL/RGB/* $SLOC_FULL/depth/*
  	
-        sleep 30
+        sleep 1m
         
  	#make file free again
  	rm /home/jay/data/remote_features/clear_memory
